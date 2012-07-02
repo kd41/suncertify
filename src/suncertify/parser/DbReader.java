@@ -16,17 +16,24 @@ public class DbReader {
   private static final Logger log = LoggerFactory.getLogger(DbReader.class);
 
   public static void main(String... args) throws IOException {
-    File file = new File("C:\\projects\\sun\\suncertify\\db-2x3-ext.db");
+    String dbPath = "C:\\projects\\sun\\suncertify\\db-2x3-ext.db";
+    DBPresenter presenter = new DBPresenter(dbPath);
+    File file = new File(dbPath);
     FileInputStream fis = new FileInputStream(file);
     BufferedInputStream bis = new BufferedInputStream(fis);
     DataInputStream dis = new DataInputStream(bis);
-    out.printf("---\nHeader\n---\n");
-    out.printf("Magic cookie: %d\n", dis.readInt());
-    int fieldNum = dis.readUnsignedShort();
-    out.printf("Number of fields in each record: %d\n", fieldNum);
+    // out.printf("---\nHeader\n---\n");
+
+    int magicCookie = dis.readInt();
+    presenter.setMagicCookie(magicCookie);
+    // out.printf("Magic cookie: %d\n", magicCookie);
+
+    int fieldsNumber = dis.readUnsignedShort();
+    // out.printf("Number of fields in each record: %d\n", fieldNum);
+    presenter.setFieldsNumber(fieldsNumber);
     out.printf("---\nSchema\n---\n");
     StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < fieldNum; i++) {
+    for (int i = 0; i < fieldsNumber; i++) {
       int recordNameLength = dis.readUnsignedByte();
       for (int j = 0; j < recordNameLength; j++) {
         sb.append((char) dis.readUnsignedByte());
@@ -35,19 +42,34 @@ public class DbReader {
       sb.setLength(0);
     }
     out.printf("---\nData\n---\n");
+    log.info("data");
     try {
+      int count = 0;
       while (true) {
-        log.info("qqqq");
+        count++;
+        log.info("{}", count);
         Record r = readNextRecord(dis);
-        out.printf("%b\t%s\t%s\t%s\t%d\t%s\t%d\n", r.isValid(), r.getName(), r.getLocation(), r.getSpecialities(), r.getSize(), r.getRate(),
-                   r.getOwner());
+        DBRecord record = new DBRecord();
+        out.printf("%b\t%s\t%s\t%s\t%d\t%s\t%d\n", r.isValid(), r.getName(), r.getLocation(), r.getSpecialities(), r.getSize(), r.getRate(), r.getOwner());
+        record.setPosition(count);
+        record.setValid(r.isValid());
+        record.setName(r.getName());
+        record.setLocation(r.getLocation());
+        record.setSpecialties(r.getSpecialities());
+        record.setSize(r.getSize());
+        record.setRate(r.getRate());
+        record.setOwner(r.getOwner());
+        presenter.getRecords().add(record);
       }
     } catch (EOFException e) {
+      log.error(e.getMessage(), e);
     }
 
     dis.close();
     bis.close();
     fis.close();
+
+    log.info("{}", presenter);
   }
 
   private static Record readNextRecord(DataInputStream dis) throws IOException {
