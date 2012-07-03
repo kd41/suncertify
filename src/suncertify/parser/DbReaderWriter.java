@@ -33,10 +33,11 @@ public class DbReaderWriter {
     FileUtils.copyFile(Variables.getOriginalFilePath(), Variables.getWorkedFilePath());
     DBPresenter presenter = createDatabasePresenter();
 
-    // log.info("{}", presenter);
+    writeTestData();
+    log.info("{}", presenter);
   }
 
-  private void writeTestData() {
+  private static void writeTestData() {
     DbReaderWriter db = new DbReaderWriter();
     try {
       log.info("try to write");
