@@ -32,13 +32,12 @@ public class DbReaderWriter {
     log.info("START");
     FileUtils.copyFile(Variables.getOriginalFilePath(), Variables.getWorkedFilePath());
     DBPresenter presenter = createDatabasePresenter();
-    byte[] terminator = ("\0").getBytes();
-    int terminatorLength = terminator.length;
-    log.info("rerminator: " + terminatorLength);
 
-    log.info("" + "".toCharArray().length);
+    // log.info("{}", presenter);
+  }
+
+  private void writeTestData() {
     DbReaderWriter db = new DbReaderWriter();
-
     try {
       log.info("try to write");
       for (int i = 0; i < 10; i++) {
@@ -47,8 +46,6 @@ public class DbReaderWriter {
     } catch (Exception e) {
       log.info(e.getMessage(), e);
     }
-
-    // log.info("{}", presenter);
   }
 
   public static DBPresenter createDatabasePresenter() throws IOException {
@@ -64,20 +61,23 @@ public class DbReaderWriter {
     // log.info("Magic cookie: %d", magicCookie);
 
     int fieldsNumber = dis.readUnsignedShort();
-    log.info("Number of fields in each record: {}", fieldsNumber);
+    // log.info("Number of fields in each record: {}", fieldsNumber);
     presenter.setFieldsNumber(fieldsNumber);
-    log.info("---Schema---");
+    // log.info("---Schema---");
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < fieldsNumber; i++) {
       int recordNameLength = dis.readUnsignedByte();
       for (int j = 0; j < recordNameLength; j++) {
         sb.append((char) dis.readUnsignedByte());
       }
-      log.info("Field name: {}\tField length: {}", sb.toString(), dis.readUnsignedByte());
+      int fieldLength = dis.readUnsignedByte();
+      log.info("Field name: '{}'\tField length: {}", sb.toString(), fieldLength);
       sb.setLength(0);
     }
-    log.info("data");
+    // log.info("data");
     try {
+      log.info("{}\t{}\t{}\t{}\t{}\t{}\t{}", new Object[] { "r.getValid()", "r.getName()", "r.getLocation()", "r.getSpecialities()", "r.getNumberOfWorkers()", "r.getRate()",
+                                                           "r.getOwner()" });
       int count = 0;
       while (true) {
         count++;
