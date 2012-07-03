@@ -91,4 +91,24 @@ public class DBRecord {
            + numberOfWorkers + ", rate=" + rate + ", owner=" + owner + ", cookie=" + cookie + "]";
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if ((o instanceof DBRecord) && (((DBRecord) o).valid == valid) && (((DBRecord) o).name == name) && (((DBRecord) o).location == location)
+        && (((DBRecord) o).specialties == specialties) && (((DBRecord) o).rate == rate)) {
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 7;
+    hash = 31 * hash + (valid == null ? 0 : valid.hashCode());
+    hash = 31 * hash + (name == null ? 0 : name.hashCode());
+    hash = 31 * hash + (location == null ? 0 : location.hashCode());
+    hash = 31 * hash + (specialties == null ? 0 : specialties.hashCode());
+    hash = 31 * hash + (rate == null ? 0 : rate.hashCode());
+    return hash;
+  }
+
 }

@@ -1,6 +1,14 @@
 package suncertify.db;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import suncertify.parser.DBPresenter;
+import suncertify.parser.DBReaderWriter;
+import suncertify.parser.DBRecordHelper;
+
 public class DBAccessImpl implements DBAccess {
+  private static final Logger log = LoggerFactory.getLogger(DBAccessImpl.class);
 
   @Override
   public String[] readRecord(long recNo) throws RecordNotFoundException {
@@ -28,8 +36,16 @@ public class DBAccessImpl implements DBAccess {
 
   @Override
   public long createRecord(String[] data) throws DuplicateKeyException {
-    // TODO Auto-generated method stub
-    return 0;
+    DBPresenter presenter = DBPresenter.getInstance();
+    if (presenter.getRecords().contains(DBRecordHelper.getDBRecordFromStringArray(data))) {
+      throw new DuplicateKeyException();
+    }
+    try {
+      DBReaderWriter.writeRecord(data);
+    } catch (Exception e) {
+      log.info(e.getMessage(), e);
+    }
+    return DBPresenter.getInstance().getRecords().size();
   }
 
   @Override

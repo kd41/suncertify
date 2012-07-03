@@ -24,6 +24,8 @@ public class DBRecordHelper {
       record.setNumberOfWorkers(data[3]);
       record.setRate(data[4]);
       record.setOwner(data[5]);
+    } else {
+      throw new RuntimeException("Wrong data to create DBRecord!");
     }
     return record;
   }

@@ -24,30 +24,8 @@ import suncertify.constants.Variables;
 
 import suncertify.constants.StringUtils;
 
-public class DbReaderWriter {
-  private static final Logger log = LoggerFactory.getLogger(DbReaderWriter.class);
-
-  public static void main(String... args) throws IOException {
-    // main method is only for test!!
-    log.info("START");
-    FileUtils.copyFile(Variables.getOriginalFilePath(), Variables.getWorkedFilePath());
-    DBPresenter presenter = createDatabasePresenter();
-    log.info("{}", presenter);
-    writeTestData();
-    // log.info("{}", presenter);
-  }
-
-  private static void writeTestData() {
-    DbReaderWriter db = new DbReaderWriter();
-    try {
-      log.info("try to write");
-      for (int i = 0; i < 10; i++) {
-        db.writeRecord(TestData.getRecord());
-      }
-    } catch (Exception e) {
-      log.info(e.getMessage(), e);
-    }
-  }
+public class DBReaderWriter {
+  private static final Logger log = LoggerFactory.getLogger(DBReaderWriter.class);
 
   public static DBPresenter createDatabasePresenter() throws IOException {
     DBPresenter presenter = DBPresenter.getInstance();
@@ -110,7 +88,7 @@ public class DbReaderWriter {
     return presenter;
   }
 
-  public long writeRecord(String[] data) throws Exception {
+  public static long writeRecord(String[] data) throws Exception {
     long recordNumber = 0;
     File file = new File(DBPresenter.getInstance().getDbPath());
     // log.info("write to dbPath: {}", DBPresenter.getInstance().getDbPath());
