@@ -32,9 +32,9 @@ public class DbReaderWriter {
     log.info("START");
     FileUtils.copyFile(Variables.getOriginalFilePath(), Variables.getWorkedFilePath());
     DBPresenter presenter = createDatabasePresenter();
-
-    writeTestData();
     log.info("{}", presenter);
+    writeTestData();
+    // log.info("{}", presenter);
   }
 
   private static void writeTestData() {
@@ -77,15 +77,16 @@ public class DbReaderWriter {
     }
     // log.info("data");
     try {
-      log.info("{}\t{}\t{}\t{}\t{}\t{}\t{}", new Object[] { "r.getValid()", "r.getName()", "r.getLocation()", "r.getSpecialities()", "r.getNumberOfWorkers()", "r.getRate()",
-                                                           "r.getOwner()" });
+      // log.info("{}\t{}\t{}\t{}\t{}\t{}\t{}", new Object[] { "r.getValid()", "r.getName()", "r.getLocation()", "r.getSpecialities()",
+      // "r.getNumberOfWorkers()", "r.getRate()",
+      // "r.getOwner()" });
       int count = 0;
       while (true) {
         count++;
         Record r = readNextRecord(dis);
         DBRecord record = new DBRecord();
-        log.info("{}\t{}\t{}\t{}\t{}\t{}\t{}",
-                 new Object[] { r.getValid(), r.getName(), r.getLocation(), r.getSpecialities(), r.getNumberOfWorkers(), r.getRate(), r.getOwner() });
+        // log.info("{}\t{}\t{}\t{}\t{}\t{}\t{}",
+        // new Object[] { r.getValid(), r.getName(), r.getLocation(), r.getSpecialities(), r.getNumberOfWorkers(), r.getRate(), r.getOwner() });
         record.setPosition(count);
         record.setValid(r.getValid());
         record.setName(r.getName());
@@ -114,9 +115,8 @@ public class DbReaderWriter {
     File file = new File(DBPresenter.getInstance().getDbPath());
     // log.info("write to dbPath: {}", DBPresenter.getInstance().getDbPath());
     FileWriter fw = new FileWriter(file, true);
-    fw.write(Variables.TERMINATOR);
+    writeNext(fw, "", 1);// valid
     for (int i = 0; i < data.length; i++) {
-      // writeNext(fw, "", 8);// valid
       String d = data[i];
       switch (i) {
       case 0:// name
@@ -150,15 +150,13 @@ public class DbReaderWriter {
     if (fw == null) {
       throw new RuntimeException("FileWriter can't be null!");
     }
-    if (data == null) {
-      data = StringPool.BLANK;
-    }
-    if (data.length() <= maxLength) {
+    if (data == null || StringPool.BLANK.equals(data)) {
+      fw.write(Variables.TERMINATOR);
+    } else if (data.length() <= maxLength) {
       fw.write(data);
       if (data.length() < maxLength) {
         fw.write(Variables.TERMINATOR);
       }
-
     } else {
       fw.write(data.substring(0, maxLength - 1));
     }
@@ -166,7 +164,7 @@ public class DbReaderWriter {
 
   private static Record readNextRecord(DataInputStream dis) throws IOException {
     Record record = new Record();
-    record.setValid(readStringField(dis, 8));
+    record.setValid(readStringField(dis, 1));
     record.setName(readStringField(dis, 32));
     record.setLocation(readStringField(dis, 64));
     record.setSpecialities(readStringField(dis, 64));
