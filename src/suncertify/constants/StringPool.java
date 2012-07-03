@@ -1,4 +1,4 @@
-package suncertity.constants;
+package suncertify.constants;
 
 /**
  * @author Aleksei Mahhov
@@ -20,10 +20,6 @@ public class StringPool {
   public static final String BLANK = "";
 
   public static final String CARET = "^";
-
-  public static final String CDATA_CLOSE = "]]>";
-
-  public static final String CDATA_OPEN = "<![CDATA[";
 
   public static final String CLOSE_BRACKET = "]";
 

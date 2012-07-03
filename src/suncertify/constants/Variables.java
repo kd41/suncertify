@@ -1,7 +1,8 @@
-package suncertity.constants;
+package suncertify.constants;
 
 public class Variables {
   public static final boolean IS_TEMP_MODE = true;
+  // public static final boolean IS_TEMP_MODE = false;
   public static final String ENCODING = "US-ASCII";
   public static final String FILE_PATH = "C:\\projects\\sun\\suncertify\\";
   public static final String FILE_NAME = "db-2x3-ext.db";

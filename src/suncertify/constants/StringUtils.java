@@ -1,4 +1,4 @@
-package suncertity.constants;
+package suncertify.constants;
 
 public class StringUtils {
 

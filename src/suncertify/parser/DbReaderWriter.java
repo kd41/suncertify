@@ -14,20 +14,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 
-import suncertity.constants.StringPool;
+import suncertify.constants.StringPool;
 
-import suncertity.constants.FileUtils;
+import suncertify.constants.FileUtils;
 
 import suncertify.mock.TestData;
 
-import suncertity.constants.Variables;
+import suncertify.constants.Variables;
 
-import suncertity.constants.StringUtils;
+import suncertify.constants.StringUtils;
 
 public class DbReaderWriter {
   private static final Logger log = LoggerFactory.getLogger(DbReaderWriter.class);
 
   public static void main(String... args) throws IOException {
+    // main method is only for test!!
+    log.info("START");
     FileUtils.copyFile(Variables.getOriginalFilePath(), Variables.getWorkedFilePath());
     DBPresenter presenter = createDatabasePresenter();
     byte[] terminator = ("\0").getBytes();
@@ -39,14 +41,14 @@ public class DbReaderWriter {
 
     try {
       log.info("try to write");
-      for (int i = 0; i < 100; i++) {
+      for (int i = 0; i < 10; i++) {
         db.writeRecord(TestData.getRecord());
       }
     } catch (Exception e) {
       log.info(e.getMessage(), e);
     }
 
-    log.info("{}", presenter);
+    // log.info("{}", presenter);
   }
 
   public static DBPresenter createDatabasePresenter() throws IOException {
@@ -94,14 +96,14 @@ public class DbReaderWriter {
         presenter.getRecords().add(record);
       }
     } catch (EOFException e) {
-      log.error(e.getMessage(), e);
+      // log.error(e.getMessage(), e);
     }
 
     dis.close();
     bis.close();
     fis.close();
 
-    log.info("{}", presenter);
+    // log.info("{}", presenter);
     out.printf("Successful: " + new Date().toString());
     return presenter;
   }
@@ -109,11 +111,11 @@ public class DbReaderWriter {
   public long writeRecord(String[] data) throws Exception {
     long recordNumber = 0;
     File file = new File(DBPresenter.getInstance().getDbPath());
-    log.info("write to dbPath: {}", DBPresenter.getInstance().getDbPath());
+    // log.info("write to dbPath: {}", DBPresenter.getInstance().getDbPath());
     FileWriter fw = new FileWriter(file, true);
     fw.write(Variables.TERMINATOR);
     for (int i = 0; i < data.length; i++) {
-      writeNext(fw, "", 8);// valid
+      // writeNext(fw, "", 8);// valid
       String d = data[i];
       switch (i) {
       case 0:// name
@@ -139,7 +141,7 @@ public class DbReaderWriter {
     fw.flush();
     fw.close();
     DBRecordHelper.addRecord(data);
-    log.info("Returned number of record: {}", DBPresenter.getInstance().getRecords().size());
+    // log.info("Returned number of record: {}", DBPresenter.getInstance().getRecords().size());
     return recordNumber;
   }
 
@@ -147,15 +149,17 @@ public class DbReaderWriter {
     if (fw == null) {
       throw new RuntimeException("FileWriter can't be null!");
     }
-    if (StringUtils.isNotEmpty(data)) {
-      if (data.length() <= maxLength) {
-        while (data.length() < maxLength) {
-          data += StringPool.SPACE;
-        }
-        fw.write(data);
-      } else {
-        fw.write(data.substring(0, maxLength - 1));
+    if (data == null) {
+      data = StringPool.BLANK;
+    }
+    if (data.length() <= maxLength) {
+      fw.write(data);
+      if (data.length() < maxLength) {
+        fw.write(Variables.TERMINATOR);
       }
+
+    } else {
+      fw.write(data.substring(0, maxLength - 1));
     }
   }
 

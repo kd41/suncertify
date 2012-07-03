@@ -3,7 +3,8 @@ package suncertify.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import suncertity.constants.Variables;
+import suncertify.constants.Variables;
+
 
 public class DBPresenter {
   private static DBPresenter instance;

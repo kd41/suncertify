@@ -1,6 +1,6 @@
 package suncertify.parser;
 
-import suncertity.constants.StringPool;
+import suncertify.constants.StringPool;
 
 public class DBRecordHelper {
 
