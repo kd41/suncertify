@@ -3,14 +3,25 @@ package suncertify.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import suncertity.constants.Variables;
+
 public class DBPresenter {
+  private static DBPresenter instance;
+
   private String dbPath;
   private int magicCookie;
   private int fieldsNumber;
   private List<DBRecord> records;
 
-  public DBPresenter(String dbPath) {
+  private DBPresenter(String dbPath) {
     this.dbPath = dbPath;
+  }
+
+  public static synchronized DBPresenter getInstance() {
+    if (instance == null) {
+      instance = new DBPresenter(Variables.getWorkedFilePath());
+    }
+    return instance;
   }
 
   public long getMagicCookie() {
@@ -50,11 +61,10 @@ public class DBPresenter {
     sb.append("DBPresenter[");
     sb.append("dbPath=").append(dbPath);
     sb.append(", magicCookie=").append(magicCookie);
-    sb.append(", fieldsNumber=").append(fieldsNumber);
+    sb.append(", fieldsNumber=").append(fieldsNumber).append("\n");
     for (DBRecord record : getRecords()) {
       sb.append(", ").append(record).append("\n");
     }
     return sb.toString();
   }
-
 }

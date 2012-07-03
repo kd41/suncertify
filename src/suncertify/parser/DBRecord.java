@@ -1,14 +1,17 @@
 package suncertify.parser;
 
+import suncertity.constants.StringPool;
+
 public class DBRecord {
   private long position;
-  private boolean isValid;
+  private String valid;
   private String name;
   private String location;
   private String specialties;
-  private long size;
+  private String numberOfWorkers;
   private String rate;
-  private long owner;
+  private String owner;
+  private long cookie;
 
   public long getPosition() {
     return position;
@@ -18,12 +21,12 @@ public class DBRecord {
     this.position = position;
   }
 
-  public void setValid(boolean isValid) {
-    this.isValid = isValid;
+  public void setValid(String valid) {
+    this.valid = valid;
   }
 
-  public boolean isValid() {
-    return isValid;
+  public String getValid() {
+    return valid;
   }
 
   public String getName() {
@@ -50,12 +53,12 @@ public class DBRecord {
     this.specialties = specialties;
   }
 
-  public long getSize() {
-    return size;
+  public String getNumberOfWorkers() {
+    return numberOfWorkers;
   }
 
-  public void setSize(long size) {
-    this.size = size;
+  public void setNumberOfWorkers(String numberOfWorkers) {
+    this.numberOfWorkers = numberOfWorkers;
   }
 
   public String getRate() {
@@ -66,18 +69,26 @@ public class DBRecord {
     this.rate = rate;
   }
 
-  public long getOwner() {
+  public String getOwner() {
     return owner;
   }
 
-  public void setOwner(long owner) {
+  public void setOwner(String owner) {
     this.owner = owner;
+  }
+
+  public void setCookie(long cookie) {
+    this.cookie = cookie;
+  }
+
+  public long getCookie() {
+    return cookie;
   }
 
   @Override
   public String toString() {
-    return "Data[position=" + position + ", isValid=" + isValid + ", name=" + name + ", location=" + location + ", specialties=" + specialties + ", size=" + size + ", rate="
-           + rate + ", owner=" + owner + "]";
+    return "Data[position=" + position + ", valid=" + valid + ", name=" + name + ", location=" + location + ", specialties=" + specialties + ", numberOfWorkers="
+           + numberOfWorkers + ", rate=" + rate + ", owner=" + owner + ", cookie=" + cookie + "]";
   }
 
 }
