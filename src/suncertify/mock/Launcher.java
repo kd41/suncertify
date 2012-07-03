@@ -34,7 +34,7 @@ public class Launcher {
   private void writeTestData() {
     try {
       log.info("try to write");
-      for (int i = 0; i < 3; i++) {
+      for (int i = 0; i < 22; i++) {
         String[] testData = TestData.getRecord();
         long position = database.createRecord(testData);
         log.info("Added new record: {}, this position is: {}", DBPresenter.getInstance().getRecords().get(DBPresenter.getInstance().getRecords().size() - 1), position);

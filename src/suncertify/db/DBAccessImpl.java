@@ -3,6 +3,8 @@ package suncertify.db;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import suncertify.parser.DBRecord;
+
 import suncertify.parser.DBPresenter;
 import suncertify.parser.DBReaderWriter;
 import suncertify.parser.DBRecordHelper;
@@ -37,8 +39,9 @@ public class DBAccessImpl implements DBAccess {
   @Override
   public long createRecord(String[] data) throws DuplicateKeyException {
     DBPresenter presenter = DBPresenter.getInstance();
-    if (presenter.getRecords().contains(DBRecordHelper.getDBRecordFromStringArray(data))) {
-      throw new DuplicateKeyException();
+    DBRecord record = DBRecordHelper.getDBRecordFromStringArray(data);
+    if (presenter.getRecords().contains(record)) {
+      throw new DuplicateKeyException("Database contains: " + record);
     }
     try {
       DBReaderWriter.writeRecord(data);

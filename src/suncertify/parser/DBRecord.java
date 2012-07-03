@@ -93,8 +93,8 @@ public class DBRecord {
 
   @Override
   public boolean equals(Object o) {
-    if ((o instanceof DBRecord) && (((DBRecord) o).valid == valid) && (((DBRecord) o).name == name) && (((DBRecord) o).location == location)
-        && (((DBRecord) o).specialties == specialties) && (((DBRecord) o).rate == rate)) {
+    if ((o instanceof DBRecord) && (((DBRecord) o).valid.equals(valid)) && (((DBRecord) o).name.equals(name)) && (((DBRecord) o).location.equals(location))
+        && (((DBRecord) o).specialties.equals( specialties)) && (((DBRecord) o).rate.equals(rate))) {
       return true;
     }
     return false;
