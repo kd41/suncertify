@@ -1,13 +1,16 @@
 package suncertify.parser;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import suncertify.constants.Variables;
 import suncertify.db.RecordNotFoundException;
 
-import suncertify.constants.Variables;
-
 public class DBPresenter {
+  private static final Logger log = LoggerFactory.getLogger(DBPresenter.class);
   private static DBPresenter instance;
 
   private String dbPath;
@@ -24,6 +27,7 @@ public class DBPresenter {
   public static synchronized DBPresenter getInstance() {
     if (instance == null) {
       instance = new DBPresenter(Variables.getWorkedFilePath());
+      log.info("worked with: " + Variables.getWorkedFilePath());
     }
     return instance;
   }

@@ -27,7 +27,7 @@ public class FileUtils {
       }
       in.close();
       out.close();
-      log.info("File copied.");
+      log.info("File copied from " + sourceFile + " to " + destinationFile);
     } catch (FileNotFoundException ex) {
       log.error(ex.getMessage(), ex);
     } catch (IOException e) {
