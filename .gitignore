@@ -5,6 +5,4 @@ bin/suncertify/db
 /.settings
 /logs
 /logs/log.log
-db-2x3-ext-temp.db
-db-2x3-ext-temp2.db
 /test-output
