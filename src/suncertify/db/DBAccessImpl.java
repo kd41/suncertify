@@ -14,8 +14,9 @@ public class DBAccessImpl implements DBAccess {
 
   @Override
   public String[] readRecord(long recNo) throws RecordNotFoundException {
-    // TODO Auto-generated method stub
-    return null;
+    DBPresenter presenter = DBPresenter.getInstance();
+    DBRecord record = presenter.getRecord(recNo);
+    return DBRecordHelper.getDBRecordAsStringArray(record);
   }
 
   @Override
@@ -39,28 +40,43 @@ public class DBAccessImpl implements DBAccess {
   @Override
   public long createRecord(String[] data) throws DuplicateKeyException {
     DBPresenter presenter = DBPresenter.getInstance();
-    DBRecord record = DBRecordHelper.getDBRecordFromStringArray(data);
+    DBRecord record = DBRecordHelper.createDBRecord(data);
     if (presenter.getRecords().contains(record)) {
       throw new DuplicateKeyException("Database contains: " + record);
     }
     try {
-      DBReaderWriter.writeRecord(data);
+      DBReaderWriter.addRecord(data);
     } catch (Exception e) {
       log.info(e.getMessage(), e);
     }
-    return DBPresenter.getInstance().getRecords().size();
+    return record.getPosition();
   }
 
   @Override
   public long lockRecord(long recNo) throws RecordNotFoundException {
-    // TODO Auto-generated method stub
+    DBPresenter presenter = DBPresenter.getInstance();
+    DBRecord record = presenter.getRecord(recNo);
+    if (!record.isLocked()) {
+      long cookie = System.currentTimeMillis();
+      record.setCookie(cookie);
+      return cookie;
+    }
     return 0;
   }
 
   @Override
   public void unlock(long recNo, long cookie) throws SecurityException {
-    // TODO Auto-generated method stub
-
+    DBPresenter presenter = DBPresenter.getInstance();
+    DBRecord record = null;
+    try {
+      record = presenter.getRecord(recNo);
+    } catch (RecordNotFoundException e) {
+      log.error(e.getMessage(), e);
+      return;
+    }
+    if (record.isLocked() && record.getCookie() != cookie) {
+      throw new SecurityException("The record " + recNo + " is locked with cookie: " + record.getCookie() + ". You cant' unlock this record with cookie: " + cookie);
+    }
+    record.setCookie(0);
   }
-
 }

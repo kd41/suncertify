@@ -12,7 +12,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import suncertify.constants.StringPool;
 
@@ -27,8 +30,17 @@ import suncertify.constants.StringUtils;
 public class DBReaderWriter {
   private static final Logger log = LoggerFactory.getLogger(DBReaderWriter.class);
 
+  private static final int VALID_LENGTH = 1;
+  private static final int NAME_LENGTH = 32;
+  private static final int LOCATION_LENGTH = 64;
+  private static final int SPECIALTIES_LENGTH = 64;
+  private static final int NUM_OF_WOKERS_LENGTH = 6;
+  private static final int RATE_LENGTH = 8;
+  private static final int OWNER_LENGTH = 8;
+
   public static DBPresenter createDatabasePresenter() throws IOException {
     DBPresenter presenter = DBPresenter.getInstance();
+    List<Byte> fileHeader = new ArrayList<Byte>();
     File file = new File(presenter.getDbPath());
     FileInputStream fis = new FileInputStream(file);
     BufferedInputStream bis = new BufferedInputStream(fis);
@@ -36,23 +48,33 @@ public class DBReaderWriter {
     // log.info("---Header---");
 
     int magicCookie = dis.readInt();
+    fileHeader.add(new Byte((byte) magicCookie));
     presenter.setMagicCookie(magicCookie);
     // log.info("Magic cookie: %d", magicCookie);
 
     int fieldsNumber = dis.readUnsignedShort();
-    // log.info("Number of fields in each record: {}", fieldsNumber);
+    fileHeader.add(new Byte((byte) fieldsNumber));
+    log.info("fieldsNumber: {}", fieldsNumber);
     presenter.setFieldsNumber(fieldsNumber);
     // log.info("---Schema---");
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < fieldsNumber; i++) {
       int recordNameLength = dis.readUnsignedByte();
+      fileHeader.add(new Byte((byte) recordNameLength));
+      log.info("recordNameLength: {}", recordNameLength);
       for (int j = 0; j < recordNameLength; j++) {
-        sb.append((char) dis.readUnsignedByte());
+        char c = (char) dis.readUnsignedByte();
+        fileHeader.add(new Byte((byte) c));
+        sb.append(c);
+        log.info("c: {}", c);
       }
       int fieldLength = dis.readUnsignedByte();
+      fileHeader.add(new Byte((byte) fieldLength));
       log.info("Field name: '{}'\tField length: {}", sb.toString(), fieldLength);
       sb.setLength(0);
     }
+    presenter.setFileHeader(fileHeader);
+    log.info("fileHeader: " + presenter.getFileHeader());
     // log.info("data");
     try {
       // log.info("{}\t{}\t{}\t{}\t{}\t{}\t{}", new Object[] { "r.getValid()", "r.getName()", "r.getLocation()", "r.getSpecialities()",
@@ -60,12 +82,11 @@ public class DBReaderWriter {
       // "r.getOwner()" });
       int count = 0;
       while (true) {
-        count++;
         Record r = readNextRecord(dis);
         DBRecord record = new DBRecord();
         // log.info("{}\t{}\t{}\t{}\t{}\t{}\t{}",
         // new Object[] { r.getValid(), r.getName(), r.getLocation(), r.getSpecialities(), r.getNumberOfWorkers(), r.getRate(), r.getOwner() });
-        record.setPosition(count);
+        record.setPosition(++count);
         record.setValid(r.getValid());
         record.setName(r.getName());
         record.setLocation(r.getLocation());
@@ -85,43 +106,42 @@ public class DBReaderWriter {
 
     // log.info("{}", presenter);
     out.printf("Successful: " + new Date().toString());
+    presenter.setNewRecordNumber(presenter.getRecords().size() + 1);
     return presenter;
   }
 
-  public static long writeRecord(String[] data) throws Exception {
-    long recordNumber = 0;
+  public static long addRecord(String[] data) throws Exception {
     File file = new File(DBPresenter.getInstance().getDbPath());
     // log.info("write to dbPath: {}", DBPresenter.getInstance().getDbPath());
     FileWriter fw = new FileWriter(file, true);
-    writeNext(fw, "", 1);// valid
+    writeNext(fw, "", VALID_LENGTH);// valid
     for (int i = 0; i < data.length; i++) {
       String d = data[i];
       switch (i) {
       case 0:// name
-        writeNext(fw, d, 32);
+        writeNext(fw, d, NAME_LENGTH);
         break;
       case 1:// location
-        writeNext(fw, d, 64);
+        writeNext(fw, d, LOCATION_LENGTH);
         break;
       case 2:// specialties
-        writeNext(fw, d, 64);
+        writeNext(fw, d, SPECIALTIES_LENGTH);
         break;
       case 3:// number of workers
-        writeNext(fw, d, 6);
+        writeNext(fw, d, NUM_OF_WOKERS_LENGTH);
         break;
       case 4:// rate
-        writeNext(fw, d, 8);
+        writeNext(fw, d, RATE_LENGTH);
         break;
       case 5:// owner
-        writeNext(fw, d, 8);
+        writeNext(fw, d, OWNER_LENGTH);
         break;
       }
     }
     fw.flush();
     fw.close();
     DBRecordHelper.addRecord(data);
-    // log.info("Returned number of record: {}", DBPresenter.getInstance().getRecords().size());
-    return recordNumber;
+    return DBPresenter.getInstance().getNewRecordNumber();
   }
 
   private static void writeNext(FileWriter fw, String data, int maxLength) throws Exception {
@@ -142,13 +162,13 @@ public class DBReaderWriter {
 
   private static Record readNextRecord(DataInputStream dis) throws IOException {
     Record record = new Record();
-    record.setValid(readStringField(dis, 1));
-    record.setName(readStringField(dis, 32));
-    record.setLocation(readStringField(dis, 64));
-    record.setSpecialities(readStringField(dis, 64));
-    record.setNumberOfWorkers(readStringField(dis, 6));
-    record.setRate(readStringField(dis, 8));
-    record.setOwner(readStringField(dis, 8));
+    record.setValid(readStringField(dis, VALID_LENGTH));
+    record.setName(readStringField(dis, NAME_LENGTH));
+    record.setLocation(readStringField(dis, LOCATION_LENGTH));
+    record.setSpecialities(readStringField(dis, SPECIALTIES_LENGTH));
+    record.setNumberOfWorkers(readStringField(dis, NUM_OF_WOKERS_LENGTH));
+    record.setRate(readStringField(dis, RATE_LENGTH));
+    record.setOwner(readStringField(dis, OWNER_LENGTH));
     return record;
   }
 

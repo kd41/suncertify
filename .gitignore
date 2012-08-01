@@ -1,6 +1,7 @@
 /bin
 bin/suncertify
 bin/suncertify/parser
+bin/suncertify/db
 /.settings
 /logs
 /logs/log.log

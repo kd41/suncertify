@@ -4,17 +4,18 @@ import suncertify.constants.StringPool;
 
 public class DBRecordHelper {
 
-  public static String[] getStringArray(DBRecord record) {
+  public static String[] getDBRecordAsStringArray(DBRecord record) {
     return new String[] { record.getValid(), record.getName(), record.getLocation(), record.getSpecialties(), record.getNumberOfWorkers(), record.getRate(), record.getOwner() };
   }
 
   public static void addRecord(String[] data) {
-    DBRecord record = getDBRecordFromStringArray(data);
-    record.setPosition(DBPresenter.getInstance().getRecords().size() + 1);
+    DBRecord record = createDBRecord(data);
+    record.setPosition(DBPresenter.getInstance().getNewRecordNumber());
+    DBPresenter.getInstance().increaseNewRecordNumber();
     DBPresenter.getInstance().getRecords().add(record);
   }
 
-  public static DBRecord getDBRecordFromStringArray(String[] data) {
+  public static DBRecord createDBRecord(String[] data) {
     DBRecord record = new DBRecord();
     if (data.length == 6) {
       record.setValid(StringPool.BLANK);

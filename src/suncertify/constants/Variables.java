@@ -8,6 +8,7 @@ public class Variables {
   public static final String FILE_NAME = "db-2x3-ext.db";
   public static final String FILE_NAME_TEMP = "db-2x3-ext-temp.db";
   public static final String FILE_NAME_TEMP2 = "db-2x3-ext-temp2.db";
+  public static final String FILE_NAME_TEMP3 = "db-2x3-ext-temp3.db";
   public static final String TERMINATOR = "\0";
 
   public static String getFullFilePath() {
@@ -20,6 +21,10 @@ public class Variables {
 
   public static String getFullFilePathTemp2() {
     return FILE_PATH + FILE_NAME_TEMP2;
+  }
+
+  public static String getFullFilePathTemp3() {
+    return FILE_PATH + FILE_NAME_TEMP3;
   }
 
   public static String getOriginalFilePath() {

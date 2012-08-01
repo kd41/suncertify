@@ -3,7 +3,10 @@ package suncertify.mock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Arrays;
 
 import suncertify.parser.DBRecordHelper;
 
@@ -16,31 +19,19 @@ import suncertify.parser.DBReaderWriter;
 public class Launcher {
   private static final Logger log = LoggerFactory.getLogger(Launcher.class);
 
-  DBAccessImpl database = new DBAccessImpl();
-
   public static void main(String... args) throws IOException {
     // main method is only for test!!
-    Launcher launcher = new Launcher();
-
     log.info("START");
     FileUtils.copyFile(Variables.getOriginalFilePath(), Variables.getWorkedFilePath());
+    TestData testData = new TestData();
+
     DBPresenter presenter = DBReaderWriter.createDatabasePresenter();
     log.info("{}", presenter);
 
-    launcher.writeTestData();
+    testData.writeTestData();
     // log.info("{}", presenter);
+
+    // testData.testReplace();
   }
 
-  private void writeTestData() {
-    try {
-      log.info("try to write");
-      for (int i = 0; i < 22; i++) {
-        String[] testData = TestData.getRecord();
-        long position = database.createRecord(testData);
-        log.info("Added new record: {}, this position is: {}", DBPresenter.getInstance().getRecords().get(DBPresenter.getInstance().getRecords().size() - 1), position);
-      }
-    } catch (Exception e) {
-      log.info(e.getMessage(), e);
-    }
-  }
 }

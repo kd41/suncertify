@@ -3,16 +3,19 @@ package suncertify.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import suncertify.constants.Variables;
+import suncertify.db.RecordNotFoundException;
 
+import suncertify.constants.Variables;
 
 public class DBPresenter {
   private static DBPresenter instance;
 
   private String dbPath;
   private int magicCookie;
+  private List<Byte> fileHeader;
   private int fieldsNumber;
   private List<DBRecord> records;
+  private long newRecordNumber;
 
   private DBPresenter(String dbPath) {
     this.dbPath = dbPath;
@@ -31,6 +34,14 @@ public class DBPresenter {
 
   public void setMagicCookie(int magicCookie) {
     this.magicCookie = magicCookie;
+  }
+
+  public void setFileHeader(List<Byte> fileHeader) {
+    this.fileHeader = fileHeader;
+  }
+
+  public List<Byte> getFileHeader() {
+    return fileHeader;
   }
 
   public long getFieldsNumber() {
@@ -54,6 +65,27 @@ public class DBPresenter {
 
   public String getDbPath() {
     return dbPath;
+  }
+
+  public void setNewRecordNumber(long newRecordNumber) {
+    this.newRecordNumber = newRecordNumber;
+  }
+
+  public long getNewRecordNumber() {
+    return newRecordNumber;
+  }
+
+  public void increaseNewRecordNumber() {
+    newRecordNumber++;
+  }
+
+  public DBRecord getRecord(long recNo) throws RecordNotFoundException {
+    for (DBRecord record : getRecords()) {
+      if (record.getPosition() == recNo) {
+        return record;
+      }
+    }
+    throw new RecordNotFoundException("No record found with number: " + recNo);
   }
 
   @Override

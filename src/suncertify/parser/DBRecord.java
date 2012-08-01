@@ -85,6 +85,10 @@ public class DBRecord {
     return cookie;
   }
 
+  public boolean isLocked() {
+    return cookie != 0;
+  }
+
   @Override
   public String toString() {
     return "Data[position=" + position + ", valid=" + valid + ", name=" + name + ", location=" + location + ", specialties=" + specialties + ", numberOfWorkers="
@@ -94,7 +98,7 @@ public class DBRecord {
   @Override
   public boolean equals(Object o) {
     if ((o instanceof DBRecord) && (((DBRecord) o).valid.equals(valid)) && (((DBRecord) o).name.equals(name)) && (((DBRecord) o).location.equals(location))
-        && (((DBRecord) o).specialties.equals( specialties)) && (((DBRecord) o).rate.equals(rate))) {
+        && (((DBRecord) o).specialties.equals(specialties)) && (((DBRecord) o).rate.equals(rate))) {
       return true;
     }
     return false;
