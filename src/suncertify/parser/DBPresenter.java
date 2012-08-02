@@ -79,8 +79,13 @@ public class DBPresenter {
     return newRecordNumber;
   }
 
-  public void increaseNewRecordNumber() {
-    newRecordNumber++;
+  public void addRecord(DBRecord record) {
+    record.setPosition(newRecordNumber++);
+    getRecords().add(record);
+  }
+
+  public void deleteRecord(DBRecord record) {
+    getRecords().remove(record);
   }
 
   public DBRecord getRecord(long recNo) throws RecordNotFoundException {

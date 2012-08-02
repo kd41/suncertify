@@ -8,11 +8,8 @@ public class DBRecordHelper {
     return new String[] { record.getValid(), record.getName(), record.getLocation(), record.getSpecialties(), record.getNumberOfWorkers(), record.getRate(), record.getOwner() };
   }
 
-  public static void addRecord(String[] data) {
-    DBRecord record = createDBRecord(data);
-    record.setPosition(DBPresenter.getInstance().getNewRecordNumber());
-    DBPresenter.getInstance().increaseNewRecordNumber();
-    DBPresenter.getInstance().getRecords().add(record);
+  public static String[] getDBRecordAsStringArray2(DBRecord record) {
+    return new String[] { record.getName(), record.getLocation(), record.getSpecialties(), record.getNumberOfWorkers(), record.getRate(), record.getOwner() };
   }
 
   public static DBRecord createDBRecord(String[] data) {

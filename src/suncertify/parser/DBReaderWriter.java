@@ -12,20 +12,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import suncertify.constants.StringPool;
-
-import suncertify.constants.FileUtils;
-
-import suncertify.mock.TestData;
-
 import suncertify.constants.Variables;
-
-import suncertify.constants.StringUtils;
 
 public class DBReaderWriter {
   private static final Logger log = LoggerFactory.getLogger(DBReaderWriter.class);
@@ -114,6 +106,14 @@ public class DBReaderWriter {
     File file = new File(DBPresenter.getInstance().getDbPath());
     // log.info("write to dbPath: {}", DBPresenter.getInstance().getDbPath());
     FileWriter fw = new FileWriter(file, true);
+    writeRecord(data, fw);
+    fw.flush();
+    fw.close();
+    DBPresenter.getInstance().addRecord(DBRecordHelper.createDBRecord(data));
+    return DBPresenter.getInstance().getNewRecordNumber();
+  }
+
+  private static void writeRecord(String[] data, FileWriter fw) throws Exception {
     writeNext(fw, "", VALID_LENGTH);// valid
     for (int i = 0; i < data.length; i++) {
       String d = data[i];
@@ -138,10 +138,34 @@ public class DBReaderWriter {
         break;
       }
     }
+  }
+
+  public static void updateRecord(DBRecord oldRecord, DBRecord newRecord) throws Exception {
+    DBPresenter.getInstance().deleteRecord(oldRecord);
+    DBPresenter.getInstance().addRecord(newRecord);
+    saveDBPresenter();
+  }
+
+  public static void deleteRecord(DBRecord record) throws Exception {
+    DBPresenter.getInstance().getRecords().remove(record);
+    saveDBPresenter();
+  }
+
+  private static void saveDBPresenter() throws Exception {
+    File file = new File(Variables.getFullFilePathTemp2());
+    FileWriter fw = new FileWriter(file, false);
+    byte[] header = new byte[DBPresenter.getInstance().getFileHeader().size()];
+    char[] headerChars = new char[DBPresenter.getInstance().getFileHeader().size()];
+    for (int i = 0; i < header.length; i++) {
+      header[i] = DBPresenter.getInstance().getFileHeader().get(i).byteValue();
+      headerChars[i] = (char) header[i];
+    }
+    fw.write(headerChars);
+    for (DBRecord record : DBPresenter.getInstance().getRecords()) {
+      writeRecord(DBRecordHelper.getDBRecordAsStringArray2(record), fw);
+    }
     fw.flush();
     fw.close();
-    DBRecordHelper.addRecord(data);
-    return DBPresenter.getInstance().getNewRecordNumber();
   }
 
   private static void writeNext(FileWriter fw, String data, int maxLength) throws Exception {

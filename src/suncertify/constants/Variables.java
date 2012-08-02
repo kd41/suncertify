@@ -38,6 +38,6 @@ public class Variables {
     if (IS_TEMP_MODE) {
       return getFullFilePathTemp2();
     }
-    return getFullFilePathTemp();
+    return getFullFilePathTemp3();
   }
 }

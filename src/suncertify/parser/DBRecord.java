@@ -1,7 +1,5 @@
 package suncertify.parser;
 
-import suncertify.constants.StringPool;
-
 public class DBRecord {
   private long position;
   private String valid;

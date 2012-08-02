@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import suncertify.db.RecordNotFoundException;
+
 import suncertify.db.DBAccessImpl;
 
 import suncertify.constants.FileUtils;
@@ -15,17 +17,39 @@ import suncertify.parser.DBPresenter;
 public class TestData {
   private static final Logger log = LoggerFactory.getLogger(TestData.class);
 
-  DBAccessImpl database = new DBAccessImpl();
+  private DBAccessImpl database = new DBAccessImpl();
 
-  public String[] getRecord() {
-    return new String[] { "some name", "some location", "some specialties", "" + (int) (Math.random() * 10), "$" + (int) (Math.random() * 10) + ".00", "0" };
+  public String[] getTestRecord() {
+    return new String[] { "some name", "some location", "some specialties", "" + (int) (Math.random() * 100), "$" + (int) (Math.random() * 10) + ".00", "0" };
+  }
+
+  public void deleteRecord(long location) {
+    try {
+      log.info("Delete record: {}", location);
+      database.deleteRecord(location, 0);
+    } catch (SecurityException e) {
+      log.info(e.getMessage(), e);
+    } catch (RecordNotFoundException e) {
+      log.info(e.getMessage(), e);
+    }
+  }
+
+  public void updateRecord(long location, String[] data) {
+    try {
+      log.info("Update record: {}", location);
+      database.updateRecord(location, data, 0);
+    } catch (SecurityException e) {
+      log.info(e.getMessage(), e);
+    } catch (RecordNotFoundException e) {
+      log.info(e.getMessage(), e);
+    }
   }
 
   public void writeTestData() {
     try {
       log.info("try to write");
-      for (int i = 0; i < 22; i++) {
-        String[] testData = getRecord();
+      for (int i = 0; i < 5; i++) {
+        String[] testData = getTestRecord();
         long position = database.createRecord(testData);
         log.info("Added new record: {}, this position is: {}", DBPresenter.getInstance().getRecords().get(DBPresenter.getInstance().getRecords().size() - 1), position);
       }
