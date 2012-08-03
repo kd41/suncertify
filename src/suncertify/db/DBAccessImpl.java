@@ -71,11 +71,15 @@ public class DBAccessImpl implements DBAccess {
     List<DBRecord> findedRecords = new ArrayList<DBRecord>();
     for (DBRecord record : presenter.getRecords()) {
       String[] recordArray = DBRecordHelper.getDBRecordAsStringArray2(record);
+      boolean isMached = true;
       for (int i = 0; i < recordArray.length; i++) {
-        if (criteria[i] == null || recordArray[i].startsWith(criteria[i])) {
-          findedRecords.add(record);
+        if (criteria[i] != null && !recordArray[i].startsWith(criteria[i])) {
+          isMached = false;
           break;
         }
+      }
+      if (isMached) {
+        findedRecords.add(record);
       }
     }
     long[] findedNumbers = new long[findedRecords.size()];
