@@ -17,7 +17,7 @@ import suncertify.parser.DBPresenter;
 public class TestData {
   private static final Logger log = LoggerFactory.getLogger(TestData.class);
 
-  private DBAccessImpl database = new DBAccessImpl();
+  private DBAccessImpl database = DBAccessImpl.getInstance();
 
   public String[] getTestRecord() {
     return new String[] { "some name", "some location", "some specialties", "" + (int) (Math.random() * 100), "$" + (int) (Math.random() * 10) + ".00", "0" };

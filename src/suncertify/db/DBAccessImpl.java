@@ -14,6 +14,18 @@ import suncertify.parser.DBRecordHelper;
 public class DBAccessImpl implements DBAccess {
   private static final Logger log = LoggerFactory.getLogger(DBAccessImpl.class);
 
+  private static DBAccessImpl dbAccessImpl;
+
+  private DBAccessImpl() {
+  }
+
+  public static synchronized DBAccessImpl getInstance() {
+    if (dbAccessImpl == null) {
+      dbAccessImpl = new DBAccessImpl();
+    }
+    return dbAccessImpl;
+  }
+
   @Override
   public String[] readRecord(long recNo) throws RecordNotFoundException {
     DBPresenter presenter = DBPresenter.getInstance();
@@ -52,7 +64,7 @@ public class DBAccessImpl implements DBAccess {
 
   @Override
   public long[] findByCriteria(String[] criteria) {
-    if (criteria == null) {
+    if (criteria == null || criteria.length != 6) {
       return null;
     }
     DBPresenter presenter = DBPresenter.getInstance();
@@ -60,7 +72,7 @@ public class DBAccessImpl implements DBAccess {
     for (DBRecord record : presenter.getRecords()) {
       String[] recordArray = DBRecordHelper.getDBRecordAsStringArray2(record);
       for (int i = 0; i < recordArray.length; i++) {
-        if (recordArray[i].startsWith(criteria[i])) {
+        if (criteria[i] == null || recordArray[i].startsWith(criteria[i])) {
           findedRecords.add(record);
           break;
         }
