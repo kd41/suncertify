@@ -1,7 +1,19 @@
 package suncertify.db;
 
 public class DBAccessLocalImpl implements DBAccess {
-  private static DBLock lock = new DBLock();
+  private boolean isLockedDB = false;
+
+  private static DBAccessLocalImpl dbAccessLocalImpl;
+
+  private DBAccessLocalImpl() {
+  }
+
+  public static synchronized DBAccessLocalImpl getInstance() {
+    if (dbAccessLocalImpl == null) {
+      dbAccessLocalImpl = new DBAccessLocalImpl();
+    }
+    return dbAccessLocalImpl;
+  }
 
   @Override
   public String[] readRecord(long recNo) throws RecordNotFoundException {
@@ -86,7 +98,9 @@ public class DBAccessLocalImpl implements DBAccess {
 
   private synchronized boolean isLock() {
     try {
-      lock.lockDB();
+      while (isLockedDB) {
+        wait();
+      }
     } catch (InterruptedException e) {
       return false;
     }
@@ -94,7 +108,7 @@ public class DBAccessLocalImpl implements DBAccess {
   }
 
   private synchronized void unlock() {
-    lock.unlockDB();
+    notify();
   }
 
 }
