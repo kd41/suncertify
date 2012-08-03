@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Arrays;
 
+import suncertify.gui.BSJTable;
+
 import suncertify.constants.FileUtils;
 import suncertify.constants.Variables;
 import suncertify.db.RecordNotFoundException;
@@ -68,5 +70,8 @@ public class Launcher {
         log.info("record {} not found!", recNo);
       }
     }
+
+    // gui
+    BSJTable frame = new BSJTable();
   }
 }

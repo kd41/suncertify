@@ -5,7 +5,8 @@ import suncertify.constants.StringPool;
 public class DBRecordHelper {
 
   public static String[] getDBRecordAsStringArray(DBRecord record) {
-    return new String[] { record.getValid(), record.getName(), record.getLocation(), record.getSpecialties(), record.getNumberOfWorkers(), record.getRate(), record.getOwner() };
+    return new String[] { String.valueOf(record.getPosition()), record.getValid(), record.getName(), record.getLocation(), record.getSpecialties(),
+                         record.getNumberOfWorkers(), record.getRate(), record.getOwner() };
   }
 
   public static String[] getDBRecordAsStringArray2(DBRecord record) {
