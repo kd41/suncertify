@@ -1,0 +1,8 @@
+1. The db describes file DBRresenter. It used singleton pattern for initializing, because I need only one file exeplar of base.
+2. DBRecord describes one row of data from db.
+3. DBPresenter can contais only Intereg.MAX_VALUE of DBRecords, because I use it as list and list can contains only 
+Integer.MAX_VALUE of rows. I decided that 2^31-1 of rows is enough for realization.
+4. By update, delete or add row to db the write to file is occur. Maybe it is not best realization but requirement not needed
+perfect performance.
+5. DBReaderWriter file reads and writes to the file.
+6. For logging I used log4j (version 1.2.17) because it is simple, popular and rather fast. 

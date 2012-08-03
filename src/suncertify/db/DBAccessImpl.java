@@ -4,15 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import suncertify.constants.StringPool;
-
-import suncertify.parser.DBRecord;
 
 import suncertify.parser.DBPresenter;
 import suncertify.parser.DBReaderWriter;
+import suncertify.parser.DBRecord;
 import suncertify.parser.DBRecordHelper;
 
 public class DBAccessImpl implements DBAccess {
@@ -60,23 +56,13 @@ public class DBAccessImpl implements DBAccess {
       return null;
     }
     DBPresenter presenter = DBPresenter.getInstance();
-    if (Arrays.asList(criteria).contains(null)) { // return all records if some criteria is null
-      long[] findedNumbers = new long[presenter.getRecords().size()];
-      int count = 0;
-      for (DBRecord record : presenter.getRecords()) {
-        findedNumbers[count++] = record.getPosition();
-      }
-      return findedNumbers;
-    }
     List<DBRecord> findedRecords = new ArrayList<DBRecord>();
     for (DBRecord record : presenter.getRecords()) {
-      for (String crit : criteria) {
-        if (StringPool.BLANK.equals(crit)) {
-          break;
-        }
-        if (record.getValid().startsWith(crit) || record.getName().startsWith(crit) || record.getLocation().startsWith(crit) || record.getSpecialties().startsWith(crit)
-            || record.getNumberOfWorkers().startsWith(crit) || record.getRate().startsWith(crit) || record.getOwner().startsWith(crit)) {
+      String[] recordArray = DBRecordHelper.getDBRecordAsStringArray2(record);
+      for (int i = 0; i < recordArray.length; i++) {
+        if (recordArray[i].startsWith(criteria[i])) {
           findedRecords.add(record);
+          break;
         }
       }
     }

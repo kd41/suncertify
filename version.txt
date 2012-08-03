@@ -1,2 +1,3 @@
-JDK version: 1.6.0_25
-host platform: Windows 7
+JDK version:	1.6.0_25
+host platform:	Windows 7
+IDE:			Eclipse (Helios)
