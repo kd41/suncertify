@@ -6,7 +6,7 @@ public class DBRecordHelper {
 
   public static String[] getDBRecordAsStringArray(DBRecord record) {
     return new String[] { String.valueOf(record.getPosition()), record.getValid(), record.getName(), record.getLocation(), record.getSpecialties(),
-                         record.getNumberOfWorkers(), record.getRate(), record.getOwner() };
+                         record.getNumberOfWorkers(), record.getRate(), record.getOwner(), String.valueOf(record.getCookie()) };
   }
 
   public static String[] getDBRecordAsStringArray2(DBRecord record) {

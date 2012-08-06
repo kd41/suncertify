@@ -1,0 +1,70 @@
+package suncertify.gui;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import suncertify.db.DBAccessLocalImpl;
+import suncertify.db.RecordNotFoundException;
+
+public class BSData {
+  protected static final long COOKIE;
+
+  static {
+    COOKIE = System.currentTimeMillis();
+  }
+
+  private DBAccessLocalImpl data = DBAccessLocalImpl.getInstance();
+
+  protected String[][] findByCriteria(String[] criteria) {
+    long[] records = data.findByCriteria(criteria);
+    List<BSJRow> rows = new ArrayList<BSJRow>();
+    int number = 1;
+    for (long record : records) {
+      try {
+        String[] dbRow = data.readRecord(record);
+        BSJRow row = new BSJRow();
+        row.setNumber(number++);
+        row.setPosition(dbRow[0]);
+        row.setValid(dbRow[1]);
+        row.setName(dbRow[2]);
+        row.setLocation(dbRow[3]);
+        row.setSpecialties(dbRow[4]);
+        row.setNumberOfWorkers(dbRow[5]);
+        row.setRate(dbRow[6]);
+        row.setOwner(dbRow[7]);
+        row.setCookie(dbRow[8]);
+        rows.add(row);
+      } catch (RecordNotFoundException e) {
+      }
+    }
+    int x = BSJRow.getHeaders().length;
+    int y = rows.size();
+    String[][] dbData = new String[y][x];
+    for (int i = 0; i < y; i++) {
+      String[] jRow = rows.get(i).toStringArray();
+      for (int j = 0; j < x; j++) {
+        dbData[i][j] = jRow[j];
+      }
+    }
+    return dbData;
+  }
+
+  protected boolean deleteRecord(long recNo) {
+    try {
+      data.deleteRecord(recNo, COOKIE);
+    } catch (Exception e) {
+      System.out.println("error: " + e.getMessage());
+      return false;
+    }
+    return true;
+  }
+
+  protected boolean createRecord(String[] recordData) {
+    try {
+      return data.createRecord(recordData) != 0;
+    } catch (Exception e) {
+      System.out.println("error: " + e.getMessage());
+      return false;
+    }
+  }
+}

@@ -10,6 +10,7 @@ public class BSJRow {
   private String numberOfWorkers;
   private String rate;
   private String owner;
+  private String cookie;
 
   public long getNumber() {
     return number;
@@ -83,15 +84,19 @@ public class BSJRow {
     this.owner = owner;
   }
 
-  public BSJRow() {
+  public void setCookie(String cookie) {
+    this.cookie = cookie;
+  }
 
+  public String getCookie() {
+    return cookie;
   }
 
   public String[] toStringArray() {
-    return new String[] { String.valueOf(number), position, valid, name, location, specialties, numberOfWorkers, rate, owner };
+    return new String[] { String.valueOf(number), position, valid, name, location, specialties, numberOfWorkers, rate, owner, cookie };
   }
 
   public static String[] getHeaders() {
-    return new String[] { "Nr", "Position", "Valid", "Name", "Location", "Specialties", "Nr workers", "Rate", "Owner" };
+    return new String[] { "Nr", "Position", "Valid", "Name", "Location", "Specialties", "Nr workers", "Rate", "Owner", "Cookie" };
   }
 }

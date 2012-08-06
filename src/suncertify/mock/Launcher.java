@@ -6,13 +6,11 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Arrays;
 
-import suncertify.gui.BSJTable;
-
 import suncertify.constants.FileUtils;
 import suncertify.constants.Variables;
 import suncertify.db.RecordNotFoundException;
+import suncertify.gui.BSJFrame;
 import suncertify.parser.DBPresenter;
-import suncertify.parser.DBReaderWriter;
 import suncertify.parser.DBRecord;
 import suncertify.parser.DBRecordHelper;
 
@@ -25,7 +23,7 @@ public class Launcher {
     FileUtils.copyFile(Variables.getOriginalFilePath(), Variables.getWorkedFilePath());
     TestData testData = new TestData();
 
-    DBPresenter presenter = DBReaderWriter.createDatabasePresenter();
+    DBPresenter presenter = DBPresenter.getInstance();
     log.info("{}", presenter);
 
     // create records
@@ -72,6 +70,6 @@ public class Launcher {
     }
 
     // gui
-    BSJTable frame = new BSJTable();
+    BSJFrame frame = new BSJFrame();
   }
 }
