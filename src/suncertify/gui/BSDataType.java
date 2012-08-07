@@ -1,5 +1,5 @@
 package suncertify.gui;
 
 public enum BSDataType {
-  REFRESH, DELETE, CREATE, SEARCH
+  REFRESH, DELETE, CREATE, SEARCH, LOCK, UNLOCK
 }

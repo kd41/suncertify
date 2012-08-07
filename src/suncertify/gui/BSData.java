@@ -2,18 +2,28 @@ package suncertify.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import suncertify.db.DBAccessLocalImpl;
 import suncertify.db.RecordNotFoundException;
 
 public class BSData {
   protected static final long COOKIE;
+  private Set<Long> cookies;
 
   static {
     COOKIE = System.currentTimeMillis();
   }
 
   private DBAccessLocalImpl data = DBAccessLocalImpl.getInstance();
+
+  public void setCookies(Set<Long> cookies) {
+    this.cookies = cookies;
+  }
+
+  public Set<Long> getCookies() {
+    return cookies;
+  }
 
   protected String[][] findByCriteria(String[] criteria) {
     long[] records = data.findByCriteria(criteria);
@@ -66,5 +76,24 @@ public class BSData {
       System.out.println("error: " + e.getMessage());
       return false;
     }
+  }
+
+  protected long lockRow(long recNo) {
+    try {
+      return data.lockRecord(recNo);
+    } catch (Exception e) {
+      System.out.println("error: " + e.getMessage());
+      return 0;
+    }
+  }
+
+  protected boolean unlockRow(long recNo, long cookie) {
+    try {
+      data.unlock(recNo, cookie);
+    } catch (Exception e) {
+      System.out.println("error: " + e.getMessage());
+      return false;
+    }
+    return true;
   }
 }
