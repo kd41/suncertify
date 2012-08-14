@@ -33,6 +33,8 @@ public class BSJFrameBase extends BSData {
   protected JButton deleteBtn;
   protected JButton lockBtn;
   protected JButton unlockBtn;
+  protected JButton getBtn;
+  protected JButton updateBtn;
 
   protected JTextField nameField;
   protected JTextField locationField;
@@ -156,6 +158,14 @@ public class BSJFrameBase extends BSData {
     createBtn = new JButton("Create");
     sgbl.setConstraints(createBtn, sgbc);
     searchPanel.add(createBtn);
+    sgbc.gridy = 8;
+    getBtn = new JButton("Get");
+    sgbl.setConstraints(getBtn, sgbc);
+    searchPanel.add(getBtn);
+    sgbc.gridy = 9;
+    updateBtn = new JButton("Update");
+    sgbl.setConstraints(updateBtn, sgbc);
+    searchPanel.add(updateBtn);
 
     searchPanel.setLayout(sgbl);
     gbl.setConstraints(searchPanel, gbc);

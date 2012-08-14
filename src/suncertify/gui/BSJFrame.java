@@ -29,6 +29,8 @@ public class BSJFrame extends BSJFrameBase {
     deleteBtn.addActionListener(new BSActionListener(table, BSDataType.DELETE));
     lockBtn.addActionListener(new BSActionListener(table, BSDataType.LOCK));
     unlockBtn.addActionListener(new BSActionListener(table, BSDataType.UNLOCK));
+    getBtn.addActionListener(new BSActionListener(table, BSDataType.GET));
+    updateBtn.addActionListener(new BSActionListener(table, BSDataType.UPDATE));
     setColums(table);
   }
 
@@ -84,13 +86,34 @@ public class BSJFrame extends BSJFrameBase {
           long cookie = Long.parseLong((String) table.getModel().getValueAt(rowSelected, 9));
           boolean isUnlocked = unlockRow(recNo, cookie);
         }
+      } else if (type == BSDataType.GET) {
+        if (rowSelected >= 0) {
+          nameField.setText((String) table.getModel().getValueAt(rowSelected, 3));
+          locationField.setText((String) table.getModel().getValueAt(rowSelected, 4));
+          specialitiesField.setText((String) table.getModel().getValueAt(rowSelected, 5));
+          workersNrField.setText((String) table.getModel().getValueAt(rowSelected, 6));
+          rateField.setText((String) table.getModel().getValueAt(rowSelected, 7));
+          ownerField.setText((String) table.getModel().getValueAt(rowSelected, 8));
+        }
+      } else if (type == BSDataType.UPDATE) {
+        if (rowSelected >= 0) {
+          int recNo = Integer.parseInt((String) table.getModel().getValueAt(rowSelected, 1));
+          long cookie = Long.parseLong((String) table.getModel().getValueAt(rowSelected, 9));
+          boolean isUpdated = updateRow(recNo, new String[] { nameField.getText(), locationField.getText(),
+                                                             specialitiesField.getText(), workersNrField.getText(),
+                                                             rateField.getText(), ownerField.getText() }, cookie);
+          rowSelected = table.getModel().getRowCount() - 1;
+        }
       }
 
       String[][] dataTable = findByCriteria();
       table.setModel(new DefaultTableModel(dataTable, BSJRow.getHeaders()));
       setColums(table);
+      if (rowSelected > -1) {
+        table.getSelectionModel().setSelectionInterval(rowSelected, rowSelected);
+        table.repaint();
+      }
     }
-
   }
 
 }

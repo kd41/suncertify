@@ -99,6 +99,16 @@ public class BSData {
     return true;
   }
 
+  protected boolean updateRow(long recNo, String[] data, long lockCookie) {
+    try {
+      this.data.updateRecord(recNo, data, lockCookie);
+    } catch (Exception e) {
+      System.out.println("error: " + e.getMessage());
+      return false;
+    }
+    return true;
+  }
+
   public void setCriteria(String[] criteria) {
     this.criteria = criteria;
   }
