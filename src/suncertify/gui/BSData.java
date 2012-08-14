@@ -11,6 +11,8 @@ public class BSData {
   protected static final long COOKIE;
   private Set<Long> cookies;
 
+  private String[] criteria;
+
   static {
     COOKIE = System.currentTimeMillis();
   }
@@ -25,8 +27,8 @@ public class BSData {
     return cookies;
   }
 
-  protected String[][] findByCriteria(String[] criteria) {
-    long[] records = data.findByCriteria(criteria);
+  protected String[][] findByCriteria() {
+    long[] records = data.findByCriteria(getCriteria());
     List<BSJRow> rows = new ArrayList<BSJRow>();
     int number = 1;
     for (long record : records) {
@@ -95,5 +97,16 @@ public class BSData {
       return false;
     }
     return true;
+  }
+
+  public void setCriteria(String[] criteria) {
+    this.criteria = criteria;
+  }
+
+  public String[] getCriteria() {
+    if (criteria == null) {
+      return new String[] { null, null, null, null, null, null };
+    }
+    return criteria;
   }
 }
