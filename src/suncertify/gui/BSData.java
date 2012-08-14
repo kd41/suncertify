@@ -8,14 +8,8 @@ import suncertify.db.DBAccessLocalImpl;
 import suncertify.db.RecordNotFoundException;
 
 public class BSData {
-  protected static final long COOKIE;
   private Set<Long> cookies;
-
   private String[] criteria;
-
-  static {
-    COOKIE = System.currentTimeMillis();
-  }
 
   private DBAccessLocalImpl data = DBAccessLocalImpl.getInstance();
 
@@ -61,9 +55,9 @@ public class BSData {
     return dbData;
   }
 
-  protected boolean deleteRecord(long recNo) {
+  protected boolean deleteRecord(long recNo, long cookie) {
     try {
-      data.deleteRecord(recNo, COOKIE);
+      data.deleteRecord(recNo, cookie);
     } catch (Exception e) {
       System.out.println("error: " + e.getMessage());
       return false;

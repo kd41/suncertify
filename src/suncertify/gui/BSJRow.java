@@ -1,6 +1,15 @@
 package suncertify.gui;
 
 public class BSJRow {
+  public static final int RECORD_NUMBER = 1;
+  public static final int NAME = 3;
+  public static final int LOCATION = 4;
+  public static final int SPECIALTIES = 5;
+  public static final int WORKERS_NUMBER = 6;
+  public static final int RATE = 7;
+  public static final int OWNER = 8;
+  public static final int COOKIE = 9;
+
   private long number;
   private String position;
   private String valid;
@@ -93,10 +102,12 @@ public class BSJRow {
   }
 
   public String[] toStringArray() {
-    return new String[] { String.valueOf(number), position, valid, name, location, specialties, numberOfWorkers, rate, owner, cookie };
+    return new String[] { String.valueOf(number), position, valid, name, location, specialties, numberOfWorkers, rate,
+                         owner, cookie };
   }
 
   public static String[] getHeaders() {
-    return new String[] { "Nr", "Position", "Valid", "Name", "Location", "Specialties", "Nr workers", "Rate", "Owner", "Cookie" };
+    return new String[] { "Nr", "Position", "Valid", "Name", "Location", "Specialties", "Nr workers", "Rate", "Owner",
+                         "Cookie" };
   }
 }

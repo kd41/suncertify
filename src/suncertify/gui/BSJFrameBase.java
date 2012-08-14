@@ -1,5 +1,7 @@
 package suncertify.gui;
 
+import static suncertify.gui.BSJRow.COOKIE;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -243,9 +245,9 @@ public class BSJFrameBase extends BSData {
       }
     }
     // set cookie column not visible
-    // table.getColumnModel().getColumn(9).setMinWidth(0);
-    // table.getColumnModel().getColumn(9).setMaxWidth(0);
-    // table.getColumnModel().getColumn(9).setWidth(0);
+    // table.getColumnModel().getColumn(COOKIE).setMinWidth(0);
+    // table.getColumnModel().getColumn(COOKIE).setMaxWidth(0);
+    // table.getColumnModel().getColumn(COOKIE).setWidth(0);
 
   }
 
@@ -257,7 +259,7 @@ public class BSJFrameBase extends BSData {
                                                    int row, int column) {
       Component rendererComp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
       if (!isSelected) {
-        long cookie = Long.parseLong((String) table.getModel().getValueAt(row, 9));
+        long cookie = Long.parseLong((String) table.getModel().getValueAt(row, COOKIE));
         if (cookie > 0) {
           rendererComp.setForeground(Color.red);
         } else {
@@ -268,6 +270,8 @@ public class BSJFrameBase extends BSData {
         } else {
           rendererComp.setBackground(Color.white);
         }
+      } else if (0 != Long.parseLong(((String) table.getModel().getValueAt(row, COOKIE)))) {
+        rendererComp.setForeground(Color.red);
       }
       return rendererComp;
     }
