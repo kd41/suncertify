@@ -16,7 +16,7 @@ public class DBPresenter {
 
   private String dbPath;
   private int magicCookie;
-  private List<Byte> fileHeader;
+  private byte[] fileHeader;
   private int fieldsNumber;
   private List<DBRecord> records;
   private long newRecordNumber;
@@ -27,7 +27,7 @@ public class DBPresenter {
 
   public static synchronized DBPresenter getInstance() {
     if (instance == null) {
-      instance = new DBPresenter(Variables.getWorkedFilePath());
+      instance = new DBPresenter(PropertiesLoader.getInstance().getDbLocation());
       try {
         DBReaderWriter.createDatabasePresenter();
       } catch (IOException e) {
@@ -46,11 +46,11 @@ public class DBPresenter {
     this.magicCookie = magicCookie;
   }
 
-  public void setFileHeader(List<Byte> fileHeader) {
+  public void setFileHeader(byte[] fileHeader) {
     this.fileHeader = fileHeader;
   }
 
-  public List<Byte> getFileHeader() {
+  public byte[] getFileHeader() {
     return fileHeader;
   }
 

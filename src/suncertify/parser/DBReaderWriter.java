@@ -12,9 +12,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStream;
 import java.util.Date;
-import java.util.List;
 
 import suncertify.constants.StringPool;
 import suncertify.constants.Variables;
@@ -32,7 +31,6 @@ public class DBReaderWriter {
 
   public static DBPresenter createDatabasePresenter() throws IOException {
     DBPresenter presenter = DBPresenter.getInstance();
-    List<Byte> fileHeader = new ArrayList<Byte>();
     File file = new File(presenter.getDbPath());
     FileInputStream fis = new FileInputStream(file);
     BufferedInputStream bis = new BufferedInputStream(fis);
@@ -40,32 +38,26 @@ public class DBReaderWriter {
     // log.info("---Header---");
 
     int magicCookie = dis.readInt();
-    fileHeader.add(new Byte((byte) magicCookie));
     presenter.setMagicCookie(magicCookie);
     // log.info("Magic cookie: %d", magicCookie);
 
     int fieldsNumber = dis.readUnsignedShort();
-    fileHeader.add(new Byte((byte) fieldsNumber));
     log.info("fieldsNumber: {}", fieldsNumber);
     presenter.setFieldsNumber(fieldsNumber);
     // log.info("---Schema---");
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < fieldsNumber; i++) {
       int recordNameLength = dis.readUnsignedByte();
-      fileHeader.add(new Byte((byte) recordNameLength));
       log.info("recordNameLength: {}", recordNameLength);
       for (int j = 0; j < recordNameLength; j++) {
         char c = (char) dis.readUnsignedByte();
-        fileHeader.add(new Byte((byte) c));
         sb.append(c);
-        log.info("c: {}", c);
+        // log.info("c: {}", c);
       }
       int fieldLength = dis.readUnsignedByte();
-      fileHeader.add(new Byte((byte) fieldLength));
       log.info("Field name: '{}'\tField length: {}", sb.toString(), fieldLength);
       sb.setLength(0);
     }
-    presenter.setFileHeader(fileHeader);
     log.info("fileHeader: " + presenter.getFileHeader());
     // log.info("data");
     try {
@@ -95,6 +87,14 @@ public class DBReaderWriter {
     dis.close();
     bis.close();
     fis.close();
+
+    // read header of file
+    File f1 = new File(PropertiesLoader.getInstance().getDbLocation());
+    InputStream in = new FileInputStream(f1);
+    byte[] buf = new byte[54];
+    in.read(buf);
+    DBPresenter.getInstance().setFileHeader(buf);
+    in.close();
 
     // log.info("{}", presenter);
     out.printf("Successful: " + new Date().toString());
@@ -152,12 +152,11 @@ public class DBReaderWriter {
   }
 
   private static void saveDBPresenter() throws Exception {
-    File file = new File(Variables.getFullFilePathTemp2());
+    File file = new File(DBPresenter.getInstance().getDbPath());
     FileWriter fw = new FileWriter(file, false);
-    byte[] header = new byte[DBPresenter.getInstance().getFileHeader().size()];
-    char[] headerChars = new char[DBPresenter.getInstance().getFileHeader().size()];
+    byte[] header = DBPresenter.getInstance().getFileHeader();
+    char[] headerChars = new char[header.length];
     for (int i = 0; i < header.length; i++) {
-      header[i] = DBPresenter.getInstance().getFileHeader().get(i).byteValue();
       headerChars[i] = (char) header[i];
     }
     fw.write(headerChars);
