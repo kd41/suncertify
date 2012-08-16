@@ -85,11 +85,12 @@ public class BSJFrame extends BSJFrameBase {
           rateField.setText((String) table.getModel().getValueAt(rowSelected, RATE));
           ownerField.setText((String) table.getModel().getValueAt(rowSelected, OWNER));
           updateBtn.setEnabled(true);
+          setSelectedRow(rowSelected);
         }
       } else if (type == BSDataType.UPDATE) {
-        if (rowSelected >= 0) {
-          int recNo = Integer.parseInt((String) table.getModel().getValueAt(rowSelected, RECORD_NUMBER));
-          long cookie = Long.parseLong((String) table.getModel().getValueAt(rowSelected, COOKIE));
+        if (getSelectedRow() > -1) {
+          int recNo = Integer.parseInt((String) table.getModel().getValueAt(getSelectedRow(), RECORD_NUMBER));
+          long cookie = Long.parseLong((String) table.getModel().getValueAt(getSelectedRow(), COOKIE));
           boolean isUpdated = updateRow(recNo, new String[] { nameField.getText(), locationField.getText(),
                                                              specialitiesField.getText(), workersNrField.getText(),
                                                              rateField.getText(), ownerField.getText() }, cookie);
@@ -100,6 +101,7 @@ public class BSJFrame extends BSJFrameBase {
       }
       if (type != BSDataType.GET) {
         updateBtn.setEnabled(false);
+        setSelectedRow(-1);
       }
 
       String[][] dataTable = findByCriteria();

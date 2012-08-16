@@ -179,7 +179,7 @@ public class DBReaderWriter {
         fw.write(Variables.TERMINATOR);
       }
     } else {
-      fw.write(data.substring(0, maxLength - 1));
+      fw.write(data.substring(0, maxLength));
     }
   }
 

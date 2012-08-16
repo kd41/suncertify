@@ -2,23 +2,33 @@ package suncertify.gui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import suncertify.db.DBAccessLocalImpl;
 import suncertify.db.RecordNotFoundException;
 
 public class BSData {
-  private Set<Long> cookies;
   private String[] criteria;
+  private int selectedRow;
 
   private DBAccessLocalImpl data = DBAccessLocalImpl.getInstance();
 
-  public void setCookies(Set<Long> cookies) {
-    this.cookies = cookies;
+  public void setCriteria(String[] criteria) {
+    this.criteria = criteria;
   }
 
-  public Set<Long> getCookies() {
-    return cookies;
+  public String[] getCriteria() {
+    if (criteria == null) {
+      return new String[] { null, null, null, null, null, null };
+    }
+    return criteria;
+  }
+
+  public void setSelectedRow(int selectedRow) {
+    this.selectedRow = selectedRow;
+  }
+
+  public int getSelectedRow() {
+    return selectedRow;
   }
 
   protected String[][] findByCriteria() {
@@ -101,16 +111,5 @@ public class BSData {
       return false;
     }
     return true;
-  }
-
-  public void setCriteria(String[] criteria) {
-    this.criteria = criteria;
-  }
-
-  public String[] getCriteria() {
-    if (criteria == null) {
-      return new String[] { null, null, null, null, null, null };
-    }
-    return criteria;
   }
 }
