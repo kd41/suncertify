@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
@@ -193,6 +194,7 @@ public class BSJFrameBase extends BSData {
     buttonPanel.setLayout(gbl);
 
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.getColumnModel().getColumn(3).setPreferredWidth(200);
 
     JTableHeader header = table.getTableHeader();

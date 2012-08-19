@@ -3,7 +3,6 @@ package suncertify.parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +27,7 @@ public class DBPresenter {
   public static synchronized DBPresenter getInstance() {
     if (instance == null) {
       instance = new DBPresenter(PropertiesLoader.getInstance().getDbLocation());
-      try {
-        DBReaderWriter.createDatabasePresenter();
-      } catch (IOException e) {
-        log.error(e.getMessage(), e);
-      }
+      DBReaderWriter.createDatabasePresenter();
       log.info("worked with: " + Variables.getWorkedFilePath());
     }
     return instance;

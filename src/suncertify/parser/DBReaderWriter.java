@@ -29,76 +29,80 @@ public class DBReaderWriter {
   private static final int RATE_LENGTH = 8;
   private static final int OWNER_LENGTH = 8;
 
-  public static DBPresenter createDatabasePresenter() throws IOException {
+  public static DBPresenter createDatabasePresenter() {
     DBPresenter presenter = DBPresenter.getInstance();
     File file = new File(presenter.getDbPath());
-    FileInputStream fis = new FileInputStream(file);
-    BufferedInputStream bis = new BufferedInputStream(fis);
-    DataInputStream dis = new DataInputStream(bis);
-    // log.info("---Header---");
 
-    int magicCookie = dis.readInt();
-    presenter.setMagicCookie(magicCookie);
-    // log.info("Magic cookie: %d", magicCookie);
-
-    int fieldsNumber = dis.readUnsignedShort();
-    log.info("fieldsNumber: {}", fieldsNumber);
-    presenter.setFieldsNumber(fieldsNumber);
-    // log.info("---Schema---");
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < fieldsNumber; i++) {
-      int recordNameLength = dis.readUnsignedByte();
-      log.info("recordNameLength: {}", recordNameLength);
-      for (int j = 0; j < recordNameLength; j++) {
-        char c = (char) dis.readUnsignedByte();
-        sb.append(c);
-        // log.info("c: {}", c);
-      }
-      int fieldLength = dis.readUnsignedByte();
-      log.info("Field name: '{}'\tField length: {}", sb.toString(), fieldLength);
-      sb.setLength(0);
-    }
-    log.info("fileHeader: " + presenter.getFileHeader());
-    // log.info("data");
+    FileInputStream fis = null;
+    BufferedInputStream bis = null;
+    DataInputStream dis = null;
     try {
-      // log.info("{}\t{}\t{}\t{}\t{}\t{}\t{}", new Object[] { "r.getValid()", "r.getName()", "r.getLocation()", "r.getSpecialities()",
-      // "r.getNumberOfWorkers()", "r.getRate()",
-      // "r.getOwner()" });
-      int count = 0;
-      while (true) {
-        Record r = readNextRecord(dis);
-        DBRecord record = new DBRecord();
-        // log.info("{}\t{}\t{}\t{}\t{}\t{}\t{}",
-        // new Object[] { r.getValid(), r.getName(), r.getLocation(), r.getSpecialities(), r.getNumberOfWorkers(), r.getRate(), r.getOwner() });
-        record.setPosition(++count);
-        record.setValid(r.getValid());
-        record.setName(r.getName());
-        record.setLocation(r.getLocation());
-        record.setSpecialties(r.getSpecialities());
-        record.setNumberOfWorkers(r.getNumberOfWorkers());
-        record.setRate(r.getRate());
-        record.setOwner(r.getOwner());
-        presenter.getRecords().add(record);
+      fis = new FileInputStream(file);
+      bis = new BufferedInputStream(fis);
+      dis = new DataInputStream(bis);
+
+      int magicCookie = dis.readInt();
+      presenter.setMagicCookie(magicCookie);
+
+      int fieldsNumber = dis.readUnsignedShort();
+      log.info("fieldsNumber: {}", fieldsNumber);
+      presenter.setFieldsNumber(fieldsNumber);
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < fieldsNumber; i++) {
+        int recordNameLength = dis.readUnsignedByte();
+        log.info("recordNameLength: {}", recordNameLength);
+        for (int j = 0; j < recordNameLength; j++) {
+          char c = (char) dis.readUnsignedByte();
+          sb.append(c);
+        }
+        int fieldLength = dis.readUnsignedByte();
+        log.info("Field name: '{}'\tField length: {}", sb.toString(), fieldLength);
+        sb.setLength(0);
       }
-    } catch (EOFException e) {
-      // log.error(e.getMessage(), e);
+      log.info("fileHeader: " + presenter.getFileHeader());
+      try {
+        int count = 0;
+        while (true) {
+          Record r = readNextRecord(dis);
+          DBRecord record = new DBRecord();
+          record.setPosition(++count);
+          record.setValid(r.getValid());
+          record.setName(r.getName());
+          record.setLocation(r.getLocation());
+          record.setSpecialties(r.getSpecialities());
+          record.setNumberOfWorkers(r.getNumberOfWorkers());
+          record.setRate(r.getRate());
+          record.setOwner(r.getOwner());
+          presenter.getRecords().add(record);
+        }
+      } catch (EOFException e) {
+      }
+
+      File f1 = new File(PropertiesLoader.getInstance().getDbLocation());
+      InputStream in = new FileInputStream(f1);
+      byte[] buf = new byte[54];
+      in.read(buf);
+      DBPresenter.getInstance().setFileHeader(buf);
+      in.close();
+
+      out.printf("Successful: " + new Date().toString());
+      presenter.setNewRecordNumber(presenter.getRecords().size() + 1);
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
+    } finally {
+      try {
+        dis.close();
+      } catch (Exception e) {
+      }
+      try {
+        bis.close();
+      } catch (Exception e) {
+      }
+      try {
+        fis.close();
+      } catch (Exception e) {
+      }
     }
-
-    dis.close();
-    bis.close();
-    fis.close();
-
-    // read header of file
-    File f1 = new File(PropertiesLoader.getInstance().getDbLocation());
-    InputStream in = new FileInputStream(f1);
-    byte[] buf = new byte[54];
-    in.read(buf);
-    DBPresenter.getInstance().setFileHeader(buf);
-    in.close();
-
-    // log.info("{}", presenter);
-    out.printf("Successful: " + new Date().toString());
-    presenter.setNewRecordNumber(presenter.getRecords().size() + 1);
     return presenter;
   }
 

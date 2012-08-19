@@ -7,3 +7,5 @@
 7. suncertify.properties
 8. can I use log4j?
 9. DBAccessImpl.java -> Data.java
+10. dobaitj proverku na maxInteger, vernutj not record found
+11. lock dolzen rabotatj 4erez wait-notify

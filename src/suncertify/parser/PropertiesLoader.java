@@ -15,7 +15,7 @@ public class PropertiesLoader {
   private static final String RESOURCE_FILE_NAME = "suncertify.properties";
   private static final String DB_ALONE_LOCATION_KEY = "db.alone.location";
   private static final String DB_SERVER_LOCATION_KEY = "db.server.location";
-  private static Properties resourceBundle;
+  private static Properties properties;
   private String dbLocation;
 
   private PropertiesLoader() {
@@ -24,11 +24,11 @@ public class PropertiesLoader {
   public static synchronized PropertiesLoader getInstance() {
     if (instance == null) {
       instance = new PropertiesLoader();
-      resourceBundle = new Properties();
+      properties = new Properties();
       FileInputStream is = null;
       try {
         is = new FileInputStream(RESOURCE_FILE_NAME);
-        resourceBundle.load(is);
+        properties.load(is);
       } catch (IOException e) {
         log.error(e.getMessage(), e);
       } finally {
@@ -46,9 +46,9 @@ public class PropertiesLoader {
   public String getDbLocation() {
     if (this.dbLocation == null) {
       if (isAloneMode) {
-        dbLocation = resourceBundle.getProperty(DB_ALONE_LOCATION_KEY);
+        dbLocation = properties.getProperty(DB_ALONE_LOCATION_KEY);
       } else {
-        dbLocation = resourceBundle.getProperty(DB_SERVER_LOCATION_KEY);
+        dbLocation = properties.getProperty(DB_SERVER_LOCATION_KEY);
       }
     }
     return dbLocation;
