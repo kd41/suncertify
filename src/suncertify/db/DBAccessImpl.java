@@ -28,17 +28,21 @@ public class DBAccessImpl implements DBAccess {
 
   @Override
   public String[] readRecord(long recNo) throws RecordNotFoundException {
+    validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = presenter.getRecord(recNo);
     return DBRecordHelper.getDBRecordAsStringArray(record);
   }
 
   @Override
-  public void updateRecord(long recNo, String[] data, long lockCookie) throws RecordNotFoundException, SecurityException {
+  public void updateRecord(long recNo, String[] data, long lockCookie) throws RecordNotFoundException,
+                                                                      SecurityException {
+    validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord oldRecord = presenter.getRecord(recNo);
     if (oldRecord.isLocked() && oldRecord.getCookie() != lockCookie) {
-      throw new SecurityException("The record " + recNo + " with cookie " + oldRecord.getCookie() + " can't be updated with cookie " + lockCookie);
+      throw new SecurityException("The record " + recNo + " with cookie " + oldRecord.getCookie()
+                                  + " can't be updated with cookie " + lockCookie);
     }
     DBRecord newRecord = DBRecordHelper.createDBRecord(data);
     try {
@@ -50,10 +54,12 @@ public class DBAccessImpl implements DBAccess {
 
   @Override
   public void deleteRecord(long recNo, long lockCookie) throws RecordNotFoundException, SecurityException {
+    validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = presenter.getRecord(recNo);
     if (record.isLocked() && record.getCookie() != lockCookie) {
-      throw new SecurityException("The record " + recNo + " with cookie " + record.getCookie() + " can't be deleted with cookie " + lockCookie);
+      throw new SecurityException("The record " + recNo + " with cookie " + record.getCookie()
+                                  + " can't be deleted with cookie " + lockCookie);
     }
     try {
       DBReaderWriter.deleteRecord(record);
@@ -107,6 +113,7 @@ public class DBAccessImpl implements DBAccess {
 
   @Override
   public long lockRecord(long recNo) throws RecordNotFoundException {
+    validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = presenter.getRecord(recNo);
     if (!record.isLocked()) {
@@ -128,8 +135,15 @@ public class DBAccessImpl implements DBAccess {
       return;
     }
     if (record.isLocked() && record.getCookie() != cookie) {
-      throw new SecurityException("The record " + recNo + " is locked with cookie: " + record.getCookie() + ". You cant' unlock this record with cookie: " + cookie);
+      throw new SecurityException("The record " + recNo + " is locked with cookie: " + record.getCookie()
+                                  + ". You cant' unlock this record with cookie: " + cookie);
     }
     record.setCookie(0);
+  }
+
+  private void validateRecordNumber(long recNo) throws RecordNotFoundException {
+    if (recNo > Integer.MAX_VALUE) {
+      throw new RecordNotFoundException("The record number is over than Integer.MAX_VALUE");
+    }
   }
 }

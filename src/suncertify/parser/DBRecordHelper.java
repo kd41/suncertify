@@ -5,18 +5,21 @@ import suncertify.constants.StringPool;
 public class DBRecordHelper {
 
   public static String[] getDBRecordAsStringArray(DBRecord record) {
-    return new String[] { String.valueOf(record.getPosition()), record.getValid(), record.getName(), record.getLocation(), record.getSpecialties(),
-                         record.getNumberOfWorkers(), record.getRate(), record.getOwner(), String.valueOf(record.getCookie()) };
+    return new String[] { String.valueOf(record.getPosition()), record.getValid(), record.getName(),
+                         record.getLocation(), record.getSpecialties(), record.getNumberOfWorkers(), record.getRate(),
+                         record.getOwner(), String.valueOf(record.getCookie()) };
   }
 
   public static String[] getDBRecordAsStringArray2(DBRecord record) {
-    return new String[] { record.getName(), record.getLocation(), record.getSpecialties(), record.getNumberOfWorkers(), record.getRate(), record.getOwner() };
+    return new String[] { record.getName(), record.getLocation(), record.getSpecialties(), record.getNumberOfWorkers(),
+                         record.getRate(), record.getOwner() };
   }
 
   public static DBRecord createDBRecord(String[] data) {
     DBRecord record = new DBRecord();
     if (data.length == 6) {
       record.setValid(StringPool.BLANK);
+      record.setPosition(DBPresenter.getInstance().getRecords().size());
       record.setName(data[0]);
       record.setLocation(data[1]);
       record.setSpecialties(data[2]);

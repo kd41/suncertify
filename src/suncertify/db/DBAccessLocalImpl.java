@@ -2,6 +2,7 @@ package suncertify.db;
 
 public class DBAccessLocalImpl implements DBAccess {
   private boolean isLockedDB = false;
+  private boolean isLockLocked = false;
 
   private static DBAccessLocalImpl dbAccessLocalImpl;
 
@@ -70,7 +71,16 @@ public class DBAccessLocalImpl implements DBAccess {
   public long lockRecord(long recNo) throws RecordNotFoundException {
     try {
       lock();
-      return DBAccessImpl.getInstance().lockRecord(recNo);
+      long cookie = DBAccessImpl.getInstance().lockRecord(recNo);
+      try {
+        if (cookie <= 0) {
+          lockLock();
+          lockRecord(recNo);
+        }
+      } finally {
+        unlockLock();
+      }
+      return cookie;
     } finally {
       unlock();
     }
@@ -98,6 +108,21 @@ public class DBAccessLocalImpl implements DBAccess {
 
   private synchronized void unlock() {
     isLockedDB = false;
+    notify();
+  }
+
+  private synchronized void lockLock() {
+    while (isLockLocked) {
+      try {
+        wait();
+      } catch (InterruptedException e) {
+      }
+    }
+    isLockLocked = true;
+  }
+
+  private synchronized void unlockLock() {
+    isLockLocked = false;
     notify();
   }
 

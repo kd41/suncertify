@@ -1,14 +1,14 @@
 package suncertify.gui;
 
 public class BSJRow {
-  public static final int RECORD_NUMBER = 1;
+  public static final int RECORD_POSITION = 1;
+  public static final int VALID = 2;
   public static final int NAME = 3;
   public static final int LOCATION = 4;
   public static final int SPECIALTIES = 5;
   public static final int WORKERS_NUMBER = 6;
   public static final int RATE = 7;
   public static final int OWNER = 8;
-  public static final int COOKIE = 9;
 
   private long number;
   private String position;
@@ -19,7 +19,6 @@ public class BSJRow {
   private String numberOfWorkers;
   private String rate;
   private String owner;
-  private String cookie;
 
   public long getNumber() {
     return number;
@@ -93,21 +92,12 @@ public class BSJRow {
     this.owner = owner;
   }
 
-  public void setCookie(String cookie) {
-    this.cookie = cookie;
-  }
-
-  public String getCookie() {
-    return cookie;
-  }
-
   public String[] toStringArray() {
     return new String[] { String.valueOf(number), position, valid, name, location, specialties, numberOfWorkers, rate,
-                         owner, cookie };
+                         owner };
   }
 
   public static String[] getHeaders() {
-    return new String[] { "Nr", "Position", "Valid", "Name", "Location", "Specialties", "Nr workers", "Rate", "Owner",
-                         "Cookie" };
+    return new String[] { "Nr", "Position", "Valid", "Name", "Location", "Specialties", "Nr workers", "Rate", "Owner" };
   }
 }

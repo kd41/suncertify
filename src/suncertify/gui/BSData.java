@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import suncertify.db.DBAccessLocalImpl;
+import suncertify.db.DuplicateKeyException;
 import suncertify.db.RecordNotFoundException;
 
 public class BSData {
@@ -48,7 +49,6 @@ public class BSData {
         row.setNumberOfWorkers(dbRow[5]);
         row.setRate(dbRow[6]);
         row.setOwner(dbRow[7]);
-        row.setCookie(dbRow[8]);
         rows.add(row);
       } catch (RecordNotFoundException e) {
       }
@@ -65,21 +65,14 @@ public class BSData {
     return dbData;
   }
 
-  protected boolean deleteRecord(long recNo, long cookie) {
-    try {
-      data.deleteRecord(recNo, cookie);
-    } catch (Exception e) {
-      System.out.println("error: " + e.getMessage());
-      return false;
-    }
-    return true;
+  protected void deleteRecord(long recNo, long cookie) throws RecordNotFoundException, SecurityException {
+    data.deleteRecord(recNo, cookie);
   }
 
   protected boolean createRecord(String[] recordData) {
     try {
       return data.createRecord(recordData) != 0;
-    } catch (Exception e) {
-      System.out.println("error: " + e.getMessage());
+    } catch (DuplicateKeyException e) {
       return false;
     }
   }
@@ -87,8 +80,7 @@ public class BSData {
   protected long lockRow(long recNo) {
     try {
       return data.lockRecord(recNo);
-    } catch (Exception e) {
-      System.out.println("error: " + e.getMessage());
+    } catch (RecordNotFoundException e) {
       return 0;
     }
   }
@@ -96,20 +88,18 @@ public class BSData {
   protected boolean unlockRow(long recNo, long cookie) {
     try {
       data.unlock(recNo, cookie);
-    } catch (Exception e) {
-      System.out.println("error: " + e.getMessage());
+    } catch (SecurityException e) {
       return false;
     }
     return true;
   }
 
-  protected boolean updateRow(long recNo, String[] data, long lockCookie) {
-    try {
-      this.data.updateRecord(recNo, data, lockCookie);
-    } catch (Exception e) {
-      System.out.println("error: " + e.getMessage());
-      return false;
-    }
-    return true;
+  protected void updateRow(long recNo, String[] data, long lockCookie) throws RecordNotFoundException,
+                                                                      SecurityException {
+    this.data.updateRecord(recNo, data, lockCookie);
+  }
+
+  protected enum ErrorType {
+    RECORD_NOT_FOUND, SECURITY, DUPLICATE_KEY
   }
 }

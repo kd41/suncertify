@@ -1,7 +1,5 @@
 package suncertify.gui;
 
-import static suncertify.gui.BSJRow.COOKIE;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -25,8 +23,13 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.io.IOException;
 
 public class BSJFrameBase extends BSData {
+  public static void main(String... args) throws IOException {
+    // TODO: main method is only for test
+    new BSJFrameBase();
+  }
 
   protected JTable table;
 
@@ -34,8 +37,6 @@ public class BSJFrameBase extends BSData {
   protected JButton searchBtn;
   protected JButton createBtn;
   protected JButton deleteBtn;
-  protected JButton lockBtn;
-  protected JButton unlockBtn;
   protected JButton getBtn;
   protected JButton updateBtn;
 
@@ -46,10 +47,12 @@ public class BSJFrameBase extends BSData {
   protected JTextField rateField;
   protected JTextField ownerField;
 
+  protected JLabel statusLabel;
+
   public BSJFrameBase() {
     JFrame jFrame = new JFrame("Bodgitt and Scarper, LLC");
     jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    jFrame.setSize(1100, 600);
+    jFrame.setSize(1100, 800);
     jFrame.setLayout(new BorderLayout());
 
     String data[][] = findByCriteria();
@@ -180,16 +183,10 @@ public class BSJFrameBase extends BSData {
     buttonPanel.add(deleteBtn);
 
     gbc.gridy = 3;
-    gbc.anchor = GridBagConstraints.NORTHEAST;
-    lockBtn = new JButton("Lock row");
-    gbl.setConstraints(lockBtn, gbc);
-    buttonPanel.add(lockBtn);
-
-    gbc.weighty = 1;
-    gbc.gridy = 4;
-    unlockBtn = new JButton("Unlock row");
-    gbl.setConstraints(unlockBtn, gbc);
-    buttonPanel.add(unlockBtn);
+    statusLabel = new JLabel("Started");
+    statusLabel.setForeground(Color.BLUE);
+    gbl.setConstraints(statusLabel, gbc);
+    buttonPanel.add(statusLabel);
 
     buttonPanel.setLayout(gbl);
 
@@ -206,6 +203,19 @@ public class BSJFrameBase extends BSData {
 
     jFrame.pack();
     jFrame.setVisible(true);
+  }
+
+  protected void setStatus(String text) {
+    setStatus(text, true);
+  }
+
+  protected void setStatus(String text, boolean isSuccess) {
+    statusLabel.setText(text);
+    if (isSuccess) {
+      statusLabel.setForeground(Color.BLUE);
+    } else {
+      statusLabel.setForeground(Color.RED);
+    }
   }
 
   protected void setColums(JTable table) {
@@ -239,17 +249,10 @@ public class BSJFrameBase extends BSData {
       case 8:
         col.setPreferredWidth(50);
         break;
-      case 9:
-        col.setPreferredWidth(500);
-        break;
       default:
         break;
       }
     }
-    // set cookie column not visible
-    // table.getColumnModel().getColumn(COOKIE).setMinWidth(0);
-    // table.getColumnModel().getColumn(COOKIE).setMaxWidth(0);
-    // table.getColumnModel().getColumn(COOKIE).setWidth(0);
 
   }
 
@@ -261,19 +264,11 @@ public class BSJFrameBase extends BSData {
                                                    int row, int column) {
       Component rendererComp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
       if (!isSelected) {
-        long cookie = Long.parseLong((String) table.getModel().getValueAt(row, COOKIE));
-        if (cookie > 0) {
-          rendererComp.setForeground(Color.red);
-        } else {
-          rendererComp.setForeground(Color.black);
-        }
         if (row % 2 == 0) {
           rendererComp.setBackground(Color.getHSBColor(9, 99, 99));
         } else {
           rendererComp.setBackground(Color.white);
         }
-      } else if (0 != Long.parseLong(((String) table.getModel().getValueAt(row, COOKIE)))) {
-        rendererComp.setForeground(Color.red);
       }
       return rendererComp;
     }
