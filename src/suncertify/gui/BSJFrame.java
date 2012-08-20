@@ -16,6 +16,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import suncertify.parser.PropertiesLoader;
+
 import suncertify.db.RecordNotFoundException;
 
 public class BSJFrame extends BSJFrameBase {
@@ -67,6 +69,9 @@ public class BSJFrame extends BSJFrameBase {
     public void actionPerformed(ActionEvent e) {
       int rowSelected = table.getSelectedRow();
       if (type == BSDataType.REFRESH) {
+        if (!PropertiesLoader.getInstance().getDBLocation().equals(dbLocationField.getText())) {
+          PropertiesLoader.getInstance().setDBLocation(dbLocationField.getText());
+        }
         setCriteria(null);
         setStatus("Refreshed");
         repaintTable(-1);

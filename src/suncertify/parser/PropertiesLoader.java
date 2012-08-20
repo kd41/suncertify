@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -43,7 +44,7 @@ public class PropertiesLoader {
     return instance;
   }
 
-  public String getDbLocation() {
+  public String getDBLocation() {
     if (this.dbLocation == null) {
       if (isAloneMode) {
         dbLocation = properties.getProperty(DB_ALONE_LOCATION_KEY);
@@ -52,5 +53,16 @@ public class PropertiesLoader {
       }
     }
     return dbLocation;
+  }
+
+  public void setDBLocation(String location) {
+    try {
+      properties.put(DB_ALONE_LOCATION_KEY, location);
+      FileOutputStream fos = new FileOutputStream(RESOURCE_FILE_NAME);
+      properties.store(fos, null);
+      fos.close();
+      dbLocation = location;
+    } catch (IOException e) {
+    }
   }
 }

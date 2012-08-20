@@ -78,7 +78,7 @@ public class DBReaderWriter {
       } catch (EOFException e) {
       }
 
-      File f1 = new File(PropertiesLoader.getInstance().getDbLocation());
+      File f1 = new File(PropertiesLoader.getInstance().getDBLocation());
       InputStream in = new FileInputStream(f1);
       byte[] buf = new byte[54];
       in.read(buf);

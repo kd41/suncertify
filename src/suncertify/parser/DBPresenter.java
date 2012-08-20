@@ -25,8 +25,8 @@ public class DBPresenter {
   }
 
   public static synchronized DBPresenter getInstance() {
-    if (instance == null) {
-      instance = new DBPresenter(PropertiesLoader.getInstance().getDbLocation());
+    if (instance == null || !instance.getDbPath().equals(PropertiesLoader.getInstance().getDBLocation())) {
+      instance = new DBPresenter(PropertiesLoader.getInstance().getDBLocation());
       DBReaderWriter.createDatabasePresenter();
       log.info("worked with: " + Variables.getWorkedFilePath());
     }

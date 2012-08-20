@@ -1,17 +1,17 @@
 package suncertify.db;
 
-public class DBAccessLocalImpl implements DBAccess {
+public class Data implements DBAccess {
   private boolean isLockedDB = false;
   private boolean isLockLocked = false;
 
-  private static DBAccessLocalImpl dbAccessLocalImpl;
+  private static Data dbAccessLocalImpl;
 
-  private DBAccessLocalImpl() {
+  private Data() {
   }
 
-  public static synchronized DBAccessLocalImpl getInstance() {
+  public static synchronized Data getInstance() {
     if (dbAccessLocalImpl == null) {
-      dbAccessLocalImpl = new DBAccessLocalImpl();
+      dbAccessLocalImpl = new Data();
     }
     return dbAccessLocalImpl;
   }

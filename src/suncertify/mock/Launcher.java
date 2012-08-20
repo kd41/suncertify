@@ -24,10 +24,14 @@ import suncertify.parser.DBRecordHelper;
 public class Launcher {
   private static final Logger log = LoggerFactory.getLogger(Launcher.class);
 
-  public static void main(String... args) throws IOException {
+  public static void main(String... args) {
     // main method is only for test!!
-    File f1 = new File(PropertiesLoader.getInstance().getDbLocation());
-    File f2 = new File(PropertiesLoader.getInstance().getDbLocation() + "123");
+    PropertiesLoader.getInstance().setDBLocation("newdbfile.db");
+  }
+
+  private void dothis() throws IOException {
+    File f1 = new File(PropertiesLoader.getInstance().getDBLocation());
+    File f2 = new File(PropertiesLoader.getInstance().getDBLocation() + "123");
     InputStream in = new FileInputStream(f1);
     OutputStream out = new FileOutputStream(f2);
 
@@ -38,9 +42,6 @@ public class Launcher {
     in.close();
     out.close();
     System.out.println("File copied.");
-  }
-
-  private void dothis() {
     log.info("START");
     FileUtils.copyFile(Variables.getOriginalFilePath(), Variables.getWorkedFilePath());
     TestData testData = new TestData();

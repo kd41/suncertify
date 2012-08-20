@@ -3,7 +3,7 @@ package suncertify.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import suncertify.db.DBAccessLocalImpl;
+import suncertify.db.Data;
 import suncertify.db.DuplicateKeyException;
 import suncertify.db.RecordNotFoundException;
 
@@ -11,7 +11,7 @@ public class BSData {
   private String[] criteria;
   private int selectedRow;
 
-  private DBAccessLocalImpl data = DBAccessLocalImpl.getInstance();
+  private Data data = Data.getInstance();
 
   public void setCriteria(String[] criteria) {
     this.criteria = criteria;

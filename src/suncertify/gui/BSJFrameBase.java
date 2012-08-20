@@ -25,6 +25,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.IOException;
 
+import suncertify.parser.DBPresenter;
+
 public class BSJFrameBase extends BSData {
   public static void main(String... args) throws IOException {
     // TODO: main method is only for test
@@ -40,6 +42,7 @@ public class BSJFrameBase extends BSData {
   protected JButton getBtn;
   protected JButton updateBtn;
 
+  protected JTextField dbLocationField;
   protected JTextField nameField;
   protected JTextField locationField;
   protected JTextField specialitiesField;
@@ -74,12 +77,25 @@ public class BSJFrameBase extends BSData {
     GridBagLayout gbl = new GridBagLayout();
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.insets = new Insets(10, 0, 5, 0);
+
+    gbc.anchor = GridBagConstraints.LINE_START;
+    JLabel dbLocationLbl = new JLabel("DB location:");
+    gbl.setConstraints(dbLocationLbl, gbc);
+    buttonPanel.add(dbLocationLbl);
+    gbc.gridy = 1;
+    gbc.anchor = GridBagConstraints.LINE_END;
+    dbLocationField = new JTextField(15);
+    gbl.setConstraints(dbLocationField, gbc);
+    dbLocationField.setText(DBPresenter.getInstance().getDbPath());
+    buttonPanel.add(dbLocationField);
+
+    gbc.gridy = 2;
     gbc.anchor = GridBagConstraints.LINE_END;
     refreshBtn = new JButton("Refresh");
     gbl.setConstraints(refreshBtn, gbc);
     buttonPanel.add(refreshBtn);
 
-    gbc.gridy = 1;
+    gbc.gridy = 3;
     gbc.insets = new Insets(0, 0, 5, 0);
     JPanel searchPanel = new JPanel();
     searchPanel.setBorder(BorderFactory.createTitledBorder("Search and Create"));
@@ -177,12 +193,12 @@ public class BSJFrameBase extends BSData {
     gbl.setConstraints(searchPanel, gbc);
     buttonPanel.add(searchPanel);
 
-    gbc.gridy = 2;
+    gbc.gridy = 4;
     deleteBtn = new JButton("Delete selected row");
     gbl.setConstraints(deleteBtn, gbc);
     buttonPanel.add(deleteBtn);
 
-    gbc.gridy = 3;
+    gbc.gridy = 5;
     statusLabel = new JLabel("Started");
     statusLabel.setForeground(Color.BLUE);
     gbl.setConstraints(statusLabel, gbc);
@@ -247,12 +263,19 @@ public class BSJFrameBase extends BSData {
         col.setPreferredWidth(60);
         break;
       case 8:
-        col.setPreferredWidth(50);
+        col.setPreferredWidth(30);
         break;
       default:
         break;
       }
     }
+    // TODO: need or not to need?
+    // table.getColumnModel().getColumn(BSJRow.VALID).setMinWidth(0);
+    // table.getColumnModel().getColumn(BSJRow.VALID).setMaxWidth(0);
+    // table.getColumnModel().getColumn(BSJRow.VALID).setWidth(0);
+    // table.getColumnModel().getColumn(BSJRow.OWNER).setMinWidth(0);
+    // table.getColumnModel().getColumn(BSJRow.OWNER).setMaxWidth(0);
+    // table.getColumnModel().getColumn(BSJRow.OWNER).setWidth(0);
 
   }
 
