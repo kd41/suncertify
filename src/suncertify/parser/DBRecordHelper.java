@@ -1,11 +1,9 @@
 package suncertify.parser;
 
-import suncertify.constants.StringPool;
-
 public class DBRecordHelper {
 
   public static String[] getDBRecordAsStringArray(DBRecord record) {
-    return new String[] { String.valueOf(record.getPosition()), record.getValid(), record.getName(),
+    return new String[] { String.valueOf(record.getPosition()), String.valueOf(record.getValid()), record.getName(),
                          record.getLocation(), record.getSpecialties(), record.getNumberOfWorkers(), record.getRate(),
                          record.getOwner(), String.valueOf(record.getCookie()) };
   }
@@ -18,7 +16,7 @@ public class DBRecordHelper {
   public static DBRecord createDBRecord(String[] data) {
     DBRecord record = new DBRecord();
     if (data.length == 6) {
-      record.setValid(StringPool.BLANK);
+      record.setValid((byte) 0);
       record.setPosition(DBPresenter.getInstance().getRecords().size());
       record.setName(data[0]);
       record.setLocation(data[1]);
@@ -35,7 +33,7 @@ public class DBRecordHelper {
   public static DBRecord updateDBRecord(String[] data, long oldPosition, long cookie) {
     DBRecord record = new DBRecord();
     if (data.length == 6) {
-      record.setValid(StringPool.BLANK);
+      record.setValid((byte) 0);
       record.setPosition(oldPosition);
       record.setName(data[0]);
       record.setLocation(data[1]);

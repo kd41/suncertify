@@ -197,6 +197,12 @@ public class BSJFrame extends BSJFrameBase {
       } catch (SecurityException e) {
         error = ErrorType.SECURITY;
       }
+      try {
+        unlockRow(recNo, cookie);
+      } catch (SecurityException e1) {
+        error = ErrorType.SECURITY;
+        return null;
+      }
       return null;
     }
 

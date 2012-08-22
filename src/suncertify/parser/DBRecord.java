@@ -2,7 +2,7 @@ package suncertify.parser;
 
 public class DBRecord {
   private long position;
-  private String valid;
+  private byte valid;
   private String name;
   private String location;
   private String specialties;
@@ -19,11 +19,15 @@ public class DBRecord {
     this.position = position;
   }
 
-  public void setValid(String valid) {
+  public void setValid(byte valid) {
     this.valid = valid;
   }
 
-  public String getValid() {
+  public boolean isValid() {
+    return valid == 0;
+  }
+
+  public byte getValid() {
     return valid;
   }
 
@@ -92,7 +96,7 @@ public class DBRecord {
 
   @Override
   public boolean equals(Object o) {
-    if ((o instanceof DBRecord) && (((DBRecord) o).valid.equals(valid)) && (((DBRecord) o).name.equals(name))
+    if ((o instanceof DBRecord) && (((DBRecord) o).valid == valid) && (((DBRecord) o).name.equals(name))
         && (((DBRecord) o).location.equals(location)) && (((DBRecord) o).specialties.equals(specialties))
         && (((DBRecord) o).rate.equals(rate))) {
       return true;
@@ -103,7 +107,7 @@ public class DBRecord {
   @Override
   public int hashCode() {
     int hash = 7;
-    hash = 31 * hash + (valid == null ? 0 : valid.hashCode());
+    hash = 31 * hash + valid;
     hash = 31 * hash + (name == null ? 0 : name.hashCode());
     hash = 31 * hash + (location == null ? 0 : location.hashCode());
     hash = 31 * hash + (specialties == null ? 0 : specialties.hashCode());

@@ -74,6 +74,9 @@ public class DBAccessImpl {
     DBPresenter presenter = DBPresenter.getInstance();
     List<DBRecord> findedRecords = new ArrayList<DBRecord>();
     for (DBRecord record : presenter.getRecords()) {
+      if (!record.isValid()) {
+        continue;
+      }
       String[] recordArray = DBRecordHelper.getDBRecordAsStringArray2(record);
       boolean isMached = true;
       for (int i = 0; i < recordArray.length; i++) {

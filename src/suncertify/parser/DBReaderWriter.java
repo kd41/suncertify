@@ -117,6 +117,20 @@ public class DBReaderWriter {
     return DBPresenter.getInstance().getNewRecordNumber();
   }
 
+  private static void writeRecord(DBRecord record, FileWriter fw) throws Exception {
+    if (record.isValid()) {
+      writeNext(fw, "", VALID_LENGTH);// valid
+    } else {
+      writeNext(fw, (byte) -1, VALID_LENGTH);// valid
+    }
+    writeNext(fw, record.getName(), NAME_LENGTH);
+    writeNext(fw, record.getLocation(), LOCATION_LENGTH);
+    writeNext(fw, record.getSpecialties(), SPECIALTIES_LENGTH);
+    writeNext(fw, record.getNumberOfWorkers(), NUM_OF_WOKERS_LENGTH);
+    writeNext(fw, record.getRate(), RATE_LENGTH);
+    writeNext(fw, record.getOwner(), OWNER_LENGTH);
+  }
+
   private static void writeRecord(String[] data, FileWriter fw) throws Exception {
     writeNext(fw, "", VALID_LENGTH);// valid
     for (int i = 0; i < data.length; i++) {
@@ -151,7 +165,8 @@ public class DBReaderWriter {
   }
 
   public static void deleteRecord(DBRecord record) throws Exception {
-    DBPresenter.getInstance().getRecords().remove(record);
+    // DBPresenter.getInstance().getRecords().remove(record);
+    record.setValid((byte) -1);
     saveDBPresenter();
   }
 
@@ -165,7 +180,7 @@ public class DBReaderWriter {
     }
     fw.write(headerChars);
     for (DBRecord record : DBPresenter.getInstance().getRecords()) {
-      writeRecord(DBRecordHelper.getDBRecordAsStringArray2(record), fw);
+      writeRecord(record, fw);
     }
     fw.flush();
     fw.close();
@@ -187,9 +202,17 @@ public class DBReaderWriter {
     }
   }
 
+  private static void writeNext(FileWriter fw, byte _byte, int maxLength) throws Exception {
+    if (fw == null) {
+      throw new RuntimeException("FileWriter can't be null!");
+    }
+    fw.write(new char[] { (char) _byte });
+  }
+
   private static Record readNextRecord(DataInputStream dis) throws IOException {
     Record record = new Record();
-    record.setValid(readStringField(dis, VALID_LENGTH));
+    String validStr = readStringField(dis, VALID_LENGTH);
+    record.setValid("?".equals(validStr) ? (byte) -1 : (byte) 0);
     record.setName(readStringField(dis, NAME_LENGTH));
     record.setLocation(readStringField(dis, LOCATION_LENGTH));
     record.setSpecialities(readStringField(dis, SPECIALTIES_LENGTH));
@@ -216,7 +239,7 @@ public class DBReaderWriter {
 
   private static class Record {
 
-    private String valid;
+    private byte valid;
     private String name;
     private String location;
     private String specialities;
@@ -224,11 +247,11 @@ public class DBReaderWriter {
     private String rate;
     private String owner;
 
-    public void setValid(String valid) {
+    public void setValid(byte valid) {
       this.valid = valid;
     }
 
-    public String getValid() {
+    public byte getValid() {
       return valid;
     }
 
