@@ -85,6 +85,10 @@ public class DBPresenter {
     getRecords().add(record);
   }
 
+  public void updateRecord(DBRecord record) {
+    getRecords().add(record);
+  }
+
   public void deleteRecord(DBRecord record) {
     getRecords().remove(record);
   }

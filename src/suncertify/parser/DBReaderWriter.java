@@ -146,7 +146,7 @@ public class DBReaderWriter {
 
   public static void updateRecord(DBRecord oldRecord, DBRecord newRecord) throws Exception {
     DBPresenter.getInstance().deleteRecord(oldRecord);
-    DBPresenter.getInstance().addRecord(newRecord);
+    DBPresenter.getInstance().updateRecord(newRecord);
     saveDBPresenter();
   }
 

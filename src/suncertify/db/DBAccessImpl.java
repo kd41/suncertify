@@ -44,7 +44,7 @@ public class DBAccessImpl {
       throw new SecurityException("The record " + recNo + " with cookie " + oldRecord.getCookie()
                                   + " can't be updated with cookie " + lockCookie);
     }
-    DBRecord newRecord = DBRecordHelper.createDBRecord(data);
+    DBRecord newRecord = DBRecordHelper.updateDBRecord(data, oldRecord.getPosition(), lockCookie);
     try {
       DBReaderWriter.updateRecord(oldRecord, newRecord);
     } catch (Exception e) {
@@ -109,14 +109,17 @@ public class DBAccessImpl {
   }
 
   public long lockRecord(long recNo) throws RecordNotFoundException {
+    System.out.println("try to lockRecord: " + recNo);
     validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = presenter.getRecord(recNo);
     record.setCookie(++cookie);
+    System.out.println("lockRecord: " + recNo + " with cookie: " + cookie);
     return cookie;
   }
 
   public void unlock(long recNo, long cookie) throws SecurityException {
+    System.out.println("try to unlock: " + recNo + " with cookie: " + cookie);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = null;
     try {
@@ -129,6 +132,7 @@ public class DBAccessImpl {
       throw new SecurityException("The record " + recNo + " is locked with cookie: " + record.getCookie()
                                   + ". You cant' unlock this record with cookie: " + cookie);
     }
+    System.out.println("unlocked");
   }
 
   private void validateRecordNumber(long recNo) throws RecordNotFoundException {

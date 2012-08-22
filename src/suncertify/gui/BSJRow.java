@@ -1,6 +1,6 @@
 package suncertify.gui;
 
-public class BSJRow {
+public class BSJRow implements Comparable<BSJRow> {
   public static final int RECORD_POSITION = 1;
   public static final int VALID = 2;
   public static final int NAME = 3;
@@ -99,5 +99,10 @@ public class BSJRow {
 
   public static String[] getHeaders() {
     return new String[] { "Nr", "Position", "Valid", "Name", "Location", "Specialties", "Nr workers", "Rate", "Owner" };
+  }
+
+  @Override
+  public int compareTo(BSJRow o) {
+    return Integer.parseInt(this.position) - Integer.parseInt(o.position);
   }
 }

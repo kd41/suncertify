@@ -1,6 +1,7 @@
 package suncertify.gui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import suncertify.db.Data;
@@ -35,12 +36,10 @@ public class BSData {
   protected String[][] findByCriteria() {
     long[] records = data.findByCriteria(getCriteria());
     List<BSJRow> rows = new ArrayList<BSJRow>();
-    int number = 1;
     for (long record : records) {
       try {
         String[] dbRow = data.readRecord(record);
         BSJRow row = new BSJRow();
-        row.setNumber(number++);
         row.setPosition(dbRow[0]);
         row.setValid(dbRow[1]);
         row.setName(dbRow[2]);
@@ -52,6 +51,11 @@ public class BSData {
         rows.add(row);
       } catch (RecordNotFoundException e) {
       }
+    }
+    Collections.sort(rows);
+    int number = 1;
+    for (BSJRow row : rows) {
+      row.setNumber(number++);
     }
     int x = BSJRow.getHeaders().length;
     int y = rows.size();
@@ -77,21 +81,12 @@ public class BSData {
     }
   }
 
-  protected long lockRow(long recNo) {
-    try {
-      return data.lockRecord(recNo);
-    } catch (RecordNotFoundException e) {
-      return 0;
-    }
+  protected long lockRow(long recNo) throws RecordNotFoundException {
+    return data.lockRecord(recNo);
   }
 
-  protected boolean unlockRow(long recNo, long cookie) {
-    try {
-      data.unlock(recNo, cookie);
-    } catch (SecurityException e) {
-      return false;
-    }
-    return true;
+  protected void unlockRow(long recNo, long cookie) throws SecurityException {
+    data.unlock(recNo, cookie);
   }
 
   protected void updateRow(long recNo, String[] data, long lockCookie) throws RecordNotFoundException,

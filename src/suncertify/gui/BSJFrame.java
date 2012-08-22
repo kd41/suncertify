@@ -132,7 +132,13 @@ public class BSJFrame extends BSJFrameBase {
 
     @Override
     public Void doInBackground() {
-      long cookie = lockRow(recNo);
+      long cookie;
+      try {
+        cookie = lockRow(recNo);
+      } catch (RecordNotFoundException e1) {
+        error = ErrorType.RECORD_NOT_FOUND;
+        return null;
+      }
       try {
         updateRow(recNo, new String[] { nameField.getText(), locationField.getText(), specialitiesField.getText(),
                                        workersNrField.getText(), rateField.getText(), ownerField.getText() }, cookie);
@@ -140,6 +146,12 @@ public class BSJFrame extends BSJFrameBase {
         error = ErrorType.RECORD_NOT_FOUND;
       } catch (SecurityException e) {
         error = ErrorType.SECURITY;
+      }
+      try {
+        unlockRow(recNo, cookie);
+      } catch (SecurityException e1) {
+        error = ErrorType.SECURITY;
+        return null;
       }
       return null;
     }
@@ -154,7 +166,7 @@ public class BSJFrame extends BSJFrameBase {
         }
       } else {
         setStatus("Update succeed.");
-        repaintTable(table.getModel().getRowCount() - 1);
+        repaintTable(recNo - 1);
       }
       setButtonsEnabled(true);
       updateBtn.setEnabled(false);
@@ -171,7 +183,13 @@ public class BSJFrame extends BSJFrameBase {
 
     @Override
     public Void doInBackground() {
-      long cookie = lockRow(recNo);
+      long cookie;
+      try {
+        cookie = lockRow(recNo);
+      } catch (RecordNotFoundException e1) {
+        error = ErrorType.RECORD_NOT_FOUND;
+        return null;
+      }
       try {
         deleteRecord(recNo, cookie);
       } catch (RecordNotFoundException e) {
