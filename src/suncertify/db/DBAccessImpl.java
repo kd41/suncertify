@@ -116,6 +116,7 @@ public class DBAccessImpl {
     validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = presenter.getRecord(recNo);
+    record.lockRecord();
     record.setCookie(++cookie);
     System.out.println("lockRecord: " + recNo + " with cookie: " + cookie);
     return cookie;
@@ -135,6 +136,7 @@ public class DBAccessImpl {
       throw new SecurityException("The record " + recNo + " is locked with cookie: " + record.getCookie()
                                   + ". You cant' unlock this record with cookie: " + cookie);
     }
+    record.unlockRecord();
     System.out.println("unlocked");
   }
 

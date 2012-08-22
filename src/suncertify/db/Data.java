@@ -2,7 +2,6 @@ package suncertify.db;
 
 public class Data implements DBAccess {
   private boolean isLockedDB = false;
-  private boolean isLockLocked = false;
 
   private static Data dbAccessLocalImpl;
 
@@ -69,15 +68,12 @@ public class Data implements DBAccess {
 
   @Override
   public long lockRecord(long recNo) throws RecordNotFoundException {
-    lockLock();
-    long cookie = DBAccessImpl.getInstance().lockRecord(recNo);
-    return cookie;
+    return DBAccessImpl.getInstance().lockRecord(recNo);
   }
 
   @Override
   public void unlock(long recNo, long cookie) throws SecurityException {
     DBAccessImpl.getInstance().unlock(recNo, cookie);
-    unlockLock();
   }
 
   private synchronized void lock() {
@@ -92,21 +88,6 @@ public class Data implements DBAccess {
 
   private synchronized void unlock() {
     isLockedDB = false;
-    notify();
-  }
-
-  private synchronized void lockLock() {
-    while (isLockLocked) {
-      try {
-        wait();
-      } catch (InterruptedException e) {
-      }
-    }
-    isLockLocked = true;
-  }
-
-  private synchronized void unlockLock() {
-    isLockLocked = false;
     notify();
   }
 

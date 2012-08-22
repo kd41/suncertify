@@ -11,6 +11,8 @@ public class DBRecord {
   private String owner;
   private long cookie;
 
+  private boolean isLocked = false;
+
   public long getPosition() {
     return position;
   }
@@ -113,6 +115,21 @@ public class DBRecord {
     hash = 31 * hash + (specialties == null ? 0 : specialties.hashCode());
     hash = 31 * hash + (rate == null ? 0 : rate.hashCode());
     return hash;
+  }
+
+  public synchronized void lockRecord() {
+    while (isLocked) {
+      try {
+        wait();
+      } catch (InterruptedException e) {
+      }
+    }
+    isLocked = true;
+  }
+
+  public synchronized void unlockRecord() {
+    isLocked = false;
+    notify();
   }
 
 }
