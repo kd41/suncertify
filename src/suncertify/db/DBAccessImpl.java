@@ -16,6 +16,8 @@ public class DBAccessImpl {
 
   private static DBAccessImpl dbAccessImpl;
 
+  private long cookie;
+
   private DBAccessImpl() {
   }
 
@@ -110,8 +112,7 @@ public class DBAccessImpl {
     validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = presenter.getRecord(recNo);
-    long cookie = System.currentTimeMillis();
-    record.setCookie(cookie);
+    record.setCookie(++cookie);
     return cookie;
   }
 
@@ -128,7 +129,6 @@ public class DBAccessImpl {
       throw new SecurityException("The record " + recNo + " is locked with cookie: " + record.getCookie()
                                   + ". You cant' unlock this record with cookie: " + cookie);
     }
-    record.setCookie(0);
   }
 
   private void validateRecordNumber(long recNo) throws RecordNotFoundException {
