@@ -70,19 +70,11 @@ public class Data implements DBAccess {
   @Override
   public long lockRecord(long recNo) throws RecordNotFoundException {
     try {
-      lock();
+      lockLock();
       long cookie = DBAccessImpl.getInstance().lockRecord(recNo);
-      try {
-        if (cookie <= 0) {
-          lockLock();
-          lockRecord(recNo);
-        }
-      } finally {
-        unlockLock();
-      }
       return cookie;
     } finally {
-      unlock();
+      unlockLock();
     }
   }
 
