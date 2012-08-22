@@ -38,7 +38,7 @@ public class DBAccessImpl {
     validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord oldRecord = presenter.getRecord(recNo);
-    if (oldRecord.isLocked() && oldRecord.getCookie() != lockCookie) {
+    if (oldRecord.getCookie() != lockCookie) {
       throw new SecurityException("The record " + recNo + " with cookie " + oldRecord.getCookie()
                                   + " can't be updated with cookie " + lockCookie);
     }
@@ -54,7 +54,7 @@ public class DBAccessImpl {
     validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = presenter.getRecord(recNo);
-    if (record.isLocked() && record.getCookie() != lockCookie) {
+    if (record.getCookie() != lockCookie) {
       throw new SecurityException("The record " + recNo + " with cookie " + record.getCookie()
                                   + " can't be deleted with cookie " + lockCookie);
     }
@@ -124,7 +124,7 @@ public class DBAccessImpl {
       log.error(e.getMessage(), e);
       return;
     }
-    if (record.isLocked() && record.getCookie() != cookie) {
+    if (record.getCookie() != cookie) {
       throw new SecurityException("The record " + recNo + " is locked with cookie: " + record.getCookie()
                                   + ". You cant' unlock this record with cookie: " + cookie);
     }

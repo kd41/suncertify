@@ -83,10 +83,6 @@ public class DBRecord {
     return cookie;
   }
 
-  public boolean isLocked() {
-    return cookie > 0;
-  }
-
   @Override
   public String toString() {
     return "Data[position=" + position + ", valid=" + valid + ", name=" + name + ", location=" + location
