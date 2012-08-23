@@ -117,32 +117,27 @@ public class DBAccessImpl {
   }
 
   public long lockRecord(long recNo) throws RecordNotFoundException {
-    // System.out.println("try to lockRecord: " + recNo);
     validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = presenter.getRecord(recNo);
     record.lockRecord();
     record.setCookie(++cookie);
-    // System.out.println("lockRecord: " + recNo + " with cookie: " + cookie);
     return cookie;
   }
 
   public void unlock(long recNo, long cookie) throws SecurityException {
-    // System.out.println("try to unlock: " + recNo + " with cookie: " + cookie);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = null;
     try {
-      record = presenter.getRecord(recNo);
+      record = presenter.getRecord(recNo, false);
     } catch (RecordNotFoundException e) {
       log.error(e.getMessage(), e);
-      return;
     }
     if (record.getCookie() != cookie) {
       throw new SecurityException("The record " + recNo + " is locked with cookie: " + record.getCookie()
                                   + ". You cant' unlock this record with cookie: " + cookie);
     }
     record.unlockRecord();
-    // System.out.println("unlocked");
   }
 
   private void validateRecordNumber(long recNo) throws RecordNotFoundException {

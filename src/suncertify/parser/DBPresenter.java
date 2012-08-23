@@ -85,18 +85,16 @@ public class DBPresenter {
     getRecords().add(record);
   }
 
-  public void updateRecord(DBRecord record) {
-    getRecords().add(record);
-  }
-
-  public void deleteRecord(DBRecord record) {
-    getRecords().remove(record);
-  }
-
   public DBRecord getRecord(long recNo) throws RecordNotFoundException {
+    return getRecord(recNo, true);
+  }
+
+  public DBRecord getRecord(long recNo, boolean checkValid) throws RecordNotFoundException {
     for (DBRecord record : getRecords()) {
-      if (record.getPosition() == recNo && record.isValid()) {
-        return record;
+      if (record.getPosition() == recNo) {
+        if (!checkValid || record.isValid()) {
+          return record;
+        }
       }
     }
     throw new RecordNotFoundException("No record found with number: " + recNo);

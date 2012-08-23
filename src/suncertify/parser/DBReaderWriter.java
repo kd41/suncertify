@@ -167,7 +167,7 @@ public class DBReaderWriter {
     saveDBPresenter();
   }
 
-  private static void saveDBPresenter() throws Exception {
+  public static void saveDBPresenter() throws Exception {
     File file = new File(DBPresenter.getInstance().getDbPath());
     FileWriter fw = new FileWriter(file, false);
     byte[] header = DBPresenter.getInstance().getFileHeader();
