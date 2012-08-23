@@ -40,6 +40,12 @@ public class DBAccessImpl {
     validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = presenter.getRecord(recNo);
+    record.setName(data[0]);
+    record.setLocation(data[1]);
+    record.setSpecialties(data[2]);
+    record.setNumberOfWorkers(data[3]);
+    record.setRate(data[4]);
+    record.setOwner(data[5]);
     if (record.getCookie() != lockCookie) {
       throw new SecurityException("The record " + recNo + " with cookie " + record.getCookie()
                                   + " can't be updated with cookie " + lockCookie);
