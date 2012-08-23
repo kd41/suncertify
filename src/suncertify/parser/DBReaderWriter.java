@@ -158,14 +158,11 @@ public class DBReaderWriter {
     }
   }
 
-  public static void updateRecord(DBRecord oldRecord, DBRecord newRecord) throws Exception {
-    DBPresenter.getInstance().deleteRecord(oldRecord);
-    DBPresenter.getInstance().updateRecord(newRecord);
+  public static void updateRecord(DBRecord record) throws Exception {
     saveDBPresenter();
   }
 
   public static void deleteRecord(DBRecord record) throws Exception {
-    // DBPresenter.getInstance().getRecords().remove(record);
     record.setValid((byte) -1);
     saveDBPresenter();
   }

@@ -166,7 +166,7 @@ public class BSJFrame extends BSJFrameBase {
         }
       } else {
         setStatus("Update succeed.");
-        repaintTable(recNo - 1);
+        repaintTable(-1);
       }
       setButtonsEnabled(true);
       updateBtn.setEnabled(false);

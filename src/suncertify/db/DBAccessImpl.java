@@ -39,14 +39,13 @@ public class DBAccessImpl {
                                                                       SecurityException {
     validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
-    DBRecord oldRecord = presenter.getRecord(recNo);
-    if (oldRecord.getCookie() != lockCookie) {
-      throw new SecurityException("The record " + recNo + " with cookie " + oldRecord.getCookie()
+    DBRecord record = presenter.getRecord(recNo);
+    if (record.getCookie() != lockCookie) {
+      throw new SecurityException("The record " + recNo + " with cookie " + record.getCookie()
                                   + " can't be updated with cookie " + lockCookie);
     }
-    DBRecord newRecord = DBRecordHelper.updateDBRecord(data, oldRecord.getPosition(), lockCookie);
     try {
-      DBReaderWriter.updateRecord(oldRecord, newRecord);
+      DBReaderWriter.updateRecord(record);
     } catch (Exception e) {
       log.info(e.getMessage(), e);
     }
@@ -112,18 +111,18 @@ public class DBAccessImpl {
   }
 
   public long lockRecord(long recNo) throws RecordNotFoundException {
-    System.out.println("try to lockRecord: " + recNo);
+    // System.out.println("try to lockRecord: " + recNo);
     validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = presenter.getRecord(recNo);
     record.lockRecord();
     record.setCookie(++cookie);
-    System.out.println("lockRecord: " + recNo + " with cookie: " + cookie);
+    // System.out.println("lockRecord: " + recNo + " with cookie: " + cookie);
     return cookie;
   }
 
   public void unlock(long recNo, long cookie) throws SecurityException {
-    System.out.println("try to unlock: " + recNo + " with cookie: " + cookie);
+    // System.out.println("try to unlock: " + recNo + " with cookie: " + cookie);
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = null;
     try {
@@ -137,7 +136,7 @@ public class DBAccessImpl {
                                   + ". You cant' unlock this record with cookie: " + cookie);
     }
     record.unlockRecord();
-    System.out.println("unlocked");
+    // System.out.println("unlocked");
   }
 
   private void validateRecordNumber(long recNo) throws RecordNotFoundException {
