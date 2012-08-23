@@ -95,7 +95,7 @@ public class DBPresenter {
 
   public DBRecord getRecord(long recNo) throws RecordNotFoundException {
     for (DBRecord record : getRecords()) {
-      if (record.getPosition() == recNo) {
+      if (record.getPosition() == recNo && record.isValid()) {
         return record;
       }
     }
