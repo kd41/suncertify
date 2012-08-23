@@ -1,5 +1,7 @@
 package suncertify.parser;
 
+import suncertify.db.RecordNotFoundException;
+
 public class DBRecord {
   private long position;
   private byte valid;
@@ -117,14 +119,20 @@ public class DBRecord {
     return hash;
   }
 
-  public synchronized void lockRecord() {
+  public synchronized void lockRecord() throws RecordNotFoundException {
+    System.out.println("isValid: " + valid);
     while (isLocked) {
       try {
         wait();
       } catch (InterruptedException e) {
       }
     }
+    if (!isValid()) {
+      notify();
+      throw new RecordNotFoundException();
+    }
     isLocked = true;
+    System.out.println("isLocked: " + position + " isValid: " + valid);
   }
 
   public synchronized void unlockRecord() {

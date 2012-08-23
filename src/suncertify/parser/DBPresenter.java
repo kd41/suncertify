@@ -91,10 +91,8 @@ public class DBPresenter {
 
   public DBRecord getRecord(long recNo, boolean checkValid) throws RecordNotFoundException {
     for (DBRecord record : getRecords()) {
-      if (record.getPosition() == recNo) {
-        if (!checkValid || record.isValid()) {
-          return record;
-        }
+      if (record.getPosition() == recNo && (!checkValid || record.isValid())) {
+        return record;
       }
     }
     throw new RecordNotFoundException("No record found with number: " + recNo);
