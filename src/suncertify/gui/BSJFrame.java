@@ -23,7 +23,7 @@ import suncertify.program.Mode;
 public class BSJFrame extends BSJFrameBase {
   public static void main(String... args) throws IOException {
     // TODO: main method is only for test
-    new BSJFrame(Mode.NETWORK_CLIENT_AND_GUI);
+    new BSJFrame(Mode.STANDALONE);
   }
 
   public BSJFrame(Mode mode) {

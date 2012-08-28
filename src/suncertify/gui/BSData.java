@@ -4,15 +4,25 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import suncertify.program.Mode;
+
 import suncertify.db.Data;
 import suncertify.db.DuplicateKeyException;
 import suncertify.db.RecordNotFoundException;
 
 public class BSData {
+  protected Mode mode;
   private String[] criteria;
   private int selectedRow;
 
-  private Data data = Data.getInstance();
+  private Data data;
+
+  public BSData(Mode mode) {
+    this.mode = mode;
+    if ((mode == Mode.STANDALONE) || (mode == Mode.SERVER)) {
+      data = Data.getInstance();
+    }
+  }
 
   public void setCriteria(String[] criteria) {
     this.criteria = criteria;

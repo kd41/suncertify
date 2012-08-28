@@ -31,12 +31,12 @@ import suncertify.program.Mode;
 public class BSJFrameBase extends BSData {
   protected JTable table;
 
-  protected JButton refreshBtn;
-  protected JButton searchBtn;
-  protected JButton createBtn;
-  protected JButton deleteBtn;
-  protected JButton getBtn;
-  protected JButton updateBtn;
+  protected BSButton refreshBtn;
+  protected BSButton searchBtn;
+  protected BSButton createBtn;
+  protected BSButton deleteBtn;
+  protected BSButton getBtn;
+  protected BSButton updateBtn;
 
   protected JTextField dbLocationField;
   protected JTextField dbHostField;
@@ -50,12 +50,19 @@ public class BSJFrameBase extends BSData {
 
   protected JLabel statusLabel;
 
+  private JLabel hostLbl;
+  private JLabel portLbl;
+  private JLabel pathLbl;
+
+  private JPanel searchPanel;
+
   public static void main(String... args) throws IOException {
     // TODO: main method is only for test
-    new BSJFrameBase(Mode.NETWORK_CLIENT_AND_GUI);
+    new BSJFrameBase(Mode.STANDALONE);
   }
 
   public BSJFrameBase(Mode mode) {
+    super(mode);
     JFrame jFrame = new JFrame("Bodgitt and Scarper, LLC");
     jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     jFrame.setSize(1100, 800);
@@ -88,7 +95,7 @@ public class BSJFrameBase extends BSData {
     GridBagConstraints dbgbc = new GridBagConstraints();
     dbgbc.insets = new Insets(0, 0, 2, 0);
     dbgbc.anchor = GridBagConstraints.LINE_END;
-    JLabel hostLbl = new JLabel("Host:");
+    hostLbl = new JLabel("Host:");
     dbgbl.setConstraints(hostLbl, dbgbc);
     dbPanel.add(hostLbl);
     dbgbc.gridx = 1;
@@ -104,7 +111,7 @@ public class BSJFrameBase extends BSData {
     dbgbc.gridx = 0;
     dbgbc.gridy = 1;
     dbgbc.anchor = GridBagConstraints.LINE_END;
-    JLabel portLbl = new JLabel("Port:");
+    portLbl = new JLabel("Port:");
     dbgbl.setConstraints(portLbl, dbgbc);
     dbPanel.add(portLbl);
     dbgbc.gridx = 2;
@@ -116,7 +123,7 @@ public class BSJFrameBase extends BSData {
     dbgbc.gridx = 0;
     dbgbc.gridy = 2;
     dbgbc.anchor = GridBagConstraints.LINE_END;
-    JLabel pathLbl = new JLabel("Path:");
+    pathLbl = new JLabel("Path:");
     dbgbl.setConstraints(pathLbl, dbgbc);
     dbPanel.add(pathLbl);
     dbgbc.gridx = 2;
@@ -131,13 +138,13 @@ public class BSJFrameBase extends BSData {
 
     gbc.gridy = 2;
     gbc.anchor = GridBagConstraints.LINE_END;
-    refreshBtn = new JButton("Refresh");
+    refreshBtn = new BSButton("Refresh");
     gbl.setConstraints(refreshBtn, gbc);
     buttonPanel.add(refreshBtn);
 
     gbc.gridy = 3;
     gbc.insets = new Insets(0, 0, 5, 0);
-    JPanel searchPanel = new JPanel();
+    searchPanel = new JPanel();
     searchPanel.setBorder(BorderFactory.createTitledBorder("Search and Create"));
     GridBagLayout sgbl = new GridBagLayout();
     GridBagConstraints sgbc = new GridBagConstraints();
@@ -213,32 +220,31 @@ public class BSJFrameBase extends BSData {
     sgbc.gridy = 6;
     sgbc.gridwidth = 3;
     sgbc.anchor = GridBagConstraints.LINE_END;
-    searchBtn = new JButton("Search");
+    searchBtn = new BSButton("Search");
     sgbl.setConstraints(searchBtn, sgbc);
     searchPanel.add(searchBtn);
     sgbc.gridy = 7;
-    createBtn = new JButton("Create");
+    createBtn = new BSButton("Create");
     sgbl.setConstraints(createBtn, sgbc);
     searchPanel.add(createBtn);
     sgbc.gridy = 8;
-    getBtn = new JButton("Get");
+    getBtn = new BSButton("Get");
     sgbl.setConstraints(getBtn, sgbc);
     searchPanel.add(getBtn);
     sgbc.gridy = 9;
-    updateBtn = new JButton("Update");
+    updateBtn = new BSButton("Update");
     sgbl.setConstraints(updateBtn, sgbc);
     searchPanel.add(updateBtn);
+    sgbc.gridy = 10;
+    deleteBtn = new BSButton("Delete selected row");
+    sgbl.setConstraints(deleteBtn, sgbc);
+    searchPanel.add(deleteBtn);
 
     searchPanel.setLayout(sgbl);
     gbl.setConstraints(searchPanel, gbc);
     buttonPanel.add(searchPanel);
 
     gbc.gridy = 4;
-    deleteBtn = new JButton("Delete selected row");
-    gbl.setConstraints(deleteBtn, gbc);
-    buttonPanel.add(deleteBtn);
-
-    gbc.gridy = 5;
     statusLabel = new JLabel("Started");
     statusLabel.setForeground(Color.BLUE);
     gbl.setConstraints(statusLabel, gbc);
@@ -256,13 +262,7 @@ public class BSJFrameBase extends BSData {
     jFrame.add(buttonPanel, BorderLayout.LINE_START);
     jFrame.add(dataPane, BorderLayout.CENTER);
 
-    // TODO: hide elements depends on run mode
-    // if (mode == Mode.NETWORK_CLIENT_AND_GUI) {
-    // dbLocationField.setVisible(false);
-    // } else if (mode == Mode.STANDALONE) {
-    // dbHostField.setVisible(false);
-    // dbPortField.setVisible(false);
-    // }
+    initComponents();
 
     jFrame.pack();
     jFrame.setVisible(true);
@@ -324,6 +324,35 @@ public class BSJFrameBase extends BSData {
     // table.getColumnModel().getColumn(BSJRow.OWNER).setMaxWidth(0);
     // table.getColumnModel().getColumn(BSJRow.OWNER).setWidth(0);
 
+  }
+
+  private void initComponents() {
+    // TODO: hide elements depends on run mode
+    if (this.mode == Mode.NETWORK_CLIENT_AND_GUI) {
+      pathLbl.setVisible(false);
+      dbLocationField.setVisible(false);
+      setStatus("Program started. Please check the host/port and press Refresh");
+    } else if (mode == Mode.STANDALONE) {
+      hostLbl.setVisible(false);
+      portLbl.setVisible(false);
+      dbHostField.setVisible(false);
+      dbPortField.setVisible(false);
+      setStatus("Standalone mode is running");
+    } else if (mode == Mode.SERVER) {
+      hostLbl.setVisible(false);
+      dbHostField.setVisible(false);
+      searchPanel.setVisible(false);
+      setStatus("Server started");
+    }
+  }
+
+  protected class BSButton extends JButton {
+    private static final long serialVersionUID = 1L;
+
+    private BSButton(String text) {
+      super(text);
+      setBackground(Color.getHSBColor(9, 99, 99));
+    }
   }
 
   private class BSCellRenderer extends DefaultTableCellRenderer {
