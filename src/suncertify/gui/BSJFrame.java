@@ -16,19 +16,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import suncertify.parser.PropertiesLoader;
-
 import suncertify.db.RecordNotFoundException;
+import suncertify.parser.PropertiesLoader;
+import suncertify.program.Mode;
 
 public class BSJFrame extends BSJFrameBase {
-
   public static void main(String... args) throws IOException {
     // TODO: main method is only for test
-    new BSJFrame();
+    new BSJFrame(Mode.NETWORK_CLIENT_AND_GUI);
   }
 
-  public BSJFrame() {
-    super();
+  public BSJFrame(Mode mode) {
+    super(mode);
     refreshBtn.addActionListener(new BSActionListener(table, BSDataType.REFRESH));
     searchBtn.addActionListener(new BSActionListener(table, BSDataType.SEARCH));
     createBtn.addActionListener(new BSActionListener(table, BSDataType.CREATE));
@@ -69,8 +68,11 @@ public class BSJFrame extends BSJFrameBase {
     public void actionPerformed(ActionEvent e) {
       int rowSelected = table.getSelectedRow();
       if (type == BSDataType.REFRESH) {
-        if (!PropertiesLoader.getInstance().getDBLocation().equals(dbLocationField.getText())) {
-          PropertiesLoader.getInstance().setDBLocation(dbLocationField.getText());
+        if (!PropertiesLoader.getInstance().getDbLocation().equals(dbLocationField.getText())
+            || !PropertiesLoader.getInstance().getDbHost().equals(dbHostField.getText())
+            || !PropertiesLoader.getInstance().getDbPort().equals(dbPortField.getText())) {
+          PropertiesLoader.getInstance().saveProperties(dbLocationField.getText(), dbHostField.getText(),
+                                                        dbPortField.getText());
         }
         setCriteria(null);
         setStatus("Refreshed");

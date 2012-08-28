@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
+import suncertify.parser.DBReaderWriter;
+
 import suncertify.parser.PropertiesLoader;
 
 import suncertify.constants.FileUtils;
@@ -26,24 +28,35 @@ public class Launcher {
 
   public static void main(String... args) {
     // main method is only for test!!
-    PropertiesLoader.getInstance().setDBLocation("newdbfile.db");
+    DBPresenter presenter = DBPresenter.getInstance();
+    for (DBRecord record : presenter.getRecords()) {
+      record.setValid((byte) 0);
+    }
+    try {
+      DBReaderWriter.saveDBPresenter();
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   private void dothis() throws IOException {
-    File f1 = new File(PropertiesLoader.getInstance().getDBLocation());
-    File f2 = new File(PropertiesLoader.getInstance().getDBLocation() + "123");
-    InputStream in = new FileInputStream(f1);
-    OutputStream out = new FileOutputStream(f2);
+    // PropertiesLoader.getInstance().setDBLocation("newdbfile.db");
 
-    byte[] buf = new byte[55];
-    int len = in.read(buf);
-    out.write(buf, 0, len);
+    // File f1 = new File(PropertiesLoader.getInstance().getDBLocation());
+    // File f2 = new File(PropertiesLoader.getInstance().getDBLocation() + "123");
+    // InputStream in = new FileInputStream(f1);
+    // /OutputStream out = new FileOutputStream(f2);
 
-    in.close();
-    out.close();
-    System.out.println("File copied.");
-    log.info("START");
-    FileUtils.copyFile(Variables.getOriginalFilePath(), Variables.getWorkedFilePath());
+    // byte[] buf = new byte[55];
+    // int len = in.read(buf);
+    // out.write(buf, 0, len);
+    //
+    // in.close();
+    // out.close();
+    // System.out.println("File copied.");
+    // log.info("START");
+    // FileUtils.copyFile(Variables.getOriginalFilePath(), Variables.getWorkedFilePath());
     TestData testData = new TestData();
 
     DBPresenter presenter = DBPresenter.getInstance();
@@ -95,6 +108,6 @@ public class Launcher {
     }
 
     // gui
-    BSJFrame frame = new BSJFrame();
+    // BSJFrame frame = new BSJFrame();
   }
 }

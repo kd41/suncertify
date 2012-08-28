@@ -1,11 +1,13 @@
-1. implement lock
+1. implement lock:done
 2. gui
 3. RMI
 4. docs
 5. userguide
 6. choises
-7. suncertify.properties
+7. suncertify.properties: done
 8. can I use log4j?
-9. DBAccessImpl.java -> Data.java
-10. dobaitj proverku na maxInteger, vernutj not record found
-11. lock dolzen rabotatj 4erez wait-notify
+9. DBAccessImpl.java -> Data.java: done
+10. dobaitj proverku na maxInteger, vernutj not record found: done
+11. lock dolzen rabotatj 4erez wait-notify: done
+12. testing, testing, testing...
+13. gui. implement RMI

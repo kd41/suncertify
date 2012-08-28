@@ -26,13 +26,9 @@ import java.awt.Insets;
 import java.io.IOException;
 
 import suncertify.parser.DBPresenter;
+import suncertify.program.Mode;
 
 public class BSJFrameBase extends BSData {
-  public static void main(String... args) throws IOException {
-    // TODO: main method is only for test
-    new BSJFrameBase();
-  }
-
   protected JTable table;
 
   protected JButton refreshBtn;
@@ -43,6 +39,8 @@ public class BSJFrameBase extends BSData {
   protected JButton updateBtn;
 
   protected JTextField dbLocationField;
+  protected JTextField dbHostField;
+  protected JTextField dbPortField;
   protected JTextField nameField;
   protected JTextField locationField;
   protected JTextField specialitiesField;
@@ -52,7 +50,12 @@ public class BSJFrameBase extends BSData {
 
   protected JLabel statusLabel;
 
-  public BSJFrameBase() {
+  public static void main(String... args) throws IOException {
+    // TODO: main method is only for test
+    new BSJFrameBase(Mode.NETWORK_CLIENT_AND_GUI);
+  }
+
+  public BSJFrameBase(Mode mode) {
     JFrame jFrame = new JFrame("Bodgitt and Scarper, LLC");
     jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     jFrame.setSize(1100, 800);
@@ -77,17 +80,54 @@ public class BSJFrameBase extends BSData {
     GridBagLayout gbl = new GridBagLayout();
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.insets = new Insets(10, 0, 5, 0);
-
-    gbc.anchor = GridBagConstraints.LINE_START;
-    JLabel dbLocationLbl = new JLabel("DB location:");
-    gbl.setConstraints(dbLocationLbl, gbc);
-    buttonPanel.add(dbLocationLbl);
-    gbc.gridy = 1;
     gbc.anchor = GridBagConstraints.LINE_END;
-    dbLocationField = new JTextField(15);
-    gbl.setConstraints(dbLocationField, gbc);
+
+    JPanel dbPanel = new JPanel();
+    dbPanel.setBorder(BorderFactory.createTitledBorder("Database location:"));
+    GridBagLayout dbgbl = new GridBagLayout();
+    GridBagConstraints dbgbc = new GridBagConstraints();
+    dbgbc.insets = new Insets(0, 0, 2, 0);
+    dbgbc.anchor = GridBagConstraints.LINE_END;
+    JLabel hostLbl = new JLabel("Host:");
+    dbgbl.setConstraints(hostLbl, dbgbc);
+    dbPanel.add(hostLbl);
+    dbgbc.gridx = 1;
+    Component dbgap = Box.createRigidArea(new Dimension(5, 5));
+    dbgbl.setConstraints(dbgap, dbgbc);
+    dbPanel.add(dbgap);
+    dbgbc.gridx = 2;
+    dbgbc.anchor = GridBagConstraints.LINE_START;
+    dbHostField = new JTextField(10);
+    dbHostField.setText(DBPresenter.getInstance().getDbHost());
+    dbgbl.setConstraints(dbHostField, dbgbc);
+    dbPanel.add(dbHostField);
+    dbgbc.gridx = 0;
+    dbgbc.gridy = 1;
+    dbgbc.anchor = GridBagConstraints.LINE_END;
+    JLabel portLbl = new JLabel("Port:");
+    dbgbl.setConstraints(portLbl, dbgbc);
+    dbPanel.add(portLbl);
+    dbgbc.gridx = 2;
+    dbgbc.anchor = GridBagConstraints.LINE_START;
+    dbPortField = new JTextField(10);
+    dbPortField.setText(DBPresenter.getInstance().getDbPort());
+    dbgbl.setConstraints(dbPortField, dbgbc);
+    dbPanel.add(dbPortField);
+    dbgbc.gridx = 0;
+    dbgbc.gridy = 2;
+    dbgbc.anchor = GridBagConstraints.LINE_END;
+    JLabel pathLbl = new JLabel("Path:");
+    dbgbl.setConstraints(pathLbl, dbgbc);
+    dbPanel.add(pathLbl);
+    dbgbc.gridx = 2;
+    dbgbc.anchor = GridBagConstraints.LINE_START;
+    dbLocationField = new JTextField(10);
     dbLocationField.setText(DBPresenter.getInstance().getDbPath());
-    buttonPanel.add(dbLocationField);
+    dbgbl.setConstraints(dbLocationField, dbgbc);
+    dbPanel.add(dbLocationField);
+    dbPanel.setLayout(dbgbl);
+    gbl.setConstraints(dbPanel, gbc);
+    buttonPanel.add(dbPanel);
 
     gbc.gridy = 2;
     gbc.anchor = GridBagConstraints.LINE_END;
@@ -208,7 +248,6 @@ public class BSJFrameBase extends BSData {
 
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    table.getColumnModel().getColumn(3).setPreferredWidth(200);
 
     JTableHeader header = table.getTableHeader();
     header.setBackground(Color.yellow);
@@ -216,6 +255,14 @@ public class BSJFrameBase extends BSData {
     table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     jFrame.add(buttonPanel, BorderLayout.LINE_START);
     jFrame.add(dataPane, BorderLayout.CENTER);
+
+    // TODO: hide elements depends on run mode
+    // if (mode == Mode.NETWORK_CLIENT_AND_GUI) {
+    // dbLocationField.setVisible(false);
+    // } else if (mode == Mode.STANDALONE) {
+    // dbHostField.setVisible(false);
+    // dbPortField.setVisible(false);
+    // }
 
     jFrame.pack();
     jFrame.setVisible(true);

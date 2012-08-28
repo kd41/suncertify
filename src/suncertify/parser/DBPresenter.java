@@ -1,34 +1,36 @@
 package suncertify.parser;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import suncertify.constants.Variables;
 import suncertify.db.RecordNotFoundException;
 
 public class DBPresenter {
-  private static final Logger log = LoggerFactory.getLogger(DBPresenter.class);
   private static DBPresenter instance;
 
   private String dbPath;
+  private String dbHost;
+  private String dbPort;
   private int magicCookie;
   private byte[] fileHeader;
   private int fieldsNumber;
   private List<DBRecord> records;
   private long newRecordNumber;
 
-  private DBPresenter(String dbPath) {
+  private DBPresenter(String dbPath, String dbHost, String dbPort) {
     this.dbPath = dbPath;
+    this.dbHost = dbHost;
+    this.dbPort = dbPort;
   }
 
   public static synchronized DBPresenter getInstance() {
-    if (instance == null || !instance.getDbPath().equals(PropertiesLoader.getInstance().getDBLocation())) {
-      instance = new DBPresenter(PropertiesLoader.getInstance().getDBLocation());
+    if (instance == null || !instance.getDbPath().equals(PropertiesLoader.getInstance().getDbLocation())
+        || !instance.getDbHost().equals(PropertiesLoader.getInstance().getDbHost())
+        || !instance.getDbPort().equals(PropertiesLoader.getInstance().getDbPort())) {
+      instance = new DBPresenter(PropertiesLoader.getInstance().getDbLocation(), PropertiesLoader.getInstance()
+                                                                                                 .getDbHost(),
+                                 PropertiesLoader.getInstance().getDbPort());
       DBReaderWriter.createDatabasePresenter();
-      log.info("worked with: " + Variables.getWorkedFilePath());
     }
     return instance;
   }
@@ -72,6 +74,14 @@ public class DBPresenter {
     return dbPath;
   }
 
+  public String getDbHost() {
+    return dbHost;
+  }
+
+  public String getDbPort() {
+    return dbPort;
+  }
+
   public void setNewRecordNumber(long newRecordNumber) {
     this.newRecordNumber = newRecordNumber;
   }
@@ -103,6 +113,8 @@ public class DBPresenter {
     StringBuffer sb = new StringBuffer();
     sb.append("DBPresenter[");
     sb.append("dbPath=").append(dbPath);
+    sb.append(", dbHost=").append(dbHost);
+    sb.append(", dbPort=").append(dbPort);
     sb.append(", magicCookie=").append(magicCookie);
     sb.append(", fieldsNumber=").append(fieldsNumber).append("\n");
     for (DBRecord record : getRecords()) {
