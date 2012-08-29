@@ -3,7 +3,7 @@ package suncertify.socket.client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import suncertify.socket.SocketHelper;
+import suncertify.socket.MessageHelper;
 
 import suncertify.parser.PropertiesLoader;
 
@@ -12,7 +12,7 @@ public class ReadClient extends Client {
 
   public ReadClient(String host, int port, long recNo) throws NotInizializedException {
     super(host, port);
-    setMessage(SocketHelper.getReadRequestMessage(recNo));
+    setMessage(MessageHelper.getReadRequestMessage(recNo));
     start();
     log.info("response: " + getResponse());
   }
