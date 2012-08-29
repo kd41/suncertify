@@ -1,87 +1,85 @@
 package suncertify.socket.client;
 
-import java.io.BufferedReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import suncertify.parser.PropertiesLoader;
+
 public class Client {
-  public static void main(String[] args) {
-    Socket s = null;
+  private static final Logger log = LoggerFactory.getLogger(Client.class);
+  private String host;
+  private int port;
+  private Socket socket;
+  private ObjectOutputStream out;
+  private ObjectInputStream in;
 
-    // Create the socket connection to the EchoServer.
+  private String message;
+  private String response;
+
+  protected Client(String host, int port) throws NotInizializedException {
+    this.host = host;
+    this.port = port;
+  }
+
+  protected void start() throws NotInizializedException {
     try {
-      s = new Socket("localhost", 12111);
-    } catch (UnknownHostException uhe) {
-      // Host unreachable
-      System.out.println("Unknown Host is localhost:");
-      s = null;
-    } catch (IOException ioe) {
-      // Cannot connect to port on given host
-      System.out.println("Cant connect to server at 12111. Make sure it is running.");
-      s = null;
-    }
-
-    if (s == null)
-      System.exit(-1);
-
-    BufferedReader in = null;
-    PrintWriter out = null;
-
-    try {
-      // Create the streams to send and receive information
-      in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-      out = new PrintWriter(new OutputStreamWriter(s.getOutputStream()));
-
-      // Since this is the client, we will initiate the talking.
-      // Send a string.
-      out.println("Hello");
+      socket = new Socket(host, port);
+      log.info("Connected to " + host + " in port " + port);
+      out = new ObjectOutputStream(socket.getOutputStream());
       out.flush();
-      // receive the reply.
-      System.out.println("Server Says : " + in.readLine());
-
-      // Send a string.
-      out.println("This");
-      out.flush();
-      // receive a reply.
-      System.out.println("Server Says : " + in.readLine());
-
-      // Send a string.
-      out.println("is");
-      out.flush();
-      // receive a reply.
-      System.out.println("Server Says : " + in.readLine());
-
-      // Send a string.
-      out.println("a");
-      out.flush();
-      // receive a reply.
-      System.out.println("Server Says : " + in.readLine());
-
-      // Send a string.
-      out.println("Test");
-      out.flush();
-      // receive a reply.
-      System.out.println("Server Says : " + in.readLine());
-
-      // Send the special string to tell server to quit.
-      out.println("Quit");
-      out.flush();
-    } catch (IOException ioe) {
-      System.out.println("Exception during communication. Server probably closed connection.");
+      in = new ObjectInputStream(socket.getInputStream());
+      try {
+        // send
+        out.writeObject(message);
+        out.flush();
+        log.info("client>" + message);
+        // receive
+        response = (String) in.readObject();
+        log.info("server>" + message);
+      } catch (IOException e) {
+        log.error(e.getMessage(), e);
+      } catch (ClassNotFoundException e) {
+        log.error(e.getMessage(), e);
+      }
+    } catch (UnknownHostException e) {
+      log.error("You are trying to connect to an unknown host!", e);
+      throw new NotInizializedException();
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
     } finally {
       try {
-        // Close the streams
-        out.close();
         in.close();
-        // Close the socket before quitting
-        s.close();
-      } catch (Exception e) {
-        e.printStackTrace();
+      } catch (IOException e) {
       }
+      try {
+        out.close();
+      } catch (IOException e) {
+      }
+      try {
+        socket.close();
+      } catch (IOException e) {
+      }
+
+      log.info("Client stoped");
     }
   }
+
+  protected String getResponse() {
+    return response;
+  }
+
+  protected void setMessage(String message) {
+    this.message = message;
+  }
+
+  public static void main(String args[]) throws NotInizializedException {
+    new Client(PropertiesLoader.getInstance().getDbHost(), Integer.parseInt(PropertiesLoader.getInstance().getDbPort()));
+  }
+
 }

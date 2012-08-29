@@ -45,21 +45,21 @@ public class DBReaderWriter {
       presenter.setMagicCookie(magicCookie);
 
       int fieldsNumber = dis.readUnsignedShort();
-      log.info("fieldsNumber: {}", fieldsNumber);
+      // log.info("fieldsNumber: {}", fieldsNumber);
       presenter.setFieldsNumber(fieldsNumber);
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < fieldsNumber; i++) {
         int recordNameLength = dis.readUnsignedByte();
-        log.info("recordNameLength: {}", recordNameLength);
+        // log.info("recordNameLength: {}", recordNameLength);
         for (int j = 0; j < recordNameLength; j++) {
           char c = (char) dis.readUnsignedByte();
           sb.append(c);
         }
         int fieldLength = dis.readUnsignedByte();
-        log.info("Field name: '{}'\tField length: {}", sb.toString(), fieldLength);
+        // log.info("Field name: '{}'\tField length: {}", sb.toString(), fieldLength);
         sb.setLength(0);
       }
-      log.info("fileHeader: " + presenter.getFileHeader());
+      // log.info("fileHeader: " + presenter.getFileHeader());
       try {
         int count = 0;
         while (true) {
