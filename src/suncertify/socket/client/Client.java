@@ -39,7 +39,7 @@ public abstract class Client {
         log.info("client send to server:> " + message);
         // receive
         response = (String) in.readObject();
-        log.info("client received from server:> " + message);
+        log.info("client received from server:> " + response);
       } catch (IOException e) {
         log.error(e.getMessage(), e);
       } catch (ClassNotFoundException e) {

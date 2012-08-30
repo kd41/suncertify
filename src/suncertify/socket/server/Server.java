@@ -128,6 +128,7 @@ public class Server {
               log.info("unlock recNo: " + recNo + ", cookie: " + cookie);
               try {
                 data.unlock(recNo, cookie);
+                sendMessage(MessageHelper.getUnlockResponseMessage());
               } catch (SecurityException e) {
                 sendMessage(MessageHelper.getSecurityError());
               }
