@@ -3,11 +3,8 @@ package suncertify.mock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
-import suncertify.program.Mode;
-
 import suncertify.gui.BSJFrame;
+import suncertify.program.Mode;
 
 public class Launcher {
   private static final Logger log = LoggerFactory.getLogger(Launcher.class);

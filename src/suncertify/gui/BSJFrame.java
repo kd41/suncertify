@@ -19,8 +19,16 @@ import suncertify.db.RecordNotFoundException;
 import suncertify.parser.PropertiesLoader;
 import suncertify.program.Mode;
 
+/**
+ * The Class BSJFrame.
+ */
 public class BSJFrame extends BSJFrameBase {
 
+  /**
+   * Instantiates a new BSJFrame.
+   * 
+   * @param mode the mode
+   */
   public BSJFrame(Mode mode) {
     super(mode);
     refreshBtn.addActionListener(new BSActionListener(table, BSDataType.REFRESH));

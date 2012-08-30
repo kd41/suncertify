@@ -27,6 +27,9 @@ import java.awt.Insets;
 import suncertify.parser.DBPresenter;
 import suncertify.program.Mode;
 
+/**
+ * The Class BSJFrameBase.
+ */
 public class BSJFrameBase extends BSData {
   protected JTable table;
 
@@ -321,7 +324,6 @@ public class BSJFrameBase extends BSData {
   }
 
   private void initComponents() {
-    // TODO: hide elements depends on run mode
     if (this.mode == Mode.NETWORK_CLIENT_AND_GUI) {
       pathLbl.setVisible(false);
       dbLocationField.setVisible(false);

@@ -12,12 +12,16 @@ import suncertify.parser.PropertiesLoader;
 import suncertify.program.Mode;
 import suncertify.socket.client.DBAccessClientImpl;
 
+/**
+ * The Class BSData.
+ */
 public class BSData {
   protected enum ErrorType {
     RECORD_NOT_FOUND, SECURITY, DUPLICATE_KEY
   }
 
   protected Mode mode;
+
   private String[] criteria;
 
   private int selectedRow;
