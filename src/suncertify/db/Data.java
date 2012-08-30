@@ -1,5 +1,8 @@
 package suncertify.db;
 
+/**
+ * The Class Data.
+ */
 public class Data implements DBAccess {
   private boolean isLockedDB = false;
 
@@ -8,6 +11,11 @@ public class Data implements DBAccess {
   private Data() {
   }
 
+  /**
+   * Gets the single instance of Data.
+   * 
+   * @return single instance of Data
+   */
   public static synchronized Data getInstance() {
     if (dbAccessLocalImpl == null) {
       dbAccessLocalImpl = new Data();

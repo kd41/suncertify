@@ -11,6 +11,9 @@ import suncertify.parser.DBReaderWriter;
 import suncertify.parser.DBRecord;
 import suncertify.parser.DBRecordHelper;
 
+/**
+ * The Class DBAccessImpl.
+ */
 public class DBAccessImpl {
   private static final Logger log = LoggerFactory.getLogger(DBAccessImpl.class);
 
@@ -21,6 +24,11 @@ public class DBAccessImpl {
   private DBAccessImpl() {
   }
 
+  /**
+   * Gets the single instance of DBAccessImpl.
+   * 
+   * @return single instance of DBAccessImpl
+   */
   public static synchronized DBAccessImpl getInstance() {
     if (dbAccessImpl == null) {
       dbAccessImpl = new DBAccessImpl();
@@ -28,6 +36,13 @@ public class DBAccessImpl {
     return dbAccessImpl;
   }
 
+  /**
+   * Read record.
+   * 
+   * @param recNo the number of record
+   * @return the string[]
+   * @throws RecordNotFoundException the record not found exception
+   */
   public String[] readRecord(long recNo) throws RecordNotFoundException {
     validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
@@ -35,6 +50,15 @@ public class DBAccessImpl {
     return DBRecordHelper.getDBRecordAsStringArray(record);
   }
 
+  /**
+   * Update record.
+   * 
+   * @param recNo the number of record
+   * @param data the data
+   * @param lockCookie the lock cookie
+   * @throws RecordNotFoundException the record not found exception
+   * @throws SecurityException the security exception
+   */
   public void updateRecord(long recNo, String[] data, long lockCookie) throws RecordNotFoundException,
                                                                       SecurityException {
     validateRecordNumber(recNo);
@@ -57,6 +81,14 @@ public class DBAccessImpl {
     }
   }
 
+  /**
+   * Delete record.
+   * 
+   * @param recNo the number of record
+   * @param lockCookie the lock cookie
+   * @throws RecordNotFoundException the record not found exception
+   * @throws SecurityException the security exception
+   */
   public void deleteRecord(long recNo, long lockCookie) throws RecordNotFoundException, SecurityException {
     validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
@@ -72,12 +104,19 @@ public class DBAccessImpl {
     }
   }
 
+  /**
+   * Find by criteria.
+   * 
+   * @param criteria the criteria
+   * @return the long[]
+   */
   public long[] findByCriteria(String[] criteria) {
     if (criteria == null || criteria.length != 6) {
       return null;
     }
     DBPresenter presenter = DBPresenter.getInstance();
     List<DBRecord> findedRecords = new ArrayList<DBRecord>();
+    log.info("findByCriteria ++++++++: " + presenter.getRecords().size());
     for (DBRecord record : presenter.getRecords()) {
       if (!record.isValid()) {
         continue;
@@ -92,16 +131,26 @@ public class DBAccessImpl {
       }
       if (isMached) {
         findedRecords.add(record);
+        log.info("found: " + record);
       }
     }
     long[] findedNumbers = new long[findedRecords.size()];
     int count = 0;
     for (DBRecord record : findedRecords) {
       findedNumbers[count++] = record.getPosition();
+      log.info("found: " + record.getPosition());
     }
+    log.info("findedNumbers: " + findedNumbers.length);
     return findedNumbers;
   }
 
+  /**
+   * Creates the record.
+   * 
+   * @param data the data
+   * @return the long
+   * @throws DuplicateKeyException the duplicate key exception
+   */
   public long createRecord(String[] data) throws DuplicateKeyException {
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = DBRecordHelper.createDBRecord(data);
@@ -116,6 +165,13 @@ public class DBAccessImpl {
     return record.getPosition();
   }
 
+  /**
+   * Lock record.
+   * 
+   * @param recNo the number of record
+   * @return the long
+   * @throws RecordNotFoundException the record not found exception
+   */
   public long lockRecord(long recNo) throws RecordNotFoundException {
     validateRecordNumber(recNo);
     DBPresenter presenter = DBPresenter.getInstance();
@@ -125,6 +181,13 @@ public class DBAccessImpl {
     return cookie;
   }
 
+  /**
+   * Unlock.
+   * 
+   * @param recNo the number of record
+   * @param cookie the cookie
+   * @throws SecurityException the security exception
+   */
   public void unlock(long recNo, long cookie) throws SecurityException {
     DBPresenter presenter = DBPresenter.getInstance();
     DBRecord record = null;

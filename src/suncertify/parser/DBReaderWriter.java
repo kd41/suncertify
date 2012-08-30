@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
-import suncertify.constants.StringPool;
 import suncertify.constants.Variables;
 
 public class DBReaderWriter {
@@ -187,7 +186,7 @@ public class DBReaderWriter {
     if (fw == null) {
       throw new RuntimeException("FileWriter can't be null!");
     }
-    if (data == null || StringPool.BLANK.equals(data)) {
+    if (data == null || "".equals(data)) {
       fw.write(Variables.TERMINATOR);
     } else if (data.length() <= maxLength) {
       fw.write(data);
