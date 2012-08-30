@@ -2,6 +2,9 @@ package suncertify.socket.client;
 
 import suncertify.socket.MessageHelper;
 
+/**
+ * The Class UpdateClient.
+ */
 public class UpdateClient extends Client {
 
   protected UpdateClient(String host, int port, long recNo, String[] data, long lockCookie) {

@@ -1,18 +1,39 @@
 package suncertify.parser;
 
+/**
+ * The Class DBRecordHelper.
+ */
 public class DBRecordHelper {
 
+  /**
+   * Gets the database record as string array.
+   * 
+   * @param record the record
+   * @return the database record as string array
+   */
   public static String[] getDBRecordAsStringArray(DBRecord record) {
     return new String[] { String.valueOf(record.getPosition()), String.valueOf(record.getValid()), record.getName(),
                          record.getLocation(), record.getSpecialties(), record.getNumberOfWorkers(), record.getRate(),
                          record.getOwner(), String.valueOf(record.getCookie()) };
   }
 
+  /**
+   * Gets the database record as string array. Version 2.
+   * 
+   * @param record the record
+   * @return the database record as string array (version 2)
+   */
   public static String[] getDBRecordAsStringArray2(DBRecord record) {
     return new String[] { record.getName(), record.getLocation(), record.getSpecialties(), record.getNumberOfWorkers(),
                          record.getRate(), record.getOwner() };
   }
 
+  /**
+   * Creates the database record.
+   * 
+   * @param data the data
+   * @return the database record
+   */
   public static DBRecord createDBRecord(String[] data) {
     DBRecord record = new DBRecord();
     if (data.length == 6) {

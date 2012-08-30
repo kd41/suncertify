@@ -2,6 +2,9 @@ package suncertify.socket.client;
 
 import suncertify.socket.MessageHelper;
 
+/**
+ * The Class UnlockClient.
+ */
 public class UnlockClient extends Client {
 
   protected UnlockClient(String host, int port, long recNo, long cookie) {

@@ -9,6 +9,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * The Class Client.
+ */
 public abstract class Client {
   private static final Logger log = LoggerFactory.getLogger(Client.class);
   private String host;

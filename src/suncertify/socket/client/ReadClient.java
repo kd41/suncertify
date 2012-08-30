@@ -2,6 +2,9 @@ package suncertify.socket.client;
 
 import suncertify.socket.MessageHelper;
 
+/**
+ * The Class ReadClient.
+ */
 public class ReadClient extends Client {
 
   protected ReadClient(String host, int port, long recNo) {

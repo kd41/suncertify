@@ -18,12 +18,21 @@ import suncertify.db.RecordNotFoundException;
 import suncertify.socket.MessageHelper;
 import suncertify.socket.MessageType;
 
+/**
+ * The Class Server.
+ */
 public class Server {
   private static final Logger log = LoggerFactory.getLogger(Server.class);
   private ServerSocket serverSocket;
   private Data data = Data.getInstance();
 
   // TODO: replace for throw new MyIOException
+  /**
+   * Instantiates a new server.
+   * 
+   * @param port the port
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   public Server(int port) throws IOException {
     serverSocket = new ServerSocket(port);
     log.info("Listening for clients on " + port + "....");

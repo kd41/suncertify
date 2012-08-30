@@ -5,6 +5,9 @@ import java.util.List;
 
 import suncertify.db.RecordNotFoundException;
 
+/**
+ * The Class DBPresenter.
+ */
 public class DBPresenter {
   private static DBPresenter instance;
 
@@ -23,6 +26,11 @@ public class DBPresenter {
     this.dbPort = dbPort;
   }
 
+  /**
+   * Gets the single instance of DBPresenter.
+   * 
+   * @return single instance of DBPresenter
+   */
   public static synchronized DBPresenter getInstance() {
     if (instance == null || !instance.getDbPath().equals(PropertiesLoader.getInstance().getDbLocation())
         || !instance.getDbHost().equals(PropertiesLoader.getInstance().getDbHost())
@@ -59,6 +67,11 @@ public class DBPresenter {
     this.fieldsNumber = fieldsNumber;
   }
 
+  /**
+   * Gets the records.
+   * 
+   * @return the records
+   */
   public List<DBRecord> getRecords() {
     if (records == null) {
       records = new ArrayList<DBRecord>();
@@ -70,14 +83,29 @@ public class DBPresenter {
     this.records = records;
   }
 
+  /**
+   * Gets the database path.
+   * 
+   * @return the database path
+   */
   public String getDbPath() {
     return dbPath;
   }
 
+  /**
+   * Gets the database host.
+   * 
+   * @return the database host
+   */
   public String getDbHost() {
     return dbHost;
   }
 
+  /**
+   * Gets the database port.
+   * 
+   * @return the database port
+   */
   public String getDbPort() {
     return dbPort;
   }
@@ -95,10 +123,25 @@ public class DBPresenter {
     getRecords().add(record);
   }
 
+  /**
+   * Gets the record.
+   * 
+   * @param recNo the rec no
+   * @return the record
+   * @throws RecordNotFoundException the record not found exception
+   */
   public DBRecord getRecord(long recNo) throws RecordNotFoundException {
     return getRecord(recNo, true);
   }
 
+  /**
+   * Gets the record.
+   * 
+   * @param recNo the rec no
+   * @param checkValid the check valid
+   * @return the record
+   * @throws RecordNotFoundException the record not found exception
+   */
   public DBRecord getRecord(long recNo, boolean checkValid) throws RecordNotFoundException {
     for (DBRecord record : getRecords()) {
       if (record.getPosition() == recNo && (!checkValid || record.isValid())) {
@@ -108,6 +151,10 @@ public class DBPresenter {
     throw new RecordNotFoundException("No record found with number: " + recNo);
   }
 
+  /*
+   * (non-Javadoc)
+   * @see java.lang.Object#toString()
+   */
   @Override
   public String toString() {
     StringBuffer sb = new StringBuffer();

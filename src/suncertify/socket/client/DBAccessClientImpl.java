@@ -12,11 +12,20 @@ import suncertify.db.DuplicateKeyException;
 import suncertify.db.RecordNotFoundException;
 import suncertify.socket.MessageType;
 
+/**
+ * The Class DBAccessClientImpl.
+ */
 public class DBAccessClientImpl implements DBAccessClient {
   private static final Logger log = LoggerFactory.getLogger(DBAccessClientImpl.class);
   private String host;
   private int port;
 
+  /**
+   * Instantiates a new database access client implementation.
+   * 
+   * @param host the host
+   * @param port the port
+   */
   public DBAccessClientImpl(String host, int port) {
     this.host = host;
     this.port = port;

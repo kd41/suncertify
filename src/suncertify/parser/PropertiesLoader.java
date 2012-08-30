@@ -8,6 +8,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * The Class PropertiesLoader.
+ */
 public class PropertiesLoader {
   private static final Logger log = LoggerFactory.getLogger(PropertiesLoader.class);
 
@@ -24,6 +27,11 @@ public class PropertiesLoader {
   private PropertiesLoader() {
   }
 
+  /**
+   * Gets the single instance of PropertiesLoader.
+   * 
+   * @return single instance of PropertiesLoader
+   */
   public static synchronized PropertiesLoader getInstance() {
     if (instance == null) {
       instance = new PropertiesLoader();
@@ -46,6 +54,11 @@ public class PropertiesLoader {
     return instance;
   }
 
+  /**
+   * Gets the database location.
+   * 
+   * @return the database location
+   */
   public String getDbLocation() {
     if (this.dbLocation == null) {
       dbLocation = properties.containsKey(DB_ALONE_LOCATION_KEY) ? properties.getProperty(DB_ALONE_LOCATION_KEY) : "";
@@ -53,6 +66,11 @@ public class PropertiesLoader {
     return dbLocation;
   }
 
+  /**
+   * Gets the database host.
+   * 
+   * @return the database host
+   */
   public String getDbHost() {
     if (this.dbHost == null) {
       dbHost = properties.containsKey(DB_SERVER_HOST_KEY) ? properties.getProperty(DB_SERVER_HOST_KEY) : "";
@@ -60,6 +78,11 @@ public class PropertiesLoader {
     return dbHost;
   }
 
+  /**
+   * Gets the database port.
+   * 
+   * @return the database port
+   */
   public String getDbPort() {
     if (this.dbPort == null) {
       dbPort = properties.containsKey(DB_SERVER_PORT_KEY) ? properties.getProperty(DB_SERVER_PORT_KEY) : "";
@@ -67,6 +90,13 @@ public class PropertiesLoader {
     return dbPort;
   }
 
+  /**
+   * Save properties.
+   * 
+   * @param location the location
+   * @param host the host
+   * @param port the port
+   */
   public void saveProperties(String location, String host, String port) {
     try {
       properties.put(DB_ALONE_LOCATION_KEY, location);

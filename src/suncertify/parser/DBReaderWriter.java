@@ -17,6 +17,9 @@ import java.util.Date;
 
 import suncertify.constants.Variables;
 
+/**
+ * The Class DBReaderWriter.
+ */
 public class DBReaderWriter {
   private static final Logger log = LoggerFactory.getLogger(DBReaderWriter.class);
 
@@ -28,6 +31,11 @@ public class DBReaderWriter {
   private static final int RATE_LENGTH = 8;
   private static final int OWNER_LENGTH = 8;
 
+  /**
+   * Creates the database presenter.
+   * 
+   * @return the database presenter
+   */
   public static DBPresenter createDatabasePresenter() {
     DBPresenter presenter = DBPresenter.getInstance();
     File file = new File(presenter.getDbPath());
@@ -105,6 +113,13 @@ public class DBReaderWriter {
     return presenter;
   }
 
+  /**
+   * Adds the record.
+   * 
+   * @param data the data
+   * @return the long
+   * @throws Exception the exception
+   */
   public static long addRecord(String[] data) throws Exception {
     File file = new File(DBPresenter.getInstance().getDbPath());
     // log.info("write to dbPath: {}", DBPresenter.getInstance().getDbPath());
@@ -157,10 +172,22 @@ public class DBReaderWriter {
     }
   }
 
+  /**
+   * Update record.
+   * 
+   * @param record the record
+   * @throws Exception the exception
+   */
   public static void updateRecord(DBRecord record) throws Exception {
     saveDBPresenter();
   }
 
+  /**
+   * Delete record.
+   * 
+   * @param record the record
+   * @throws Exception the exception
+   */
   public static void deleteRecord(DBRecord record) throws Exception {
     record.setValid((byte) -1);
     saveDBPresenter();
