@@ -64,7 +64,7 @@ public class Server {
           try {
             // receive
             message = (String) in.readObject();
-            log.info("client>" + message);
+            log.info("server received:>" + message);
             if (message.startsWith(MessageType.READ.getName())) {
               long recNo = Long.parseLong(message.split(TERMINATOR)[1]);
               try {
@@ -73,12 +73,8 @@ public class Server {
                 sendMessage(MessageHelper.getNoRecordError());
               }
             } else if (message.startsWith(MessageType.FIND.getName())) {
-              log.info("message: " + message);
+              log.info("find message: " + message);
               String[] temp = message.split(TERMINATOR, -1);
-              for (String t : temp) {
-                log.info("t:" + t);
-              }
-              log.info("temp len: " + temp.length);
               String[] criteria = { temp[1], temp[2], temp[3], temp[4], temp[5], temp[6] };
               sendMessage(MessageHelper.getFindByCriteriaResponseMessage(data.findByCriteria(criteria)));
             } else if (message.startsWith(MessageType.UPDATE.getName())) {
@@ -120,6 +116,7 @@ public class Server {
               long recNo = Long.parseLong(temp[1]);
               try {
                 long cookie = data.lockRecord(recNo);
+                log.info("Locked recNo: " + recNo + " by cookie: " + cookie);
                 sendMessage(MessageHelper.getLockResponseMessage(cookie));
               } catch (RecordNotFoundException e) {
                 sendMessage(MessageHelper.getNoRecordError());
@@ -128,6 +125,7 @@ public class Server {
               String[] temp = message.split(TERMINATOR, -1);
               long recNo = Long.parseLong(temp[1]);
               long cookie = Long.parseLong(temp[2]);
+              log.info("unlock recNo: " + recNo + ", cookie: " + cookie);
               try {
                 data.unlock(recNo, cookie);
               } catch (SecurityException e) {
@@ -159,7 +157,7 @@ public class Server {
       try {
         out.writeObject(msg);
         out.flush();
-        log.info("server>" + msg);
+        log.info("server sends:> " + msg);
       } catch (IOException e) {
         log.error(e.getMessage(), e);
       }

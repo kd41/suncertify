@@ -9,9 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import suncertify.parser.PropertiesLoader;
-
-public class Client {
+public abstract class Client {
   private static final Logger log = LoggerFactory.getLogger(Client.class);
   private String host;
   private int port;
@@ -22,12 +20,12 @@ public class Client {
   private String message;
   private String response;
 
-  protected Client(String host, int port) throws NotInizializedException {
+  protected Client(String host, int port) {
     this.host = host;
     this.port = port;
   }
 
-  protected void start() throws NotInizializedException {
+  protected void start() {
     try {
       socket = new Socket(host, port);
       log.info("Connected to " + host + " in port " + port);
@@ -38,10 +36,10 @@ public class Client {
         // send
         out.writeObject(message);
         out.flush();
-        log.info("client>" + message);
+        log.info("client send to server:> " + message);
         // receive
         response = (String) in.readObject();
-        log.info("server>" + message);
+        log.info("client received from server:> " + message);
       } catch (IOException e) {
         log.error(e.getMessage(), e);
       } catch (ClassNotFoundException e) {
@@ -49,7 +47,8 @@ public class Client {
       }
     } catch (UnknownHostException e) {
       log.error("You are trying to connect to an unknown host!", e);
-      throw new NotInizializedException();
+      // TODO: need this?
+      // throw new NotInizializedException();
     } catch (IOException e) {
       log.error(e.getMessage(), e);
     } finally {
@@ -76,10 +75,6 @@ public class Client {
 
   protected void setMessage(String message) {
     this.message = message;
-  }
-
-  public static void main(String args[]) throws NotInizializedException {
-    new Client(PropertiesLoader.getInstance().getDbHost(), Integer.parseInt(PropertiesLoader.getInstance().getDbPort()));
   }
 
 }

@@ -17,7 +17,7 @@ public class MessageHelper {
   }
 
   public static String getFindByCriteriaRequestMessage(String[] criteria) {
-    return MessageType.FIND.getName() + TERMINATOR + getMessage(criteria);
+    return MessageType.FIND.getName() + TERMINATOR + getFindMessage(criteria);
   }
 
   public static String getFindByCriteriaResponseMessage(long[] recNos) {
@@ -25,7 +25,7 @@ public class MessageHelper {
   }
 
   public static String getUpdateRequestMessage(long recNo, String[] data, long lockCookie) {
-    return MessageType.UPDATE.getName() + TERMINATOR + getMessage(data) + TERMINATOR + lockCookie;
+    return MessageType.UPDATE.getName() + TERMINATOR + recNo + TERMINATOR + getMessage(data) + TERMINATOR + lockCookie;
   }
 
   public static String getUpdateResponseMessage() {
@@ -33,7 +33,7 @@ public class MessageHelper {
   }
 
   public static String getDeleteRequestMessage(long recNo, long lockCookie) {
-    return MessageType.DELETE.getName() + TERMINATOR + lockCookie;
+    return MessageType.DELETE.getName() + TERMINATOR + recNo + TERMINATOR + lockCookie;
   }
 
   public static String getDeleteResponseMessage() {
@@ -88,9 +88,26 @@ public class MessageHelper {
     return sb.toString();
   }
 
+  private static String getFindMessage(String[] data) {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < data.length; i++) {
+      if (data[i] == null) {
+        sb.append(TERMINATOR);
+      } else {
+        if (i < data.length - 1) {
+          sb.append(data[i]).append(TERMINATOR);
+        } else {
+          sb.append(data[i]);
+        }
+      }
+    }
+    return sb.toString();
+  }
+
   private static String getMessage(long[] data) {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < data.length; i++) {
+      log.info("i: " + data[i]);
       if (i < data.length - 1) {
         sb.append(data[i]).append(TERMINATOR);
       } else {

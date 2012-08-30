@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import suncertify.parser.PropertiesLoader;
+
+import suncertify.socket.client.DBAccessClientImpl;
+
+import suncertify.db.DBAccess;
+
 import suncertify.program.Mode;
 
 import suncertify.db.Data;
@@ -15,12 +21,15 @@ public class BSData {
   private String[] criteria;
   private int selectedRow;
 
-  private Data data;
+  private DBAccess data;
 
   public BSData(Mode mode) {
     this.mode = mode;
     if ((mode == Mode.STANDALONE) || (mode == Mode.SERVER)) {
       data = Data.getInstance();
+    } else {
+      data = new DBAccessClientImpl(PropertiesLoader.getInstance().getDbHost(),
+                                    Integer.parseInt(PropertiesLoader.getInstance().getDbPort()));
     }
   }
 

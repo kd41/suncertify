@@ -12,7 +12,7 @@ import suncertify.socket.MessageHelper;
 public class FindClient extends Client {
   private static final Logger log = LoggerFactory.getLogger(FindClient.class);
 
-  protected FindClient(String host, int port, String[] criteria) throws NotInizializedException {
+  protected FindClient(String host, int port, String[] criteria) {
     super(host, port);
     setMessage(MessageHelper.getFindByCriteriaRequestMessage(criteria));
     start();
