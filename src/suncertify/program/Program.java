@@ -12,23 +12,15 @@ public class Program {
   public static void main(String... args) {
     String mode = args.length > 0 ? args[0] : "";
     if (args.length == 0) {
-      new Program(Mode.NETWORK_CLIENT_AND_GUI).runNetworkClientAndGUI();
+      new Program(Mode.NETWORK_CLIENT_AND_GUI).run();
     } else if ("server".endsWith(mode)) {
-      new Program(Mode.SERVER).runServer();
+      new Program(Mode.SERVER).run();
     } else if ("alone".equals(mode)) {
-      new Program(Mode.STANDALONE).runStandalone();
+      new Program(Mode.STANDALONE).run();
     }
   }
 
-  private void runStandalone() {
-    new BSJFrame(mode);
-  }
-
-  private void runServer() {
-    new BSJFrame(mode);
-  }
-
-  private void runNetworkClientAndGUI() {
+  private void run() {
     new BSJFrame(mode);
   }
 }
