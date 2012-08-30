@@ -15,7 +15,6 @@ import java.net.Socket;
 import suncertify.db.Data;
 import suncertify.db.DuplicateKeyException;
 import suncertify.db.RecordNotFoundException;
-import suncertify.parser.PropertiesLoader;
 import suncertify.socket.MessageHelper;
 import suncertify.socket.MessageType;
 
@@ -34,11 +33,6 @@ public class Server {
       ServerThread thread = new ServerThread(clientSocket, count++);
       thread.start();
     }
-  }
-
-  // TODO: delete after
-  public static void main(String[] args) throws IOException {
-    new Server(Integer.parseInt(PropertiesLoader.getInstance().getDbPort()));
   }
 
   private class ServerThread extends Thread {

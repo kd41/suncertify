@@ -23,7 +23,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.io.IOException;
 
 import suncertify.parser.DBPresenter;
 import suncertify.program.Mode;
@@ -56,12 +55,7 @@ public class BSJFrameBase extends BSData {
 
   private JPanel searchPanel;
 
-  public static void main(String... args) throws IOException {
-    // TODO: main method is only for test
-    new BSJFrameBase(Mode.STANDALONE);
-  }
-
-  public BSJFrameBase(Mode mode) {
+  protected BSJFrameBase(Mode mode) {
     super(mode);
     JFrame jFrame = new JFrame("Bodgitt and Scarper, LLC");
     jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -25,7 +25,7 @@ public class Program {
   }
 
   private void runServer() {
-
+    new BSJFrame(mode);
   }
 
   private void runNetworkClientAndGUI() {

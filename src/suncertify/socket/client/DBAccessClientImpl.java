@@ -1,17 +1,12 @@
 package suncertify.socket.client;
 
+import static suncertify.constants.Variables.TERMINATOR;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import suncertify.socket.MessageHelper;
-
-import suncertify.parser.DBRecord;
-
-import static suncertify.constants.Variables.TERMINATOR;
 
 import suncertify.db.DuplicateKeyException;
 import suncertify.db.RecordNotFoundException;

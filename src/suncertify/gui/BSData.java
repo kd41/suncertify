@@ -4,26 +4,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import suncertify.parser.PropertiesLoader;
-
-import suncertify.socket.client.DBAccessClientImpl;
-
 import suncertify.db.DBAccess;
-
-import suncertify.program.Mode;
-
 import suncertify.db.Data;
 import suncertify.db.DuplicateKeyException;
 import suncertify.db.RecordNotFoundException;
+import suncertify.parser.PropertiesLoader;
+import suncertify.program.Mode;
+import suncertify.socket.client.DBAccessClientImpl;
 
 public class BSData {
+  protected enum ErrorType {
+    RECORD_NOT_FOUND, SECURITY, DUPLICATE_KEY
+  }
+
   protected Mode mode;
   private String[] criteria;
+
   private int selectedRow;
 
   private DBAccess data;
 
-  public BSData(Mode mode) {
+  protected BSData(Mode mode) {
     this.mode = mode;
     if ((mode == Mode.STANDALONE) || (mode == Mode.SERVER)) {
       data = Data.getInstance();
@@ -33,23 +34,16 @@ public class BSData {
     }
   }
 
-  public void setCriteria(String[] criteria) {
-    this.criteria = criteria;
-  }
-
-  public String[] getCriteria() {
-    if (criteria == null) {
-      return new String[] { null, null, null, null, null, null };
+  protected boolean createRecord(String[] recordData) {
+    try {
+      return data.createRecord(recordData) != 0;
+    } catch (DuplicateKeyException e) {
+      return false;
     }
-    return criteria;
   }
 
-  public void setSelectedRow(int selectedRow) {
-    this.selectedRow = selectedRow;
-  }
-
-  public int getSelectedRow() {
-    return selectedRow;
+  protected void deleteRecord(long recNo, long cookie) throws RecordNotFoundException, SecurityException {
+    data.deleteRecord(recNo, cookie);
   }
 
   protected String[][] findByCriteria() {
@@ -76,6 +70,7 @@ public class BSData {
     for (BSJRow row : rows) {
       row.setNumber(number++);
     }
+
     int x = BSJRow.getHeaders().length;
     int y = rows.size();
     String[][] dbData = new String[y][x];
@@ -88,20 +83,27 @@ public class BSData {
     return dbData;
   }
 
-  protected void deleteRecord(long recNo, long cookie) throws RecordNotFoundException, SecurityException {
-    data.deleteRecord(recNo, cookie);
+  protected String[] getCriteria() {
+    if (criteria == null) {
+      return new String[] { null, null, null, null, null, null };
+    }
+    return criteria;
   }
 
-  protected boolean createRecord(String[] recordData) {
-    try {
-      return data.createRecord(recordData) != 0;
-    } catch (DuplicateKeyException e) {
-      return false;
-    }
+  protected int getSelectedRow() {
+    return selectedRow;
   }
 
   protected long lockRow(long recNo) throws RecordNotFoundException {
     return data.lockRecord(recNo);
+  }
+
+  protected void setCriteria(String[] criteria) {
+    this.criteria = criteria;
+  }
+
+  protected void setSelectedRow(int selectedRow) {
+    this.selectedRow = selectedRow;
   }
 
   protected void unlockRow(long recNo, long cookie) throws SecurityException {
@@ -111,9 +113,5 @@ public class BSData {
   protected void updateRow(long recNo, String[] data, long lockCookie) throws RecordNotFoundException,
                                                                       SecurityException {
     this.data.updateRecord(recNo, data, lockCookie);
-  }
-
-  protected enum ErrorType {
-    RECORD_NOT_FOUND, SECURITY, DUPLICATE_KEY
   }
 }

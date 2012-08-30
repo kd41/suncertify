@@ -4,8 +4,11 @@ bin/suncertify/parser
 bin/suncertify/db
 /.settings
 /logs
+/logs/
 /logs/log.log
 db-2x3-ext-temp.db
 db-2x3-ext-temp2.db
 db-2x3-ext-temp3.db
 /test-output
+/docs/javadoc
+/docs/javadoc/

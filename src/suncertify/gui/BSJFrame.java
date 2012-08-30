@@ -14,17 +14,12 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import suncertify.db.RecordNotFoundException;
 import suncertify.parser.PropertiesLoader;
 import suncertify.program.Mode;
 
 public class BSJFrame extends BSJFrameBase {
-  public static void main(String... args) throws IOException {
-    // TODO: main method is only for test
-    new BSJFrame(Mode.STANDALONE);
-  }
 
   public BSJFrame(Mode mode) {
     super(mode);
@@ -133,7 +128,7 @@ public class BSJFrame extends BSJFrameBase {
     }
 
     @Override
-    public Void doInBackground() {
+    protected Void doInBackground() {
       long cookie;
       try {
         cookie = lockRow(recNo);
@@ -184,7 +179,7 @@ public class BSJFrame extends BSJFrameBase {
     }
 
     @Override
-    public Void doInBackground() {
+    protected Void doInBackground() {
       long cookie;
       try {
         cookie = lockRow(recNo);

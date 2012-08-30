@@ -35,27 +35,27 @@ public class DBPresenter {
     return instance;
   }
 
-  public long getMagicCookie() {
+  protected long getMagicCookie() {
     return magicCookie;
   }
 
-  public void setMagicCookie(int magicCookie) {
+  protected void setMagicCookie(int magicCookie) {
     this.magicCookie = magicCookie;
   }
 
-  public void setFileHeader(byte[] fileHeader) {
+  protected void setFileHeader(byte[] fileHeader) {
     this.fileHeader = fileHeader;
   }
 
-  public byte[] getFileHeader() {
+  protected byte[] getFileHeader() {
     return fileHeader;
   }
 
-  public long getFieldsNumber() {
+  protected long getFieldsNumber() {
     return fieldsNumber;
   }
 
-  public void setFieldsNumber(int fieldsNumber) {
+  protected void setFieldsNumber(int fieldsNumber) {
     this.fieldsNumber = fieldsNumber;
   }
 
@@ -66,7 +66,7 @@ public class DBPresenter {
     return records;
   }
 
-  public void setRecords(List<DBRecord> records) {
+  protected void setRecords(List<DBRecord> records) {
     this.records = records;
   }
 
@@ -82,15 +82,15 @@ public class DBPresenter {
     return dbPort;
   }
 
-  public void setNewRecordNumber(long newRecordNumber) {
+  protected void setNewRecordNumber(long newRecordNumber) {
     this.newRecordNumber = newRecordNumber;
   }
 
-  public long getNewRecordNumber() {
+  protected long getNewRecordNumber() {
     return newRecordNumber;
   }
 
-  public void addRecord(DBRecord record) {
+  protected void addRecord(DBRecord record) {
     record.setPosition(newRecordNumber++);
     getRecords().add(record);
   }

@@ -30,21 +30,4 @@ public class DBRecordHelper {
     return record;
   }
 
-  public static DBRecord updateDBRecord(String[] data, long oldPosition, long cookie) {
-    DBRecord record = new DBRecord();
-    if (data.length == 6) {
-      record.setValid((byte) 0);
-      record.setPosition(oldPosition);
-      record.setName(data[0]);
-      record.setLocation(data[1]);
-      record.setSpecialties(data[2]);
-      record.setNumberOfWorkers(data[3]);
-      record.setRate(data[4]);
-      record.setOwner(data[5]);
-      record.setCookie(cookie);
-    } else {
-      throw new RuntimeException("Wrong data to create DBRecord!");
-    }
-    return record;
-  }
 }
