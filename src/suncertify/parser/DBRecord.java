@@ -19,6 +19,12 @@ public class DBRecord {
   private boolean isLocked = false;
 
   /**
+   * Instantiates a new database record.
+   */
+  public DBRecord() {
+  }
+
+  /**
    * Gets the position.
    * 
    * @return the position
@@ -223,7 +229,6 @@ public class DBRecord {
    * @throws RecordNotFoundException the record not found exception
    */
   public synchronized void lockRecord() throws RecordNotFoundException {
-    System.out.println("isValid: " + valid);
     while (isLocked) {
       try {
         wait();
@@ -235,7 +240,6 @@ public class DBRecord {
       throw new RecordNotFoundException();
     }
     isLocked = true;
-    System.out.println("isLocked: " + position + " isValid: " + valid);
   }
 
   /**

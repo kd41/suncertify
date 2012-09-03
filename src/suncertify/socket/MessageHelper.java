@@ -2,14 +2,16 @@ package suncertify.socket;
 
 import static suncertify.constants.Variables.TERMINATOR;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * The Class MessageHelper.
  */
 public class MessageHelper {
-  private static final Logger log = LoggerFactory.getLogger(MessageHelper.class);
+
+  /**
+   * Instantiates a new message helper.
+   */
+  public MessageHelper() {
+  }
 
   /**
    * Gets the read request message.
@@ -210,7 +212,6 @@ public class MessageHelper {
   private static String getMessage(long[] data) {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < data.length; i++) {
-      log.info("i: " + data[i]);
       if (i < data.length - 1) {
         sb.append(data[i]).append(TERMINATOR);
       } else {

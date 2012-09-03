@@ -2,9 +2,6 @@ package suncertify.parser;
 
 import static java.lang.System.out;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
@@ -21,7 +18,6 @@ import suncertify.constants.Variables;
  * The Class DBReaderWriter.
  */
 public class DBReaderWriter {
-  private static final Logger log = LoggerFactory.getLogger(DBReaderWriter.class);
 
   private static final int VALID_LENGTH = 1;
   private static final int NAME_LENGTH = 32;
@@ -30,6 +26,12 @@ public class DBReaderWriter {
   private static final int NUM_OF_WOKERS_LENGTH = 6;
   private static final int RATE_LENGTH = 8;
   private static final int OWNER_LENGTH = 8;
+
+  /**
+   * Instantiates a new database reader writer.
+   */
+  public DBReaderWriter() {
+  }
 
   /**
    * Creates the database presenter.
@@ -52,21 +54,17 @@ public class DBReaderWriter {
       presenter.setMagicCookie(magicCookie);
 
       int fieldsNumber = dis.readUnsignedShort();
-      // log.info("fieldsNumber: {}", fieldsNumber);
       presenter.setFieldsNumber(fieldsNumber);
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < fieldsNumber; i++) {
         int recordNameLength = dis.readUnsignedByte();
-        // log.info("recordNameLength: {}", recordNameLength);
         for (int j = 0; j < recordNameLength; j++) {
           char c = (char) dis.readUnsignedByte();
           sb.append(c);
         }
-        int fieldLength = dis.readUnsignedByte();
-        // log.info("Field name: '{}'\tField length: {}", sb.toString(), fieldLength);
+        dis.readUnsignedByte();
         sb.setLength(0);
       }
-      // log.info("fileHeader: " + presenter.getFileHeader());
       try {
         int count = 0;
         while (true) {
@@ -95,7 +93,7 @@ public class DBReaderWriter {
       out.printf("Successful: " + new Date().toString());
       presenter.setNewRecordNumber(presenter.getRecords().size() + 1);
     } catch (IOException e) {
-      log.error(e.getMessage(), e);
+      out.println(e);
     } finally {
       try {
         dis.close();
@@ -122,7 +120,6 @@ public class DBReaderWriter {
    */
   public static long addRecord(String[] data) throws Exception {
     File file = new File(DBPresenter.getInstance().getDbPath());
-    // log.info("write to dbPath: {}", DBPresenter.getInstance().getDbPath());
     FileWriter fw = new FileWriter(file, true);
     writeRecord(data, fw);
     fw.flush();

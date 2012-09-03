@@ -1,8 +1,5 @@
 package suncertify.parser;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,7 +9,6 @@ import java.util.Properties;
  * The Class PropertiesLoader.
  */
 public class PropertiesLoader {
-  private static final Logger log = LoggerFactory.getLogger(PropertiesLoader.class);
 
   private static PropertiesLoader instance;
   private static final String RESOURCE_FILE_NAME = "suncertify.properties";
@@ -41,7 +37,7 @@ public class PropertiesLoader {
         is = new FileInputStream(RESOURCE_FILE_NAME);
         properties.load(is);
       } catch (IOException e) {
-        log.error(e.getMessage(), e);
+        System.out.println(e);
       } finally {
         if (null != is) {
           try {

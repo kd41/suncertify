@@ -6,6 +6,12 @@ package suncertify.parser;
 public class DBRecordHelper {
 
   /**
+   * Instantiates a new database record helper.
+   */
+  public DBRecordHelper() {
+  }
+
+  /**
    * Gets the database record as string array.
    * 
    * @param record the record

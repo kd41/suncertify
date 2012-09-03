@@ -1,8 +1,5 @@
 package suncertify.socket.client;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,7 +10,6 @@ import java.net.UnknownHostException;
  * The Class Client.
  */
 public abstract class Client {
-  private static final Logger log = LoggerFactory.getLogger(Client.class);
   private String host;
   private int port;
   private Socket socket;
@@ -30,8 +26,8 @@ public abstract class Client {
 
   protected void start() {
     try {
+      System.out.println("Client started.");
       socket = new Socket(host, port);
-      log.info("Connected to " + host + " in port " + port);
       out = new ObjectOutputStream(socket.getOutputStream());
       out.flush();
       in = new ObjectInputStream(socket.getInputStream());
@@ -39,21 +35,16 @@ public abstract class Client {
         // send
         out.writeObject(message);
         out.flush();
-        log.info("client send to server:> " + message);
         // receive
         response = (String) in.readObject();
-        log.info("client received from server:> " + response);
       } catch (IOException e) {
-        log.error(e.getMessage(), e);
+        System.out.println(e);
       } catch (ClassNotFoundException e) {
-        log.error(e.getMessage(), e);
+        System.out.println(e);
       }
     } catch (UnknownHostException e) {
-      log.error("You are trying to connect to an unknown host!", e);
-      // TODO: need this?
-      // throw new NotInizializedException();
     } catch (IOException e) {
-      log.error(e.getMessage(), e);
+      System.out.println(e);
     } finally {
       try {
         in.close();
@@ -67,8 +58,6 @@ public abstract class Client {
         socket.close();
       } catch (IOException e) {
       }
-
-      log.info("Client stoped");
     }
   }
 

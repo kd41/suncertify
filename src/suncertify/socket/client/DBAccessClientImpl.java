@@ -2,9 +2,6 @@ package suncertify.socket.client;
 
 import static suncertify.constants.Variables.TERMINATOR;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +13,6 @@ import suncertify.socket.MessageType;
  * The Class DBAccessClientImpl.
  */
 public class DBAccessClientImpl implements DBAccessClient {
-  private static final Logger log = LoggerFactory.getLogger(DBAccessClientImpl.class);
   private String host;
   private int port;
 
@@ -66,9 +62,6 @@ public class DBAccessClientImpl implements DBAccessClient {
   public long[] findByCriteria(String[] criteria) {
     String response = new FindClient(host, port, criteria).getResponse();
     String[] temp = response.split(TERMINATOR, -1);
-    for (String s : temp) {
-      log.info("s: " + s);
-    }
     List<Integer> foundedList = new ArrayList<Integer>();
     for (int i = 1; i < temp.length; i++) {
       try {

@@ -1,8 +1,5 @@
 package suncertify.db;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +12,6 @@ import suncertify.parser.DBRecordHelper;
  * The Class DBAccessImpl.
  */
 public class DBAccessImpl {
-  private static final Logger log = LoggerFactory.getLogger(DBAccessImpl.class);
 
   private static DBAccessImpl dbAccessImpl;
 
@@ -77,7 +73,7 @@ public class DBAccessImpl {
     try {
       DBReaderWriter.updateRecord(record);
     } catch (Exception e) {
-      log.info(e.getMessage(), e);
+      System.out.println(e);
     }
   }
 
@@ -100,7 +96,7 @@ public class DBAccessImpl {
     try {
       DBReaderWriter.deleteRecord(record);
     } catch (Exception e) {
-      log.info(e.getMessage(), e);
+      System.out.println(e);
     }
   }
 
@@ -116,7 +112,6 @@ public class DBAccessImpl {
     }
     DBPresenter presenter = DBPresenter.getInstance();
     List<DBRecord> findedRecords = new ArrayList<DBRecord>();
-    log.info("findByCriteria ++++++++: " + presenter.getRecords().size());
     for (DBRecord record : presenter.getRecords()) {
       if (!record.isValid()) {
         continue;
@@ -131,16 +126,13 @@ public class DBAccessImpl {
       }
       if (isMached) {
         findedRecords.add(record);
-        log.info("found: " + record);
       }
     }
     long[] findedNumbers = new long[findedRecords.size()];
     int count = 0;
     for (DBRecord record : findedRecords) {
       findedNumbers[count++] = record.getPosition();
-      log.info("found: " + record.getPosition());
     }
-    log.info("findedNumbers: " + findedNumbers.length);
     return findedNumbers;
   }
 
@@ -160,7 +152,7 @@ public class DBAccessImpl {
     try {
       DBReaderWriter.addRecord(data);
     } catch (Exception e) {
-      log.info(e.getMessage(), e);
+      System.out.println(e);
     }
     return record.getPosition();
   }
@@ -194,7 +186,7 @@ public class DBAccessImpl {
     try {
       record = presenter.getRecord(recNo, false);
     } catch (RecordNotFoundException e) {
-      log.error(e.getMessage(), e);
+      System.out.println(e);
     }
     if (record.getCookie() != cookie) {
       throw new SecurityException("The record " + recNo + " is locked with cookie: " + record.getCookie()
