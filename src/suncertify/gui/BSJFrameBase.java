@@ -314,9 +314,9 @@ public class BSJFrameBase extends BSData {
       }
     }
     // TODO: need or not to need?
-    // table.getColumnModel().getColumn(BSJRow.VALID).setMinWidth(0);
-    // table.getColumnModel().getColumn(BSJRow.VALID).setMaxWidth(0);
-    // table.getColumnModel().getColumn(BSJRow.VALID).setWidth(0);
+    table.getColumnModel().getColumn(BSJRow.VALID).setMinWidth(0);
+    table.getColumnModel().getColumn(BSJRow.VALID).setMaxWidth(0);
+    table.getColumnModel().getColumn(BSJRow.VALID).setWidth(0);
     // table.getColumnModel().getColumn(BSJRow.OWNER).setMinWidth(0);
     // table.getColumnModel().getColumn(BSJRow.OWNER).setMaxWidth(0);
     // table.getColumnModel().getColumn(BSJRow.OWNER).setWidth(0);
@@ -327,7 +327,7 @@ public class BSJFrameBase extends BSData {
     if (this.mode == Mode.NETWORK_CLIENT_AND_GUI) {
       pathLbl.setVisible(false);
       dbLocationField.setVisible(false);
-      setStatus("Program started. Please check the host/port and press Refresh");
+      setStatus("Client started.");
     } else if (mode == Mode.STANDALONE) {
       hostLbl.setVisible(false);
       portLbl.setVisible(false);

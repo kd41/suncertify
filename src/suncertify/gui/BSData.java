@@ -1,5 +1,6 @@
 package suncertify.gui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +12,7 @@ import suncertify.db.RecordNotFoundException;
 import suncertify.parser.PropertiesLoader;
 import suncertify.program.Mode;
 import suncertify.socket.client.DBAccessClientImpl;
+import suncertify.socket.server.Server;
 
 /**
  * The Class BSData.
@@ -21,21 +23,49 @@ public class BSData {
   }
 
   protected Mode mode;
+  protected DBAccess data;
+  protected boolean isStarrtedOK = true;
 
   private String[] criteria;
-
   private int selectedRow;
-
-  private DBAccess data;
+  private Thread serverThread;
 
   protected BSData(Mode mode) {
     this.mode = mode;
-    if ((mode == Mode.STANDALONE) || (mode == Mode.SERVER)) {
-      data = Data.getInstance();
-    } else {
-      data = new DBAccessClientImpl(PropertiesLoader.getInstance().getDbHost(),
-                                    Integer.parseInt(PropertiesLoader.getInstance().getDbPort()));
+    int port = 0;
+    try {
+      port = Integer.parseInt(PropertiesLoader.getInstance().getDbPort());
+    } catch (NumberFormatException e) {
+      e.printStackTrace();
+      isStarrtedOK = false;
     }
+    if (mode == Mode.STANDALONE) {
+      data = Data.getInstance();
+    } else if (mode == Mode.SERVER) {
+      data = Data.getInstance();
+      runServer(port);
+    } else {
+      data = new DBAccessClientImpl(PropertiesLoader.getInstance().getDbHost(), port);
+    }
+  }
+
+  protected void runServer(final int port) {
+    if (serverThread != null) {
+      serverThread.interrupt();
+      serverThread = null;
+    }
+    serverThread = new Thread() {
+      @Override
+      public void run() {
+        try {
+          new Server(port);
+        } catch (IOException e) {
+          e.printStackTrace();
+          isStarrtedOK = false;
+        }
+      }
+    };
+    serverThread.start();
   }
 
   protected boolean createRecord(String[] recordData) {

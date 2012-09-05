@@ -21,6 +21,7 @@ import suncertify.socket.MessageType;
 public class Server {
   private ServerSocket serverSocket;
   private Data data = Data.getInstance();
+  protected boolean isRunning = true;
 
   // TODO: replace for throw new MyIOException
   /**
@@ -32,11 +33,15 @@ public class Server {
   public Server(int port) throws IOException {
     serverSocket = new ServerSocket(port);
     int count = 0;
-    while (true) {
+    while (isRunning) {
       Socket clientSocket = serverSocket.accept();
       ServerThread thread = new ServerThread(clientSocket, count++);
-      thread.start();
+      thread.run();
     }
+  }
+
+  protected void stop() {
+    this.isRunning = false;
   }
 
   private class ServerThread extends Thread {
@@ -54,7 +59,8 @@ public class Server {
     @Override
     public void run() {
       try {
-        System.out.println("Request nr: " + count);
+        System.out.println("Connection received from " + clientSocket.getInetAddress().getHostName() + "; count: "
+                           + count);
         out = new ObjectOutputStream(clientSocket.getOutputStream());
         out.flush();
         in = new ObjectInputStream(clientSocket.getInputStream());
@@ -156,5 +162,6 @@ public class Server {
         System.out.println(e);
       }
     }
+
   }
 }

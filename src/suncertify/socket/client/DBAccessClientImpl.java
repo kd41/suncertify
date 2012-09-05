@@ -60,7 +60,12 @@ public class DBAccessClientImpl implements DBAccessClient {
 
   @Override
   public long[] findByCriteria(String[] criteria) {
-    String response = new FindClient(host, port, criteria).getResponse();
+    String response = "";
+    try {
+      response = new FindClient(host, port, criteria).getResponse();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     String[] temp = response.split(TERMINATOR, -1);
     List<Integer> foundedList = new ArrayList<Integer>();
     for (int i = 1; i < temp.length; i++) {

@@ -56,9 +56,7 @@ public class PropertiesLoader {
    * @return the database location
    */
   public String getDbLocation() {
-    if (this.dbLocation == null) {
-      dbLocation = properties.containsKey(DB_ALONE_LOCATION_KEY) ? properties.getProperty(DB_ALONE_LOCATION_KEY) : "";
-    }
+    dbLocation = properties.containsKey(DB_ALONE_LOCATION_KEY) ? properties.getProperty(DB_ALONE_LOCATION_KEY) : "";
     return dbLocation;
   }
 
@@ -68,9 +66,7 @@ public class PropertiesLoader {
    * @return the database host
    */
   public String getDbHost() {
-    if (this.dbHost == null) {
-      dbHost = properties.containsKey(DB_SERVER_HOST_KEY) ? properties.getProperty(DB_SERVER_HOST_KEY) : "";
-    }
+    dbHost = properties.containsKey(DB_SERVER_HOST_KEY) ? properties.getProperty(DB_SERVER_HOST_KEY) : "";
     return dbHost;
   }
 
@@ -80,9 +76,7 @@ public class PropertiesLoader {
    * @return the database port
    */
   public String getDbPort() {
-    if (this.dbPort == null) {
-      dbPort = properties.containsKey(DB_SERVER_PORT_KEY) ? properties.getProperty(DB_SERVER_PORT_KEY) : "";
-    }
+    dbPort = properties.containsKey(DB_SERVER_PORT_KEY) ? properties.getProperty(DB_SERVER_PORT_KEY) : "";
     return dbPort;
   }
 

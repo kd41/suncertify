@@ -5,5 +5,5 @@ I decided that 2^31-1 of rows should be sufficient for realization.
 4. Create, update, delete will trigger overwriting of the db file. 
 Maybe it is not best realization but performance was not a part of requirements.
 6. For logging I used log4j (version 1.2.17) because it is simple, 
-popular and rather fast. 
+popular and rather fast, but it was removed in the end of developing.
 The lock(

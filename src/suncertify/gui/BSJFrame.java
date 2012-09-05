@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import suncertify.db.RecordNotFoundException;
 import suncertify.parser.PropertiesLoader;
 import suncertify.program.Mode;
+import suncertify.socket.client.DBAccessClientImpl;
 
 /**
  * The Class BSJFrame.
@@ -39,6 +40,9 @@ public class BSJFrame extends BSJFrameBase {
     updateBtn.addActionListener(new BSActionListener(table, BSDataType.UPDATE));
     updateBtn.setEnabled(false);
     setColums(table);
+    if (!isStarrtedOK) {
+      setStatus("Started, but check the database location!", false);
+    }
   }
 
   private void setButtonsEnabled(boolean isEnabled) {
@@ -70,12 +74,24 @@ public class BSJFrame extends BSJFrameBase {
     @Override
     public void actionPerformed(ActionEvent e) {
       int rowSelected = table.getSelectedRow();
+      int port = 0;
       if (type == BSDataType.REFRESH) {
+        try {
+          port = Integer.parseInt(dbPortField.getText());
+        } catch (NumberFormatException ex) {
+          setStatus("Port must be number", false);
+          return;
+        }
         if (!PropertiesLoader.getInstance().getDbLocation().equals(dbLocationField.getText())
             || !PropertiesLoader.getInstance().getDbHost().equals(dbHostField.getText())
             || !PropertiesLoader.getInstance().getDbPort().equals(dbPortField.getText())) {
           PropertiesLoader.getInstance().saveProperties(dbLocationField.getText(), dbHostField.getText(),
                                                         dbPortField.getText());
+          if (mode == Mode.NETWORK_CLIENT_AND_GUI) {
+            data = new DBAccessClientImpl(dbHostField.getText(), port);
+          } else if (mode == Mode.SERVER) {
+            runServer(port);
+          }
         }
         setCriteria(null);
         setStatus("Refreshed");
