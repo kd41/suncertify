@@ -32,4 +32,5 @@ Packages for javadoc was described by package.html files.
 ###
 All of public methods, variables, constructors was commented for javadoc.
 
-
+###
+The client-server is implemented by sockets because I think it is easier and better as RMI.
