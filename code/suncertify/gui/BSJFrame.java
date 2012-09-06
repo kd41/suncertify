@@ -90,7 +90,11 @@ public class BSJFrame extends BSJFrameBase {
           if (mode == Mode.NETWORK_CLIENT_AND_GUI) {
             data = new DBAccessClientImpl(dbHostField.getText(), port);
           } else if (mode == Mode.SERVER) {
-            runServer(port);
+            setStatus("Please restart server!", false);
+            refreshBtn.setEnabled(false);
+            dbLocationField.setEnabled(false);
+            dbPortField.setEnabled(false);
+            return;
           }
         }
         setCriteria(null);

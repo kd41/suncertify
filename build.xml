@@ -1,0 +1,40 @@
+<?xml version="1.0" ?> 
+<project default="jar">
+	<property name="build.folder" value="runme" />
+	<property name="build.folder.classes" value="${build.folder}/code/classes" />
+	<property name="build.folder.docs" value="${build.folder}/docs" />
+	
+	<target name="build" depends="init,compile,copy-files">
+		<echo message="Build done." level="info" />
+	</target>
+	
+	<target name="init">
+		<delete includeemptydirs="true">
+    		<fileset dir="${build.folder}" includes="**/*" />
+  		</delete>
+		<mkdir dir="${build.folder}" />
+		<mkdir dir="${build.folder.classes}" />
+		<mkdir dir="${build.folder.docs}" />
+	</target>
+	
+	<target name="compile" depends="copy-source">
+		<echo message="Compiling code..." level="info" />
+		<javac srcdir="code" destdir="${build.folder.classes}" />
+	</target>
+	
+	<target name="copy-source">
+		<echo message="Coping files..." level="info" />
+		<copy todir="${build.folder}/code">
+    		<fileset dir="code" />
+  		</copy>
+	</target>
+	
+	<target name="copy-files">
+		<copy file="version.txt" todir="${build.folder}" />
+		<copy file="suncertify.properties" todir="${build.folder}" />
+		<copy todir="${build.folder.docs}">
+    		<fileset dir="docs" />
+  		</copy>
+	</target>
+	
+</project>

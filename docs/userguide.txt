@@ -17,7 +17,7 @@ By changing the database location user must press Refresh button to see the reco
 ###
 Refresh:
 ###
-User became all records from database by pressing Refresh button. 
+User gets all records from database by pressing Refresh button. 
 
 ###
 Search:
@@ -36,7 +36,7 @@ If duplicate record does't exists in database, then new record will be created o
 ###
 Get:
 ###
-Get can be used for update. Select needed row in table. Press Get button. 
+Get must be used for update. Select needed row in table. Press Get button. 
 Values from selected record will fill the corresponding fields in the control panel.
 
 ###
@@ -69,9 +69,9 @@ In the right part of the application is a table that displays the records. The a
 ###
 Database location and port:
 ###
-By changing the database location or port user must press Refresh and restart server. 
+By changing the database location or port user must press Save button and restart server. 
 
 ###
-Refresh:
+Save:
 ###
-By pressing Refresh button the database setting will be saved to properties fail.
+By pressing Save button the database setting will be saved to properties fail.

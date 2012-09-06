@@ -135,7 +135,7 @@ public class BSJFrameBase extends BSData {
 
     gbc.gridy = 2;
     gbc.anchor = GridBagConstraints.LINE_END;
-    refreshBtn = new BSButton("Refresh");
+    refreshBtn = new BSButton(mode == Mode.SERVER ? "Save" : "Refresh");
     gbl.setConstraints(refreshBtn, gbc);
     buttonPanel.add(refreshBtn);
 
