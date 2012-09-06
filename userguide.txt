@@ -1,0 +1,77 @@
+GUI depends on run mode: standalone, server or client.
+
+####################
+### Standalone and client mode:
+####################
+In the left side of the application is a control panel through which the user can change the settings of database; 
+search records on the characters entered in the appropriate fields; edit / create / delete records. 
+By default the Update button is disabled. In the right part of the application is a table that displays the records. 
+In the table can simultaneously selected only one row. The application has a status label, 
+which shows the success or failure of the executed user's request.
+
+###
+Database location:
+###
+By changing the database location user must press Refresh button to see the records from selected resource. 
+
+###
+Refresh:
+###
+User became all records from database by pressing Refresh button. 
+
+###
+Search:
+###
+User can search in database by defined criteria. User can to type in the appropriate fields text to search. 
+Search is implemented by the logical AND, which means: if user want to find the record where Name is 'Dogs With Tools' 
+and location is 'Smallville' and typed to search Name='Do' and Location='Who', 
+then this search parameters does't return this record. Search is case sensitive.
+
+###
+Create:
+###
+Fill fields Name, Location, Specialties, Nr. workers, Rate and Owner. Press create button. 
+If duplicate record does't exists in database, then new record will be created otherwise user became error message in status field.
+
+###
+Get:
+###
+Get can be used for update. Select needed row in table. Press Get button. 
+Values from selected record will fill the corresponding fields in the control panel.
+
+###
+Update:
+###
+Updates the selected record by data from control panel: 
+Select row in table for update
+Press Get button. Update button will be enabled
+Change needed values in the appropriate fields
+Press Update button
+
+### 
+Delete:
+###
+Deletes the selected record.
+
+###
+Table:
+###
+Table have 8 columns: Number, Position, Name, Location, Specialties, Nr workers, Rate and Owner. 
+In table can be selected one row at the same time.
+
+
+####################
+### Server mode:
+####################
+In the left side of the application is a control panel through which the user can change the settings of database. 
+In the right part of the application is a table that displays the records. The application has a status label.
+
+###
+Database location and port:
+###
+By changing the database location or port user must press Refresh and restart server. 
+
+###
+Refresh:
+###
+By pressing Refresh button the database setting will be saved to properties fail.
