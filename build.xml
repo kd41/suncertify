@@ -39,7 +39,7 @@
 	<target name="jar" depends="copy-source">
 		<mkdir dir="${build.folder.classes}" />
 		<echo message="Compiling code..." level="info" />
-		<javac srcdir="code" destdir="${build.folder.classes}" />
+		<javac srcdir="code" excludes="suncertify/mock/**" destdir="${build.folder.classes}" />
 		
 		<echo message="Making executable jar file..." level="info" />
 		<jar destfile="${build.folder}/runme.jar" basedir="${build.folder.classes}">
@@ -54,7 +54,10 @@
 	<target name="copy-source">
 		<echo message="Coping source files..." level="info" />
 		<copy todir="${build.folder}/code">
-    		<fileset dir="code" />
+    		<fileset dir="code" >
+				<include name="**/*"/>  
+	    		<exclude name="**/suncertify/mock/**"/>
+			</fileset> 
   		</copy>
 	</target>
 	
