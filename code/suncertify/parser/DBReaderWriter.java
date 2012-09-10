@@ -7,6 +7,7 @@ import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,7 +83,6 @@ public class DBReaderWriter {
         }
       } catch (EOFException e) {
       }
-
       File f1 = new File(PropertiesLoader.getInstance().getDbLocation());
       InputStream in = new FileInputStream(f1);
       byte[] buf = new byte[54];
@@ -92,6 +92,9 @@ public class DBReaderWriter {
 
       out.printf("Successful: " + new Date().toString());
       presenter.setNewRecordNumber(presenter.getRecords().size() + 1);
+    } catch (FileNotFoundException e) {
+      out.println("File not exists: '" + PropertiesLoader.getInstance().getDbLocation()
+                  + "'. Please check the database location.");
     } catch (IOException e) {
       out.println(e);
     } finally {

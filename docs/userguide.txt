@@ -13,11 +13,13 @@ which shows the success or failure of the executed user's request.
 Database location:
 ###
 By changing the database location user must press Refresh button to see the records from selected resource. 
+Default path value is 'db-2x3.db' ant port value is '14444'.
 
 ###
 Refresh:
 ###
-User gets all records from database by pressing Refresh button. 
+The database setting will be saved into 'suncertify.properties' file and 
+user gets all records from database by pressing Refresh button. 
 
 ###
 Search:
@@ -69,9 +71,11 @@ In the right part of the application is a table that displays the records. The a
 ###
 Database location and port:
 ###
-By changing the database location or port user must press Save button and restart server. 
+By changing the database location or port user must press Save button and restart server.
+Default path value is 'db-2x3.db' ant port value is '14444'.
 
 ###
 Save:
 ###
-By pressing Save button the database setting will be saved to properties fail.
+By pressing Save button the database setting will be saved to 'suncertify.properties' fail. 
+Server must be restarted!

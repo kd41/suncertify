@@ -33,11 +33,14 @@ public class BSData {
   protected BSData(Mode mode) {
     this.mode = mode;
     int port = 0;
-    try {
-      port = Integer.parseInt(PropertiesLoader.getInstance().getDbPort());
-    } catch (NumberFormatException e) {
-      e.printStackTrace();
-      isStarrtedOK = false;
+    if (mode != Mode.STANDALONE) {
+      try {
+        port = Integer.parseInt(PropertiesLoader.getInstance().getDbPort());
+      } catch (NumberFormatException e) {
+        System.out.println("Port: '" + PropertiesLoader.getInstance().getDbPort()
+                           + "' is invalid. Port must be a number.");
+        isStarrtedOK = false;
+      }
     }
     if (mode == Mode.STANDALONE) {
       data = Data.getInstance();

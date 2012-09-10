@@ -1,6 +1,7 @@
 package suncertify.parser;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -15,6 +16,8 @@ public class PropertiesLoader {
   private static final String DB_ALONE_LOCATION_KEY = "db.alone.location";
   private static final String DB_SERVER_HOST_KEY = "db.server.host";
   private static final String DB_SERVER_PORT_KEY = "db.server.port";
+  private static final String DB_DEFAULT_LOCATION = "db-2x3.db";
+  private static final String DB_DEFAULT_PORT = "14444";
   private static Properties properties;
   private String dbLocation;
   private String dbHost;
@@ -36,6 +39,7 @@ public class PropertiesLoader {
       try {
         is = new FileInputStream(RESOURCE_FILE_NAME);
         properties.load(is);
+      } catch (FileNotFoundException e) {
       } catch (IOException e) {
         System.out.println(e);
       } finally {
@@ -56,7 +60,8 @@ public class PropertiesLoader {
    * @return the database location
    */
   public String getDbLocation() {
-    dbLocation = properties.containsKey(DB_ALONE_LOCATION_KEY) ? properties.getProperty(DB_ALONE_LOCATION_KEY) : "";
+    dbLocation = properties.containsKey(DB_ALONE_LOCATION_KEY) ? properties.getProperty(DB_ALONE_LOCATION_KEY)
+                                                              : DB_DEFAULT_LOCATION;
     return dbLocation;
   }
 
@@ -76,7 +81,7 @@ public class PropertiesLoader {
    * @return the database port
    */
   public String getDbPort() {
-    dbPort = properties.containsKey(DB_SERVER_PORT_KEY) ? properties.getProperty(DB_SERVER_PORT_KEY) : "";
+    dbPort = properties.containsKey(DB_SERVER_PORT_KEY) ? properties.getProperty(DB_SERVER_PORT_KEY) : DB_DEFAULT_PORT;
     return dbPort;
   }
 
