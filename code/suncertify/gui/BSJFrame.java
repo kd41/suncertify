@@ -80,7 +80,9 @@ public class BSJFrame extends BSJFrameBase {
           port = Integer.parseInt(dbPortField.getText());
         } catch (NumberFormatException ex) {
           setStatus("Port must be number", false);
-          return;
+          if (mode != Mode.STANDALONE) {
+            return;
+          }
         }
         if (!PropertiesLoader.getInstance().getDbLocation().equals(dbLocationField.getText())
             || !PropertiesLoader.getInstance().getDbHost().equals(dbHostField.getText())

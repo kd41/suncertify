@@ -66,6 +66,8 @@ public class BSJFrameBase extends BSData {
     jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     if (mode != Mode.SERVER) {
       jFrame.setPreferredSize(new Dimension(1200, 800));
+    } else {
+      jFrame.setPreferredSize(new Dimension(300, 250));
     }
     jFrame.setLayout(new BorderLayout());
 

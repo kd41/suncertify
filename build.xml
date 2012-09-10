@@ -64,8 +64,7 @@
 	<target name="copy-files">
 		<echo message="Coping related files..." level="info" />
 		<copy file="version.txt" todir="${build.folder}" />
-		<copy file="suncertify.properties" todir="${build.folder}" />
-		<copy file="db-2x3-ext-temp.db" todir="${build.folder}" />
+		<copy file="db-2x3.db" todir="${build.folder}" />
 		<copy todir="${build.folder.docs}">
     		<fileset dir="docs" />
   		</copy>
