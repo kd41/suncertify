@@ -3,7 +3,7 @@ package suncertify.socket.client;
 import suncertify.socket.MessageHelper;
 
 /**
- * The Class UnlockClient.
+ * The Class UnlockClient provides the unlock record.
  */
 public class UnlockClient extends Client {
 

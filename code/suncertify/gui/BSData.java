@@ -15,7 +15,7 @@ import suncertify.socket.client.DBAccessClientImpl;
 import suncertify.socket.server.Server;
 
 /**
- * The Class BSData.
+ * The Class BSData initializes communication between gui and application data.
  */
 public class BSData {
   protected enum ErrorType {

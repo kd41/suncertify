@@ -6,7 +6,7 @@ import java.util.List;
 import suncertify.db.RecordNotFoundException;
 
 /**
- * The Class DBPresenter.
+ * The Class DBPresenter provides communication between the database and application.
  */
 public class DBPresenter {
   private static DBPresenter instance;

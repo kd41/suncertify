@@ -5,7 +5,7 @@ import java.net.ConnectException;
 import suncertify.socket.MessageHelper;
 
 /**
- * The Class FindClient.
+ * The Class FindClient provides the find records.
  */
 public class FindClient extends Client {
 

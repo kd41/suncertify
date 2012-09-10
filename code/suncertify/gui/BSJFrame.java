@@ -21,7 +21,7 @@ import suncertify.program.Mode;
 import suncertify.socket.client.DBAccessClientImpl;
 
 /**
- * The Class BSJFrame.
+ * The Class BSJFrame sets settings for user components.
  */
 public class BSJFrame extends BSJFrameBase {
 
@@ -84,7 +84,7 @@ public class BSJFrame extends BSJFrameBase {
         }
         if (!PropertiesLoader.getInstance().getDbLocation().equals(dbLocationField.getText())
             || !PropertiesLoader.getInstance().getDbHost().equals(dbHostField.getText())
-            || !PropertiesLoader.getInstance().getDbPort().equals(dbPortField.getText())) {
+            || !PropertiesLoader.getInstance().getDbPort().equals(dbPortField.getText()) || mode == Mode.SERVER) {
           PropertiesLoader.getInstance().saveProperties(dbLocationField.getText(), dbHostField.getText(),
                                                         dbPortField.getText());
           if (mode == Mode.NETWORK_CLIENT_AND_GUI) {
@@ -94,6 +94,7 @@ public class BSJFrame extends BSJFrameBase {
             refreshBtn.setEnabled(false);
             dbLocationField.setEnabled(false);
             dbPortField.setEnabled(false);
+            data = null;
             return;
           }
         }

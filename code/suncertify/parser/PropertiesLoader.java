@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * The Class PropertiesLoader.
+ * The Class PropertiesLoader. Read and write the database configuration.
  */
 public class PropertiesLoader {
 

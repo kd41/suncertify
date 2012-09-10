@@ -3,7 +3,7 @@ package suncertify.parser;
 import suncertify.db.RecordNotFoundException;
 
 /**
- * The Class DBRecord.
+ * The Class DBRecord provides the record from database.
  */
 public class DBRecord {
   private long position;

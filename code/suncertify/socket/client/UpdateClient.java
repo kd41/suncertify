@@ -3,7 +3,7 @@ package suncertify.socket.client;
 import suncertify.socket.MessageHelper;
 
 /**
- * The Class UpdateClient.
+ * The Class UpdateClient provides the update record.
  */
 public class UpdateClient extends Client {
 

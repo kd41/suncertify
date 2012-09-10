@@ -16,14 +16,13 @@ import suncertify.socket.MessageHelper;
 import suncertify.socket.MessageType;
 
 /**
- * The Class Server.
+ * The Class Server initializes the socket server.
  */
 public class Server {
   private ServerSocket serverSocket;
   private Data data = Data.getInstance();
   protected boolean isRunning = true;
 
-  // TODO: replace for throw new MyIOException
   /**
    * Instantiates a new server.
    * 

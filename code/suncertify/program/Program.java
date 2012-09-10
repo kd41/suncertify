@@ -3,7 +3,7 @@ package suncertify.program;
 import suncertify.gui.BSJFrame;
 
 /**
- * The Class Program.
+ * The Class Program is an entry point of application.
  */
 public class Program {
   private Mode mode;

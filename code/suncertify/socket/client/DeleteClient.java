@@ -3,7 +3,7 @@ package suncertify.socket.client;
 import suncertify.socket.MessageHelper;
 
 /**
- * The Class DeleteClient.
+ * The Class DeleteClient provides the delete record.
  */
 public class DeleteClient extends Client {
 

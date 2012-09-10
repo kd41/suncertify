@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * The Class Client.
+ * The Class Client initializes the socket client.
  */
 public abstract class Client {
   private String host;
@@ -26,8 +26,13 @@ public abstract class Client {
 
   protected void start() {
     try {
-      System.out.println("Client started.");
-      socket = new Socket(host, port);
+      System.out.println("Client starting...");
+      try {
+        socket = new Socket(host, port);
+      } catch (Exception e) {
+        System.out.println("Please check is server running on host: " + host + ", port: " + port);
+        return;
+      }
       out = new ObjectOutputStream(socket.getOutputStream());
       out.flush();
       in = new ObjectInputStream(socket.getInputStream());

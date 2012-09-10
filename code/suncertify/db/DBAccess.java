@@ -1,7 +1,7 @@
 package suncertify.db;
 
 /**
- * The Interface DBAccess.
+ * The Interface DBAccess is the main interface of application.
  */
 public interface DBAccess {
 

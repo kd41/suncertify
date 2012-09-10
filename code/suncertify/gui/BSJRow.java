@@ -1,7 +1,7 @@
 package suncertify.gui;
 
 /**
- * The Class BSJRow.
+ * The Class BSJRow provides the row of record in table.
  */
 public class BSJRow implements Comparable<BSJRow> {
 

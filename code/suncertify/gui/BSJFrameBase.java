@@ -28,7 +28,7 @@ import suncertify.parser.DBPresenter;
 import suncertify.program.Mode;
 
 /**
- * The Class BSJFrameBase.
+ * The Class BSJFrameBase initializes components of user interface.
  */
 public class BSJFrameBase extends BSData {
   protected JTable table;
@@ -58,11 +58,15 @@ public class BSJFrameBase extends BSData {
 
   private JPanel searchPanel;
 
+  private JScrollPane dataPane;
+
   protected BSJFrameBase(Mode mode) {
     super(mode);
     JFrame jFrame = new JFrame("Bodgitt and Scarper, LLC");
     jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    jFrame.setSize(1100, 800);
+    if (mode != Mode.SERVER) {
+      jFrame.setPreferredSize(new Dimension(1200, 800));
+    }
     jFrame.setLayout(new BorderLayout());
 
     String data[][] = findByCriteria();
@@ -254,7 +258,7 @@ public class BSJFrameBase extends BSData {
 
     JTableHeader header = table.getTableHeader();
     header.setBackground(Color.yellow);
-    JScrollPane dataPane = new JScrollPane(table);
+    dataPane = new JScrollPane(table);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     jFrame.add(buttonPanel, BorderLayout.LINE_START);
     jFrame.add(dataPane, BorderLayout.CENTER);
@@ -283,13 +287,13 @@ public class BSJFrameBase extends BSData {
       TableColumn col = table.getColumnModel().getColumn(i);
       switch (i) {
       case 0:
-        col.setPreferredWidth(40);
+        col.setPreferredWidth(50);
         break;
       case 1:
         col.setPreferredWidth(50);
         break;
       case 2:
-        col.setPreferredWidth(30);
+        col.setPreferredWidth(50);
         break;
       case 3:
         col.setPreferredWidth(400);
@@ -307,20 +311,15 @@ public class BSJFrameBase extends BSData {
         col.setPreferredWidth(60);
         break;
       case 8:
-        col.setPreferredWidth(30);
+        col.setPreferredWidth(50);
         break;
       default:
         break;
       }
     }
-    // TODO: need or not to need?
     table.getColumnModel().getColumn(BSJRow.VALID).setMinWidth(0);
     table.getColumnModel().getColumn(BSJRow.VALID).setMaxWidth(0);
     table.getColumnModel().getColumn(BSJRow.VALID).setWidth(0);
-    // table.getColumnModel().getColumn(BSJRow.OWNER).setMinWidth(0);
-    // table.getColumnModel().getColumn(BSJRow.OWNER).setMaxWidth(0);
-    // table.getColumnModel().getColumn(BSJRow.OWNER).setWidth(0);
-
   }
 
   private void initComponents() {
@@ -338,6 +337,7 @@ public class BSJFrameBase extends BSData {
       hostLbl.setVisible(false);
       dbHostField.setVisible(false);
       searchPanel.setVisible(false);
+      dataPane.setVisible(false);
       setStatus("Server started");
     }
   }

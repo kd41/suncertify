@@ -10,7 +10,7 @@ import suncertify.db.RecordNotFoundException;
 import suncertify.socket.MessageType;
 
 /**
- * The Class DBAccessClientImpl.
+ * The Class DBAccessClientImpl implements the communication between client and server.
  */
 public class DBAccessClientImpl implements DBAccessClient {
   private String host;
@@ -64,7 +64,8 @@ public class DBAccessClientImpl implements DBAccessClient {
     try {
       response = new FindClient(host, port, criteria).getResponse();
     } catch (Exception e) {
-      e.printStackTrace();
+      System.out.println("Client not started.");
+      return new long[] {};
     }
     String[] temp = response.split(TERMINATOR, -1);
     List<Integer> foundedList = new ArrayList<Integer>();

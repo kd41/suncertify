@@ -1,7 +1,7 @@
 package suncertify.parser;
 
 /**
- * The Class DBRecordHelper.
+ * The Class DBRecordHelper. Helper class to unite database and presentation of database.
  */
 public class DBRecordHelper {
 

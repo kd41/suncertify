@@ -15,7 +15,7 @@ import java.util.Date;
 import suncertify.constants.Variables;
 
 /**
- * The Class DBReaderWriter.
+ * The Class DBReaderWriter. Reads and writes the records into database.
  */
 public class DBReaderWriter {
 

@@ -1,7 +1,7 @@
 package suncertify.db;
 
 /**
- * The Class Data.
+ * The data access class.
  */
 public class Data implements DBAccess {
   private boolean isLockedDB = false;
