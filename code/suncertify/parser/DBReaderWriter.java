@@ -1,6 +1,13 @@
 package suncertify.parser;
 
 import static java.lang.System.out;
+import static suncertify.constants.Variables.LOCATION_LENGTH;
+import static suncertify.constants.Variables.NAME_LENGTH;
+import static suncertify.constants.Variables.NUM_OF_WOKERS_LENGTH;
+import static suncertify.constants.Variables.OWNER_LENGTH;
+import static suncertify.constants.Variables.RATE_LENGTH;
+import static suncertify.constants.Variables.SPECIALTIES_LENGTH;
+import static suncertify.constants.Variables.VALID_LENGTH;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -19,14 +26,6 @@ import suncertify.constants.Variables;
  * The Class DBReaderWriter. Reads and writes the records into database.
  */
 public class DBReaderWriter {
-
-  private static final int VALID_LENGTH = 1;
-  private static final int NAME_LENGTH = 32;
-  private static final int LOCATION_LENGTH = 64;
-  private static final int SPECIALTIES_LENGTH = 64;
-  private static final int NUM_OF_WOKERS_LENGTH = 6;
-  private static final int RATE_LENGTH = 8;
-  private static final int OWNER_LENGTH = 8;
 
   /**
    * Instantiates a new database reader writer.

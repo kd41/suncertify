@@ -1,5 +1,12 @@
 package suncertify.gui;
 
+import static suncertify.constants.Variables.LOCATION_LENGTH;
+import static suncertify.constants.Variables.NAME_LENGTH;
+import static suncertify.constants.Variables.NUM_OF_WOKERS_LENGTH;
+import static suncertify.constants.Variables.OWNER_LENGTH;
+import static suncertify.constants.Variables.RATE_LENGTH;
+import static suncertify.constants.Variables.SPECIALTIES_LENGTH;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -15,6 +22,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -163,6 +173,7 @@ public class BSJFrameBase extends BSData {
     sgbc.gridx = 2;
     sgbc.anchor = GridBagConstraints.LINE_START;
     nameField = new JTextField(10);
+    nameField.setDocument(new BSPlainDocument(NAME_LENGTH));
     sgbl.setConstraints(nameField, sgbc);
     searchPanel.add(nameField);
     sgbc.gridx = 0;
@@ -174,6 +185,7 @@ public class BSJFrameBase extends BSData {
     sgbc.gridx = 2;
     sgbc.anchor = GridBagConstraints.LINE_START;
     locationField = new JTextField(10);
+    locationField.setDocument(new BSPlainDocument(LOCATION_LENGTH));
     sgbl.setConstraints(locationField, sgbc);
     searchPanel.add(locationField);
     sgbc.gridx = 0;
@@ -185,6 +197,7 @@ public class BSJFrameBase extends BSData {
     sgbc.gridx = 2;
     sgbc.anchor = GridBagConstraints.LINE_START;
     specialitiesField = new JTextField(10);
+    specialitiesField.setDocument(new BSPlainDocument(SPECIALTIES_LENGTH));
     sgbl.setConstraints(specialitiesField, sgbc);
     searchPanel.add(specialitiesField);
     sgbc.gridx = 0;
@@ -196,6 +209,7 @@ public class BSJFrameBase extends BSData {
     sgbc.gridx = 2;
     sgbc.anchor = GridBagConstraints.LINE_START;
     workersNrField = new JTextField(10);
+    workersNrField.setDocument(new BSPlainDocument(NUM_OF_WOKERS_LENGTH));
     sgbl.setConstraints(workersNrField, sgbc);
     searchPanel.add(workersNrField);
     sgbc.gridx = 0;
@@ -207,6 +221,7 @@ public class BSJFrameBase extends BSData {
     sgbc.gridx = 2;
     sgbc.anchor = GridBagConstraints.LINE_START;
     rateField = new JTextField(10);
+    rateField.setDocument(new BSPlainDocument(RATE_LENGTH));
     sgbl.setConstraints(rateField, sgbc);
     searchPanel.add(rateField);
     sgbc.gridx = 0;
@@ -218,6 +233,7 @@ public class BSJFrameBase extends BSData {
     sgbc.gridx = 2;
     sgbc.anchor = GridBagConstraints.LINE_START;
     ownerField = new JTextField(10);
+    ownerField.setDocument(new BSPlainDocument(OWNER_LENGTH));
     sgbl.setConstraints(ownerField, sgbc);
     searchPanel.add(ownerField);
     sgbc.gridy = 6;
@@ -368,6 +384,23 @@ public class BSJFrameBase extends BSData {
         }
       }
       return rendererComp;
+    }
+  }
+
+  private class BSPlainDocument extends PlainDocument {
+    private static final long serialVersionUID = 1L;
+    private int maxLength;
+
+    BSPlainDocument(int maxLength) {
+      super();
+      this.maxLength = maxLength;
+    }
+
+    @Override
+    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+      if ((str != null) && ((getLength() + str.length()) <= maxLength)) {
+        super.insertString(offs, str, a);
+      }
     }
   }
 }

@@ -44,3 +44,7 @@ By Ant (version 1.8.2) was:
 ###
 In the DBPresenter.getRecord(long recNo, boolean checkValid) method firstly will copy a list of records
 and then will iterate by it. It prevents ConcurrentModificationException. 
+
+###
+For text fields limitation in gui was created class BSPlainDocument that extends PlainDocument class.
+The constructor of BSPlainDocument takes the maximum chars length for text field.
