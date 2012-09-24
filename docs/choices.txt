@@ -42,8 +42,7 @@ By Ant (version 1.8.2) was:
 3. created runme.jar
 
 ###
-In the DBPresenter.getRecord(long recNo, boolean checkValid) method firstly will copy a list of records
-and then will iterate by it. It prevents ConcurrentModificationException. 
+The records stored in ConcurrentSkipListSet. It prevents ConcurrentModificationException. 
 
 ###
 For text fields limitation in gui was created class BSPlainDocument that extends PlainDocument class.

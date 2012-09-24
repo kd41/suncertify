@@ -5,7 +5,7 @@ import suncertify.db.RecordNotFoundException;
 /**
  * The Class DBRecord provides the record from database.
  */
-public class DBRecord {
+public class DBRecord implements Comparable {
   private long position;
   private byte valid;
   private String name;
@@ -200,6 +200,14 @@ public class DBRecord {
     return "Data[position=" + position + ", valid=" + valid + ", name=" + name + ", location=" + location
            + ", specialties=" + specialties + ", numberOfWorkers=" + numberOfWorkers + ", rate=" + rate + ", owner="
            + owner + ", cookie=" + cookie + "]";
+  }
+
+  @Override
+  public int compareTo(Object o) {
+    if (this.position > ((DBRecord) o).position) {
+      return 1;
+    }
+    return -1;
   }
 
   @Override

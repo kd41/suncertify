@@ -1,7 +1,7 @@
 package suncertify.parser;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import suncertify.db.RecordNotFoundException;
 
@@ -17,7 +17,7 @@ public class DBPresenter {
   private int magicCookie;
   private byte[] fileHeader;
   private int fieldsNumber;
-  private List<DBRecord> records;
+  private Set<DBRecord> records;
   private long newRecordNumber;
 
   private DBPresenter(String dbPath, String dbHost, String dbPort) {
@@ -72,14 +72,14 @@ public class DBPresenter {
    * 
    * @return the records
    */
-  public List<DBRecord> getRecords() {
+  public Set<DBRecord> getRecords() {
     if (records == null) {
-      records = new ArrayList<DBRecord>();
+      records = new ConcurrentSkipListSet<DBRecord>();
     }
     return records;
   }
 
-  protected void setRecords(List<DBRecord> records) {
+  protected void setRecords(Set<DBRecord> records) {
     this.records = records;
   }
 
@@ -126,7 +126,7 @@ public class DBPresenter {
   /**
    * Gets the record.
    * 
-   * @param recNo the rec no
+   * @param recNo the record number
    * @return the record
    * @throws RecordNotFoundException the record not found exception
    */
@@ -137,14 +137,13 @@ public class DBPresenter {
   /**
    * Gets the record.
    * 
-   * @param recNo the rec no
+   * @param recNo the record number
    * @param checkValid the check valid
    * @return the record
    * @throws RecordNotFoundException the record not found exception
    */
   public DBRecord getRecord(long recNo, boolean checkValid) throws RecordNotFoundException {
-    List<DBRecord> currentRecords = new ArrayList<DBRecord>(getRecords());
-    for (DBRecord record : currentRecords) {
+    for (DBRecord record : getRecords()) {
       if (record.getPosition() == recNo && (!checkValid || record.isValid())) {
         return record;
       }
