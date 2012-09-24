@@ -1,8 +1,8 @@
 GUI depends on run mode: standalone, server or client.
 
-####################
-### Standalone and client mode:
-####################
+###################################
+### Standalone and client mode: ###
+###################################
 In the left side of the application is a control panel through which the user can change the settings of database; 
 search records on the characters entered in the appropriate fields; edit / create / delete records. 
 By default the Update button is disabled. In the right part of the application is a table that displays the records. 
@@ -63,7 +63,7 @@ In table can be selected one row at the same time.
 
 
 ####################
-### Server mode:
+### Server mode: ###
 ####################
 In the left side of the application is a control panel through which the user can change the settings of database. 
 In the right part of the application is a table that displays the records. The application has a status label.
@@ -77,5 +77,5 @@ Default path value is 'db-2x3.db' ant port value is '14444'.
 ###
 Save:
 ###
-By pressing Save button the database setting will be saved to 'suncertify.properties' fail. 
+By pressing Save button the database setting will be saved to 'suncertify.properties' file. 
 Server must be restarted!

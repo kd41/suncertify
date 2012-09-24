@@ -40,3 +40,7 @@ By Ant (version 1.8.2) was:
 1. builded project.
 2. generated javadoc.
 3. created runme.jar
+
+###
+In the DBPresenter.getRecord(long recNo, boolean checkValid) method firstly will copy a list of records
+and then will iterate by it. It prevents ConcurrentModificationException. 

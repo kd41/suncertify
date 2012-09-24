@@ -143,12 +143,14 @@ public class DBPresenter {
    * @throws RecordNotFoundException the record not found exception
    */
   public DBRecord getRecord(long recNo, boolean checkValid) throws RecordNotFoundException {
-    for (DBRecord record : getRecords()) {
+    List<DBRecord> currentRecords = new ArrayList<DBRecord>(getRecords());
+    for (DBRecord record : currentRecords) {
       if (record.getPosition() == recNo && (!checkValid || record.isValid())) {
         return record;
       }
     }
     throw new RecordNotFoundException("No record found with number: " + recNo);
+
   }
 
   /*
