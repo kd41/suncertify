@@ -40,6 +40,12 @@ public class BSJRow implements Comparable<BSJRow> {
   private String owner;
 
   /**
+   * Instantiates a new BSSJRow class.
+   */
+  public BSJRow() {
+  }
+
+  /**
    * Gets the number.
    * 
    * @return the number

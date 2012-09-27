@@ -41,7 +41,8 @@ import suncertify.program.Mode;
  * The Class BSJFrameBase initializes components of user interface.
  */
 public class BSJFrameBase extends BSData {
-  protected JTable table;
+  // TODO: put protect
+  public JTable table;
 
   protected BSButton refreshBtn;
   protected BSButton searchBtn;

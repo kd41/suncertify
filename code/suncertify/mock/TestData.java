@@ -8,9 +8,14 @@ public class TestData {
 
   private DBAccessImpl database = DBAccessImpl.getInstance();
 
-  public String[] getTestRecord() {
-    return new String[] { "some name", "some location", "some specialties", "" + (int) (Math.random() * 100),
-                         "$" + (int) (Math.random() * 10) + ".00", "0" };
+  private static int MAX_RANDOM = 10000;
+
+  public static String[] getTestRecord() {
+    return new String[] { "some name" + (int) (Math.random() * MAX_RANDOM),
+                         "some location" + (int) (Math.random() * MAX_RANDOM),
+                         "some specialties" + (int) (Math.random() * MAX_RANDOM),
+                         "" + (int) (Math.random() * MAX_RANDOM), "$" + (int) (Math.random() * MAX_RANDOM) + ".00",
+                         "" + (int) (Math.random() * MAX_RANDOM) };
   }
 
   public void deleteRecord(long location) {

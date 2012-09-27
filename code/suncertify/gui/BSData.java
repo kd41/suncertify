@@ -17,6 +17,7 @@ import suncertify.socket.server.Server;
 /**
  * The Class BSData initializes communication between gui and application data.
  */
+// TODO: put protected for public methods!!!
 public class BSData {
   protected enum ErrorType {
     RECORD_NOT_FOUND, SECURITY, DUPLICATE_KEY
@@ -52,7 +53,7 @@ public class BSData {
     }
   }
 
-  protected void runServer(final int port) {
+  private void runServer(final int port) {
     if (serverThread != null) {
       serverThread.interrupt();
       serverThread = null;
@@ -71,7 +72,7 @@ public class BSData {
     serverThread.start();
   }
 
-  protected boolean createRecord(String[] recordData) {
+  public boolean createRecord(String[] recordData) {
     try {
       return data.createRecord(recordData) != 0;
     } catch (DuplicateKeyException e) {
@@ -79,11 +80,11 @@ public class BSData {
     }
   }
 
-  protected void deleteRecord(long recNo, long cookie) throws RecordNotFoundException, SecurityException {
+  public void deleteRecord(long recNo, long cookie) throws RecordNotFoundException, SecurityException {
     data.deleteRecord(recNo, cookie);
   }
 
-  protected String[][] findByCriteria() {
+  public String[][] findByCriteria() {
     long[] records = data.findByCriteria(getCriteria());
     List<BSJRow> rows = new ArrayList<BSJRow>();
     for (long record : records) {
@@ -131,11 +132,11 @@ public class BSData {
     return selectedRow;
   }
 
-  protected long lockRow(long recNo) throws RecordNotFoundException {
+  public long lockRow(long recNo) throws RecordNotFoundException {
     return data.lockRecord(recNo);
   }
 
-  protected void setCriteria(String[] criteria) {
+  public void setCriteria(String[] criteria) {
     this.criteria = criteria;
   }
 
@@ -143,12 +144,11 @@ public class BSData {
     this.selectedRow = selectedRow;
   }
 
-  protected void unlockRow(long recNo, long cookie) throws SecurityException {
+  public void unlockRow(long recNo, long cookie) throws SecurityException {
     data.unlock(recNo, cookie);
   }
 
-  protected void updateRow(long recNo, String[] data, long lockCookie) throws RecordNotFoundException,
-                                                                      SecurityException {
+  public void updateRow(long recNo, String[] data, long lockCookie) throws RecordNotFoundException, SecurityException {
     this.data.updateRecord(recNo, data, lockCookie);
   }
 }
