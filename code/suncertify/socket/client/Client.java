@@ -26,9 +26,9 @@ public abstract class Client {
 
   protected void start() {
     try {
-      System.out.println("Client starting...");
       try {
         socket = new Socket(host, port);
+        socket.setSoTimeout(3000);
       } catch (Exception e) {
         System.out.println("Please check is server running on host: " + host + ", port: " + port);
         return;
@@ -52,7 +52,9 @@ public abstract class Client {
       System.out.println(e);
     } finally {
       try {
-        in.close();
+        if (in != null) {
+          in.close();
+        }
       } catch (IOException e) {
       }
       try {
