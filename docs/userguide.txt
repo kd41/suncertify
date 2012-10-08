@@ -78,4 +78,4 @@ Default path value is 'db-2x3.db' ant port value is '14444'.
 Save:
 ###
 By pressing Save button the database setting will be saved to 'suncertify.properties' file. 
-Server must be restarted!
+Server must be restarted witch means that application must be closed and opened again!

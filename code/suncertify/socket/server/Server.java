@@ -58,8 +58,10 @@ public class Server {
     @Override
     public void run() {
       try {
-        System.out.println("Connection received from " + clientSocket.getInetAddress().getHostName() + "; count: "
-                           + count);
+        if (count % 100 == 0) {
+          System.out.println("Connection received from " + clientSocket.getInetAddress().getHostName() + "; count: "
+                             + count);
+        }
         out = new ObjectOutputStream(clientSocket.getOutputStream());
         out.flush();
         in = new ObjectInputStream(clientSocket.getInputStream());

@@ -21,7 +21,7 @@ import suncertify.program.Mode;
 import suncertify.socket.client.DBAccessClientImpl;
 
 /**
- * The Class BSJFrame sets settings for user components.
+ * The Class BSJFrame sets the settings for user components.
  */
 public class BSJFrame extends BSJFrameBase {
 

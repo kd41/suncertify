@@ -1,7 +1,7 @@
 package suncertify.parser;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import suncertify.db.RecordNotFoundException;
 
@@ -17,7 +17,7 @@ public class DBPresenter {
   private int magicCookie;
   private byte[] fileHeader;
   private int fieldsNumber;
-  private Set<DBRecord> records;
+  private List<DBRecord> records;
   private long newRecordNumber;
 
   private DBPresenter(String dbPath, String dbHost, String dbPort) {
@@ -72,14 +72,14 @@ public class DBPresenter {
    * 
    * @return the records
    */
-  public Set<DBRecord> getRecords() {
+  public List<DBRecord> getRecords() {
     if (records == null) {
-      records = new ConcurrentSkipListSet<DBRecord>();
+      records = new CopyOnWriteArrayList<DBRecord>();
     }
     return records;
   }
 
-  protected void setRecords(Set<DBRecord> records) {
+  protected void setRecords(List<DBRecord> records) {
     this.records = records;
   }
 

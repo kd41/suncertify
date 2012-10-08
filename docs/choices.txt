@@ -42,7 +42,7 @@ By Ant (version 1.8.2) was:
 3. created runme.jar
 
 ###
-The records stored in ConcurrentSkipListSet. It prevents ConcurrentModificationException. 
+The records stored in CopyOnWriteArrayList. It prevents ConcurrentModificationException. 
 
 ###
 For text fields limitation in gui was created class BSPlainDocument that extends PlainDocument class.

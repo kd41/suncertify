@@ -1,6 +1,6 @@
 <?xml version="1.0" ?> 
 <project default="build">
-	<property name="build.folder" value="runme" />
+	<property name="build.folder" value="assigment" />
 	<property name="build.folder.classes" value="${build.folder}/classes" />
 	<property name="build.folder.docs" value="${build.folder}/docs" />
 	
@@ -9,7 +9,7 @@
 	</target>
 	
 	<target name="init">
-		<delete includeemptydirs="true">
+		<delete includeemptydirs="true" quiet="true">
     		<fileset dir="${build.folder}" includes="**/*" />
   		</delete>
 		<mkdir dir="${build.folder}" />
