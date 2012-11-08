@@ -1,0 +1,9 @@
+Run 'ant build' command to setup the application.
+
+java -jar <path_and_filename> [<mode>] 
+The mode flag must be either "server", indicating the server program must run, 
+"alone", indicating standalone mode, or left out entirely, in which case the network client and gui must run.
+
+All configuration is done via a GUI, and is persistent between runs of the program. 
+Such configuration information is stored in a file called suncertify.properties which 
+is located in the current working directory. 
