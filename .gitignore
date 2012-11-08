@@ -1,7 +1,9 @@
 /bin
-bin/suncertify
-bin/suncertify/parser
-bin/suncertify/db
+/bin/
+/bin/suncertify
+/bin/suncertify/parser
+/bin/suncertify/db
+/bin/suncertify/db/
 /.settings
 /logs
 /logs/
@@ -12,5 +14,9 @@ db-2x3-ext-temp3.db
 /test-output
 /docs/javadoc
 /docs/javadoc/
-/docs/runme
-/docs/runme/
+/runme
+/runme/
+/assigment
+/assigment/
+suncertify.properties
+assigment.jar

@@ -70,4 +70,10 @@
   		</copy>
 	</target>
 	
+	<target name="last">
+		<jar destfile="${build.folder}.jar" >
+	  		<fileset dir="${build.folder}" />
+		</jar>
+	</target>
+	
 </project>
